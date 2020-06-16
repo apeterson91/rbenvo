@@ -1,0 +1,17 @@
+Package: rbenvo
+Type: Package
+Title: Built Environment Objects for Point Pattern Data in R 
+Version: 0.1.0
+Authors@R: person("Adam", "Peterson", , "atpvyc@umich.edu", c("aut", "cre"))
+Description: rbenvo is package that holds S4 class objects and methods for built environment data to ease the use of working with these data and improve interoperability with other packages.
+License: GPL-3
+Encoding: UTF-8
+LazyData: true
+Imports: 
+    methods,
+    ggplot2
+RoxygenNote: 6.1.1
+Suggests: 
+    knitr,
+    rmarkdown
+VignetteBuilder: knitr

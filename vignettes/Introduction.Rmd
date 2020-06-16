@@ -1,0 +1,32 @@
+---
+title: "Getting Started with Benvos"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Getting Started with Benvos}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r setup}
+library(rbenvo)
+data("FFR_distances")
+data("FFR_subjects")
+```
+
+```{r}
+bdf <- benvo(subject_data = FFR_subjects,
+             bef_data = list(FFR_distances),
+             bef_names = "FFR",
+             joining_id = "id",
+             distance_col = "Distance",
+             exposed_time_col = c(NULL))
+bdf
+```
+
