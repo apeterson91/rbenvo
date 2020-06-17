@@ -19,6 +19,7 @@ benvo <- function(subject_data,
 				  distance_col = NULL,
 				  exposed_time_col = NULL){
 
+	subject_data <- as.data.frame(subject_data)
 	## --  Checks
 	check_bef_data(bef_names,bef_data)
 	stopifnot(joining_id %in% colnames(subject_data))
@@ -30,24 +31,21 @@ benvo <- function(subject_data,
 	## ------
 
 	## Processing / Standardize Distance/Time Columns
-	sapply(1:Q,function(x){
-			   if(!is.null(distance_col[x]))
-				   colnames(bef_data[[x]][,distance_col,drop = F]) <- "Distance"
-			   if(!is.null(exposed_time_col[x]))
-				   colnames(bef_data[[x]][,exposed_time_col, drop = F]) <- "Time"
-				  } )
 	components <- vector(mode="character",length = Q)
+
 	for(i in 1:Q){
 	  if(!is.null(distance_col[i])){
 	    components[i] <- "Space"
+	    names(bef_data[[i]][,distance_col]) <- "Distance"
 	    if(!is.null(exposed_time_col[i]))
 	      components[i] <- "Space-Time"
 	  }else if(!is.null(exposed_time_col[i])){
+	    names(bef_data[[i]][,exposed_time_col]) <- "Time"
 	    components[i] <- "Time"
 	  }else{
 	    stop("Each BEF must either have Distance or Time measures associated with it")
 	  }
-		}
+  }
 	## ------
 
 	bdf <- new("Benvo",subject_data = subject_data,

@@ -21,7 +21,7 @@ data("FFR_subjects")
 ```
 
 ```{r}
-bdf <- benvo(subject_data = FFR_subjects,
+bdf <- benvo(subject_data = as.data.frame(FFR_subjects),
              bef_data = list(FFR_distances),
              bef_names = "FFR",
              joining_id = "id",

@@ -10,7 +10,7 @@
 \arguments{
 \item{object}{benvo object}
 
-\item{pars}{optional vector of 
+\item{pars}{optional vector of
 BEF strings with which to subset printed summary}
 }
 \description{

@@ -1,13 +1,15 @@
 ## rbenvo: Built Environment Objects for Point Pattern Data in R
 <!-- badges: start -->
 [![License: GPL v3](https://img.shields.io/badge/License-GPL%20v3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
+[![Travis build status](https://travis-ci.org/apeterson91/rbenvo.svg?branch=master)](https://travis-ci.org/apeterson91/rbenvo)
 <!-- badges: end -->
 
 ## About
 
-rbenvo is package that holds S4 class objects and methods for
+rbenvo is package that creates S4 class objects and methods for
 built environment data to ease the use of working with these data 
-and improve interoperability with other packages.
+and improve interoperability with other R packages developing methods in this 
+same space.
 
 
 ## Installation

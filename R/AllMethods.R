@@ -1,4 +1,6 @@
 
+
+
 #' benvo Print Method
 #'
 #' @export
@@ -40,6 +42,11 @@ print_benvo <- function(object){
 }
 
 
+#' Number of Built Environment Features
+#'
+#' @export
+#' @param x a benvo object
+#' 
 setGeneric("Num_BEF",function(x){
 		   standardGeneric("Num_BEF")
 })

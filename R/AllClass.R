@@ -23,4 +23,5 @@ Benvo <- setClass("Benvo",
 				    id = "character",
 					bef_names = "character",
 					components = "character"
-                  ))
+                  )
+				)

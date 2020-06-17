@@ -5,7 +5,7 @@
 \title{Create a benvo object}
 \usage{
 benvo(subject_data, bef_data, bef_names, joining_id, distance_col = NULL,
-  exposed_time_col = NULL, bef_col)
+  exposed_time_col = NULL)
 }
 \arguments{
 \item{subject_data}{data.frame containing subject level covariates.}
@@ -16,7 +16,7 @@ benvo(subject_data, bef_data, bef_names, joining_id, distance_col = NULL,
 
 \item{joining_id}{character vector containing strings in both subject and bef data frames used to join data}
 
-\item{distance_col}{character vector containing strings 
+\item{distance_col}{character vector containing strings
 in bef_data frames where Distance measures are stored. NULL if there is no distance measure.}
 
 \item{time_col}{character vector containing strings
