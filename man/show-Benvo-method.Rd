@@ -9,9 +9,6 @@
 }
 \arguments{
 \item{object}{benvo object}
-
-\item{pars}{optional vector of
-BEF strings with which to subset printed summary}
 }
 \description{
 benvo Print Method

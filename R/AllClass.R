@@ -13,6 +13,8 @@
 #'      character vector containing strings in both data frames used to join data
 #' @slot bef_names 
 #'      character vector containing the names of the BEFs
+#' @slot components
+#'	    character vector containing the Space and/or Time data measured for each BEF
 #'
 #' @export
 #'

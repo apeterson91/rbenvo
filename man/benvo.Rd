@@ -19,7 +19,7 @@ benvo(subject_data, bef_data, bef_names, joining_id, distance_col = NULL,
 \item{distance_col}{character vector containing strings
 in bef_data frames where Distance measures are stored. NULL if there is no distance measure.}
 
-\item{time_col}{character vector containing strings
+\item{exposed_time_col}{character vector containing strings
 in bef_data frames where Distance measures are stored. NULL if there is no time measure.}
 }
 \description{

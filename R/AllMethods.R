@@ -1,13 +1,10 @@
 
-
-
 #' benvo Print Method
 #'
 #' @export
+#' @importFrom methods show
 #'
 #' @param object benvo object
-#' @param pars optional vector of
-#' BEF strings with which to subset printed summary
 setMethod(f = "show",
 	signature = "Benvo",
 	definition = function(object){
@@ -61,6 +58,7 @@ num_BEF <- function(x)
 #'
 #' @param x benvo object
 #' @param formula similar to \code{\link[stats]{lm}}.
+#' @importFrom stats is.empty.model model.response model.matrix 
 #'
 setGeneric("subject_design",function(x) standardGeneric("subject_design"))
 
@@ -81,4 +79,18 @@ subject_design <- function(formula,x){
 	X <-  model.matrix(mt,mf)
 	out <- list(y=y,X=X)
 	return(out)
+}
+
+#' Extract BEF design Matrix
+#' 
+#' @export
+#' @param x benvo object
+#' @param formula 
+#'
+setGeneric("bef_design",function(x) standardGeneric("bef_design"))
+
+
+bef_design <- function(x){
+
+	cat("Not implimented")
 }

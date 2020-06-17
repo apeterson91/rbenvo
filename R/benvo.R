@@ -9,8 +9,9 @@
 #' @param joining_id character vector containing strings in both subject and bef data frames used to join data
 #' @param distance_col character vector containing strings
 #' in bef_data frames where Distance measures are stored. NULL if there is no distance measure.
-#' @param time_col character vector containing strings
+#' @param exposed_time_col character vector containing strings
 #' in bef_data frames where Distance measures are stored. NULL if there is no time measure.
+#' @importFrom methods new
 #'
 benvo <- function(subject_data,
 				  bef_data,
