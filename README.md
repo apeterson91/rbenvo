@@ -1,4 +1,4 @@
-## rbenvo: Built Environment Objects for Point Pattern Data in R
+## <img src = "docs/figures/rbenvo_hex.png" align="right" width="400" height = "400"> rbenvo: Built Environment Objects for Point Pattern Data in R
 <!-- badges: start -->
 [![License: GPL v3](https://img.shields.io/badge/License-GPL%20v3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
 [![Travis build status](https://travis-ci.org/apeterson91/rbenvo.svg?branch=master)](https://travis-ci.org/apeterson91/rbenvo)
