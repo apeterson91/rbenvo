@@ -1,7 +1,7 @@
 
 
 
-#' Small dataset for use in \pkg{rstapDP} examples and vignettes.
+#' Small dataset for use in \pkg{benvo} examples and vignettes.
 #'
 #' @name FFR_subjects
 #'
@@ -16,7 +16,7 @@
 "FFR_subjects"
 
 
-#' Small dataset for use in \pkg{rstapDP} examples and vignettes.
+#' Small dataset for use in \pkg{benvo} examples and vignettes.
 #'
 #' @name FFR_distances
 #' @format  A data frame with 9501 rows and 2 columns
@@ -27,3 +27,17 @@
 #' 
 #' 
 "FFR_distances"
+
+
+#' Small benvo for use in \pkg{benvo} examples and vignettes.
+#'
+#' @name example_benvo 
+#'
+#' @format  A benvo with 1000 subjects and nearby simulated FFRs
+#' \describe{
+#' \item{\code{FFR_subjects }}{:see FFR_subjects dataset}
+#' \item{\code{FFR_distances}}{:see FFR_distances dataset}
+#' }
+#' 
+#' 
+"example_benvo"

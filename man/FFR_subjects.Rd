@@ -3,7 +3,7 @@
 \docType{data}
 \name{FFR_subjects}
 \alias{FFR_subjects}
-\title{Small dataset for use in \pkg{rstapDP} examples and vignettes.}
+\title{Small dataset for use in \pkg{benvo} examples and vignettes.}
 \format{A data frame with 1000 rows and 3 columns
 \describe{
 \item{\code{id}}{:The subject unique identifier}
@@ -14,6 +14,6 @@
 FFR_subjects
 }
 \description{
-Small dataset for use in \pkg{rstapDP} examples and vignettes.
+Small dataset for use in \pkg{benvo} examples and vignettes.
 }
 \keyword{datasets}

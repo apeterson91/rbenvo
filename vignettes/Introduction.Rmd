@@ -14,14 +14,36 @@ knitr::opts_chunk$set(
 )
 ```
 
-```{r setup}
+# Introduction
+
+This vignette serves to introduce the philosophy and structure of the `rbenvo` package, which impliments `Benvo` classes: Built Environment Objects. These classes make working with built environment data easier by offering a common interface to do so. We'll illustrate some of the very basics of how to use benvo's in this vignette as well
+as give some references as to how it might be used in other packages or settings.
+
+We'll begin by loading the library and the two example datasets involving subjects living near Fast Food Restaurants (FFR). One of the two datasets will be for the subject level information, `FFR_subjects`, the other will 
+contain some measure of exposure (space/time) that describe how long and how close subjects are located near the nearby Built Environment Features (BEFs).
+
+```{r setup,message=F,results=F}
 library(rbenvo)
 data("FFR_distances")
 data("FFR_subjects")
 ```
 
-```{r}
-bdf <- benvo(subject_data = as.data.frame(FFR_subjects),
+
+The subject dataframe should look familiar. This is a tidy dataset with an ID and two subject-level measures: BMI and sex.
+
+```{r subjdf}
+head(FFR_subjects,5)
+```
+
+The distance dataframe is a tidy "long" dataframe, containing multiple nearby BEF exposures per subject
+```{r befdf}
+head(FFR_distances,5)
+```
+
+In order to create a benvo we'll pass the two dataframes to the `benvo()` function, wrapping the FFR_distances data frame in a list. We'll also pass the BEF name we want, along with the joining id name and the name of the column that contains the distance measures.
+
+```{r mkbenvo}
+bdf <- benvo(subject_data = FFR_subjects,
              bef_data = list(FFR_distances),
              bef_names = "FFR",
              joining_id = "id",
@@ -29,4 +51,30 @@ bdf <- benvo(subject_data = as.data.frame(FFR_subjects),
              exposed_time_col = c(NULL))
 bdf
 ```
+## Simple Descriptives
+
+We can see from the above a simple summary of the kind of feature that we have data on. If we call the `summary` function we'll get a more detailed understanding of the bef data available.
+
+```{r summary}
+summary(bdf)
+```
+
+Finally, as one last descriptive offering, we can plot a pointrange of the distances for each subject using the 
+`plot_pointrange` function and passing the BEF label we want plotted. You'll see that there are several observations missing, since not every subject lives near a FFR.
+
+
+```{r plot}
+plot_pointrange(bdf,c("FFR"))
+```
+
+
+## Other packages
+
+While the above descriptive statistics are nice, the real power of using `benvos` is that they offer 
+functions like `joinvo` to easily join the subject and bef data frames, which can be useful in setting up the data for models in other packages. Below we'll use the `joinvo` function, passing the benvo, bef character label, and `TRUE` to the tibble argument, denoting that we want a tibble object returned from the function.
+
+```{r}
+joinvo(bdf,"FFR",tibble=T)
+```
+
 

@@ -16,7 +16,7 @@ Consists of two dataframes (1) subject and (2) subject - BEF with a joining id(s
 
 \item{\code{bef_data}}{data.frame containing subject - bef distance/time data}
 
-\item{\code{id}}{character vector containing strings in both data frames used to join data}
+\item{\code{longitudinal}}{boolean value indicating whether the Benvo holds longitudinal data}
 
 \item{\code{bef_names}}{character vector containing the names of the BEFs}
 
