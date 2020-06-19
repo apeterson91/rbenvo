@@ -53,10 +53,10 @@ bdf
 ```
 ## Simple Descriptives
 
-We can see from the above a simple summary of the kind of feature that we have data on. If we call the `summary` function we'll get a more detailed understanding of the bef data available.
+We can see from the above a simple summary of the kind of feature that we have data on. If we call the `bef_summary` function we'll get a more detailed understanding of the bef data available.
 
 ```{r summary}
-summary(bdf)
+bef_summary(bdf)
 ```
 
 Finally, as one last descriptive offering, we can plot a pointrange of the distances for each subject using the 

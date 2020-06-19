@@ -32,8 +32,8 @@ setValidity("Benvo",function(object){
 				if(length(object@bef_names) != length(length(object@components))){
 					"@bef_names and @components must be the same length"
 				}
-				if(!all(sapply(bef_data,is.data.frame)))
+				if(!all(sapply(object@bef_data,is.data.frame)))
 					"All members of @bef_data must inherit from class data.frame"
-				if(length(intersect(colnames(subject_data),Reduce(lapply(bef_data,colnames),union))==0))
+				if(length(intersect(colnames(object@subject_data),Reduce(union,lapply(object@bef_data,colnames))))==0)
 					"There must be a common id between the subject_data and all bef_data data frames"
 				})

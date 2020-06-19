@@ -41,14 +41,14 @@ print_benvo <- function(object){
 #'
 #' @param x a benvo object
 #'
-setGeneric("summary", function(x) standardGeneric("summary"))
+setGeneric("bef_summary", function(x) standardGeneric("bef_summary"))
 
-#' benvo Summary Method
+#' benvo BEF Summary Method
 #'
 #' @export
 #' @param x a benvo object
 #'
-setMethod(f = "summary",
+setMethod(f = "bef_summary",
 	signature="Benvo",
 	definition = function(x){
 
