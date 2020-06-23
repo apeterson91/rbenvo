@@ -10,7 +10,7 @@ f <- function(x) 3*pweibull(x,shape=5,scale=.6,lower.tail = F)
 exposure <- sapply(ldists,function(x) sum(f(x)))
 
 
-y <- 26 + Z * -2.2 +  high_risk*((exposure))  + (1-high_risk)*(exposure)*0 + rnorm(num_subj)
+y <- 26 + Z * -2.2 +  exposure  +  rnorm(num_subj)
 
 
 
@@ -28,6 +28,6 @@ example_benvo <- rbenvo::benvo(subject_data = as.data.frame(FFR_subjects),
                                bef_names = "FFR",
                                joining_id = "id",
                                distance_col = "Distance",
-                               exposed_time_col = c(NULL))
+                               exposed_time_col = NA)
 
 usethis::use_data(example_benvo, overwrite = TRUE)
