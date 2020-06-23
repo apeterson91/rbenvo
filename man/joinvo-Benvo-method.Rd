@@ -5,14 +5,15 @@
 \alias{joinvo,Benvo-method}
 \title{Join bef and subject data in benvos}
 \usage{
-\S4method{joinvo}{Benvo}(x, bef_name, component = "Space", tibble = F)
+\S4method{joinvo}{Benvo}(x, bef_name, component = "Distance",
+  tibble = F)
 }
 \arguments{
 \item{x}{benvo object}
 
 \item{bef_name}{string of bef data to join on in bef_data}
 
-\item{component}{one of c("Space","Time","Space-Time") indicating which column(s) of the bef dataset should be returned}
+\item{component}{one of c("Distance","Time","Distance-Time") indicating which column(s) of the bef dataset should be returned}
 
 \item{tibble}{boolean value of whether or not to return a data.frame or tibble}
 }

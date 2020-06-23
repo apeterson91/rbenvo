@@ -5,12 +5,14 @@
 \alias{plot_pointrange,Benvo-method}
 \title{Pointrange plot}
 \usage{
-\S4method{plot_pointrange}{Benvo}(x, BEF)
+\S4method{plot_pointrange}{Benvo}(x, BEF, component)
 }
 \arguments{
 \item{x}{benvo object}
 
 \item{BEF}{BEF specification}
+
+\item{component}{one of c("Distance","Time") indicating which column(s) of the bef dataset should be returned}
 }
 \description{
 Pointrange plot

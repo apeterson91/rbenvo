@@ -52,7 +52,8 @@
 #' \item{\code{measurement}}{:The subject repeat measurement id}
 #' \item{\code{sex}}{:The measurement unique identifier}
 #' \item{\code{BMI}}{:The Built Environment Unique identifier}
-#' \item{\code{exposure}}{:The hypothetical Healthy Food Store exposure effect }
+#' \item{\code{subj_effect}}{:subject specific intercept used in simulating BMI }
+#' \item{\code{exposure}}{:The hypothetical Healthy Food Store exposure effect}
 #' }
 "HFS_subjects"
 
@@ -62,7 +63,7 @@
 #' @name HFS_distances_times 
 #' @format  A data frame with 5709 rows and 3 columns
 #' \describe{
-#' \item{ \code{id}}{: The subject unique identifier}
+#' \item{\code{id}}{: The subject unique identifier}
 #' \item{\code{measurement}}{:The subject repeat measurement id}
 #' \item{\code{Distance}}{:The simulated distance between a hypothetical subject and fast food restaurant.}
 #' \item{\code{Time}}{:The simulated time between a hypothetical subject and fast food restaurant.}

@@ -6,6 +6,9 @@
 \usage{
 joining_ID(x)
 }
+\arguments{
+\item{x}{benvo object}
+}
 \description{
 Return the joining ID of the benvo
 }

@@ -13,5 +13,5 @@
 \item{bef_name}{bef_name string}
 }
 \description{
-returns the measure (Space/Time) that's associated with the input BEF
+returns the measure (Distance/Time) that's associated with the input BEF
 }

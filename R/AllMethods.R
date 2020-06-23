@@ -43,6 +43,8 @@ print_benvo <- function(object){
 
 #' Benvo BEF Summary Generic
 #'
+#' @param x a benvo object
+#'
 setGeneric("bef_summary", function(x) standardGeneric("bef_summary"))
 
 #' benvo BEF Summary Method
@@ -54,23 +56,28 @@ setMethod(f = "bef_summary",
 	signature="Benvo",
 	definition = function(x){
 
-		BEF <- Measure <- NULL
+		BEF <- Measure <- Distance_Time <- Measurement <- NULL
 
 	dfr <- purrr::map_dfr(1:(num_BEF(x)),function(y) {x@bef_data[[y]] %>% 
 						  dplyr::mutate(BEF = x@bef_names[y] ) }) %>%
-		tidyr::gather(dplyr::matches("Distance|Time"),key = "Distance_Time",value="Measure") %>%
-		dplyr::group_by(BEF,Distance_Time) %>%
-		dplyr::summarise(Lower = quantile(Measure,0.025,na.rm=T),
+		tidyr::gather(dplyr::matches("Distance|Time"),key = "Distance_Time",value="Measure") 
+	if(x@longitudinal)
+		dfr <- dfr %>% dplyr::group_by(BEF,Distance_Time,Measurement)
+	else
+		dfr <- dfr %>% dplyr::group_by(BEF,Distance_Time)
+	dfr <- dfr %>% dplyr::summarise(Lower = quantile(Measure,0.025,na.rm=T),
 						 Median = median(Measure,na.rm=T),
 						 Upper = quantile(Measure,0.975,na.rm=T),
 						 Number = dplyr::n(),
 						 Num_NA = sum(is.na(Measure))
-		)
+						)
 	print(dfr)
 	return(invisible(dfr))
 })
 
 #' Return the joining ID of the benvo
+#'
+#' @param x benvo object 
 #'
 setGeneric("joining_ID",function(x) standardGeneric("joining_ID"))
 
@@ -90,6 +97,9 @@ setMethod("joining_ID","Benvo",function(x){
 })
 
 #' BEF component look up
+#'
+#' @param x benvo object
+#' @param bef_name bef_name string
 #'
 setGeneric("component_lookup",function(x,bef_name) standardGeneric("component_lookup"))
 
@@ -113,6 +123,8 @@ setMethod("component_lookup","Benvo",function(x,bef_name){
 
 #' Number of BEF data frames
 #'
+#' @param x a benvo object
+#'
 setGeneric("num_BEF",function(x) standardGeneric("num_BEF") )
 
 #' Number of Built Environment Features
@@ -125,6 +137,10 @@ setMethod("num_BEF","Benvo",function(x){
 
 
 #' Subject Design Matrix
+#'
+#' @param formula similar to \code{\link[stats]{lm}}.
+#' @param x benvo object
+#' @param ... other arguments passed to the model frame
 #'
 setGeneric("subject_design",function(x,formula,...) standardGeneric("subject_design"))
 
@@ -157,6 +173,10 @@ setMethod("subject_design","Benvo",function(x,formula,...){
 })
 
 #' Longitudinal design dataframe
+#'
+#' @param formula similar to \code{\link[lme4]{glmer}}.
+#' @param x benvo object
+#' @param ... other arguments passed to the model frame
 #'
 setGeneric("longitudinal_design",function(x,formula,...) standardGeneric("longitudinal_design"))
 
@@ -195,6 +215,11 @@ setMethod("longitudinal_design","Benvo",function(x,formula,...){
 
 
 #' Join bef and subject data in benvos
+#'
+#' @param x benvo object
+#' @param bef_name string of bef data to join on in bef_data
+#' @param component one of c("Distance","Time","Distance-Time") indicating which column(s) of the bef dataset should be returned
+#' @param tibble boolean value of whether or not to return a data.frame or tibble
 #'
 setGeneric("joinvo",function(x,bef_name,component = "Distance",tibble = F) standardGeneric("joinvo"))
 
@@ -251,7 +276,7 @@ setGeneric("plot_pointrange", function(x,BEF,component)  standardGeneric("plot_p
 #'
 setMethod("plot_pointrange","Benvo",function(x,BEF,component){
 
-	Distance <- Lower <- Median <- Upper <- ID <- Measure <-  NULL
+	Distance <- Lower <- Median <- Upper <- ID <- Measure <-  Measurement <- NULL
 	jdf <- joinvo(x,BEF,component,tibble=T)
 
 	if(x@longitudinal)

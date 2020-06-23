@@ -6,6 +6,9 @@
 \usage{
 bef_summary(x)
 }
+\arguments{
+\item{x}{a benvo object}
+}
 \description{
 Benvo BEF Summary Generic
 }

@@ -6,6 +6,13 @@
 \usage{
 subject_design(x, formula, ...)
 }
+\arguments{
+\item{x}{benvo object}
+
+\item{formula}{similar to \code{\link[stats]{lm}}.}
+
+\item{...}{other arguments passed to the model frame}
+}
 \description{
 Subject Design Matrix
 }

@@ -6,6 +6,11 @@
 \usage{
 component_lookup(x, bef_name)
 }
+\arguments{
+\item{x}{benvo object}
+
+\item{bef_name}{bef_name string}
+}
 \description{
 BEF component look up
 }

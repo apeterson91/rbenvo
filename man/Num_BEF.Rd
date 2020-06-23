@@ -6,6 +6,9 @@
 \usage{
 num_BEF(x)
 }
+\arguments{
+\item{x}{a benvo object}
+}
 \description{
 Number of BEF data frames
 }

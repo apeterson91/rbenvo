@@ -10,7 +10,8 @@
 \item{\code{measurement}}{:The subject repeat measurement id}
 \item{\code{sex}}{:The measurement unique identifier}
 \item{\code{BMI}}{:The Built Environment Unique identifier}
-\item{\code{exposure}}{:The hypothetical Healthy Food Store exposure effect }
+\item{\code{subj_effect}}{:subject specific intercept used in simulating BMI }
+\item{\code{exposure}}{:The hypothetical Healthy Food Store exposure effect}
 }}
 \usage{
 HFS_subjects

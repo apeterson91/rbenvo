@@ -20,6 +20,6 @@ Consists of two dataframes (1) subject and (2) subject - BEF with a joining id(s
 
 \item{\code{bef_names}}{character vector containing the names of the BEFs}
 
-\item{\code{components}}{character vector containing the Space and/or Time data measured for each BEF}
+\item{\code{components}}{character vector containing the Distances and/or Time data measured for each BEF}
 }}
 

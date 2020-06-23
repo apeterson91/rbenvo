@@ -6,6 +6,13 @@
 \usage{
 longitudinal_design(x, formula, ...)
 }
+\arguments{
+\item{x}{benvo object}
+
+\item{formula}{similar to \code{\link[lme4]{glmer}}.}
+
+\item{...}{other arguments passed to the model frame}
+}
 \description{
 Longitudinal design dataframe
 }
