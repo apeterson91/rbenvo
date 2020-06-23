@@ -111,53 +111,92 @@
 <a class="sourceLine" id="cb4-2" data-line-number="2">             <span class="dt">bef_data =</span> <span class="kw"><a href="https://rdrr.io/r/base/list.html">list</a></span>(FFR_distances),</a>
 <a class="sourceLine" id="cb4-3" data-line-number="3">             <span class="dt">bef_names =</span> <span class="st">"FFR"</span>,</a>
 <a class="sourceLine" id="cb4-4" data-line-number="4">             <span class="dt">joining_id =</span> <span class="st">"id"</span>,</a>
-<a class="sourceLine" id="cb4-5" data-line-number="5">             <span class="dt">distance_col =</span> <span class="st">"Distance"</span>,</a>
-<a class="sourceLine" id="cb4-6" data-line-number="6">             <span class="dt">exposed_time_col =</span> <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="ot">NULL</span>))</a>
-<a class="sourceLine" id="cb4-7" data-line-number="7">bdf</a>
-<a class="sourceLine" id="cb4-8" data-line-number="8"><span class="co">#&gt; Subject Data:</span></a>
-<a class="sourceLine" id="cb4-9" data-line-number="9"><span class="co">#&gt; ---------------------------:</span></a>
-<a class="sourceLine" id="cb4-10" data-line-number="10"><span class="co">#&gt; Observations:  1000</span></a>
-<a class="sourceLine" id="cb4-11" data-line-number="11"><span class="co">#&gt; Columns:  4</span></a>
-<a class="sourceLine" id="cb4-12" data-line-number="12"><span class="co">#&gt; </span></a>
-<a class="sourceLine" id="cb4-13" data-line-number="13"><span class="co">#&gt; BEF Data:</span></a>
-<a class="sourceLine" id="cb4-14" data-line-number="14"><span class="co">#&gt; ---------------------------:</span></a>
-<a class="sourceLine" id="cb4-15" data-line-number="15"><span class="co">#&gt; Number of Features:  1</span></a>
-<a class="sourceLine" id="cb4-16" data-line-number="16"><span class="co">#&gt; Features: </span></a>
-<a class="sourceLine" id="cb4-17" data-line-number="17"><span class="co">#&gt;   Name Measures</span></a>
-<a class="sourceLine" id="cb4-18" data-line-number="18"><span class="co">#&gt; 1  FFR    Space</span></a></code></pre></div>
+<a class="sourceLine" id="cb4-5" data-line-number="5">             <span class="dt">distance_col =</span> <span class="st">"Distance"</span>)</a>
+<a class="sourceLine" id="cb4-6" data-line-number="6">bdf</a>
+<a class="sourceLine" id="cb4-7" data-line-number="7"><span class="co">#&gt; Subject Data:</span></a>
+<a class="sourceLine" id="cb4-8" data-line-number="8"><span class="co">#&gt; ---------------------------:</span></a>
+<a class="sourceLine" id="cb4-9" data-line-number="9"><span class="co">#&gt; Observations:  1000</span></a>
+<a class="sourceLine" id="cb4-10" data-line-number="10"><span class="co">#&gt; Columns:  3</span></a>
+<a class="sourceLine" id="cb4-11" data-line-number="11"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb4-12" data-line-number="12"><span class="co">#&gt; BEF Data:</span></a>
+<a class="sourceLine" id="cb4-13" data-line-number="13"><span class="co">#&gt; ---------------------------:</span></a>
+<a class="sourceLine" id="cb4-14" data-line-number="14"><span class="co">#&gt; Number of Features:  1</span></a>
+<a class="sourceLine" id="cb4-15" data-line-number="15"><span class="co">#&gt; Features: </span></a>
+<a class="sourceLine" id="cb4-16" data-line-number="16"><span class="co">#&gt;   Name Measures</span></a>
+<a class="sourceLine" id="cb4-17" data-line-number="17"><span class="co">#&gt; 1  FFR Distance</span></a></code></pre></div>
 <div id="simple-descriptives" class="section level2">
 <h2 class="hasAnchor">
 <a href="#simple-descriptives" class="anchor"></a>Simple Descriptives</h2>
 <p>We can see from the above a simple summary of the kind of feature that we have data on. If we call the <code>bef_summary</code> function we’ll get a more detailed understanding of the bef data available.</p>
 <div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" data-line-number="1"><span class="kw"><a href="../reference/bef_summary.html">bef_summary</a></span>(bdf)</a>
-<a class="sourceLine" id="cb5-2" data-line-number="2"><span class="co">#&gt; # A tibble: 1 x 5</span></a>
-<a class="sourceLine" id="cb5-3" data-line-number="3"><span class="co">#&gt;   BEF    Lower Median Upper Number</span></a>
-<a class="sourceLine" id="cb5-4" data-line-number="4"><span class="co">#&gt;   &lt;chr&gt;  &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt;  &lt;int&gt;</span></a>
-<a class="sourceLine" id="cb5-5" data-line-number="5"><span class="co">#&gt; 1 FFR   0.0278  0.504 0.975   9501</span></a></code></pre></div>
+<a class="sourceLine" id="cb5-2" data-line-number="2"><span class="co">#&gt; # A tibble: 1 x 7</span></a>
+<a class="sourceLine" id="cb5-3" data-line-number="3"><span class="co">#&gt; # Groups:   BEF [1]</span></a>
+<a class="sourceLine" id="cb5-4" data-line-number="4"><span class="co">#&gt;   BEF   Distance_Time  Lower Median Upper Number Num_NA</span></a>
+<a class="sourceLine" id="cb5-5" data-line-number="5"><span class="co">#&gt;   &lt;chr&gt; &lt;chr&gt;          &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt;  &lt;int&gt;  &lt;int&gt;</span></a>
+<a class="sourceLine" id="cb5-6" data-line-number="6"><span class="co">#&gt; 1 FFR   Distance      0.0278  0.504 0.975   9501      0</span></a></code></pre></div>
 <p>Finally, as one last descriptive offering, we can plot a pointrange of the distances for each subject using the <code>plot_pointrange</code> function and passing the BEF label we want plotted. You’ll see that there are several observations missing, since not every subject lives near a FFR.</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" data-line-number="1"><span class="kw"><a href="../reference/plot_pointrange.html">plot_pointrange</a></span>(bdf,<span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"FFR"</span>))</a>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" data-line-number="1"><span class="kw"><a href="../reference/plot_pointrange.html">plot_pointrange</a></span>(bdf,<span class="st">"FFR"</span>,<span class="st">"Distance"</span>)</a>
 <a class="sourceLine" id="cb6-2" data-line-number="2"><span class="co">#&gt; Warning: Removed 49 rows containing missing values (geom_pointrange).</span></a></code></pre></div>
 <p><img src="Introduction_files/figure-html/plot-1.png" width="700"></p>
 </div>
-<div id="other-packages" class="section level2">
-<h2 class="hasAnchor">
-<a href="#other-packages" class="anchor"></a>Other packages</h2>
+</div>
+<div id="other-packages" class="section level1">
+<h1 class="hasAnchor">
+<a href="#other-packages" class="anchor"></a>Other packages</h1>
 <p>While the above descriptive statistics are nice, the real power of using <code>benvos</code> is that they offer functions like <code>joinvo</code> to easily join the subject and bef data frames, which can be useful in setting up the data for models in other packages. Below we’ll use the <code>joinvo</code> function, passing the benvo, bef character label, and <code>TRUE</code> to the tibble argument, denoting that we want a tibble object returned from the function.</p>
 <div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" data-line-number="1"><span class="kw"><a href="../reference/joinvo.html">joinvo</a></span>(bdf,<span class="st">"FFR"</span>,<span class="dt">tibble=</span>T)</a>
-<a class="sourceLine" id="cb7-2" data-line-number="2"><span class="co">#&gt; # A tibble: 9,550 x 5</span></a>
-<a class="sourceLine" id="cb7-3" data-line-number="3"><span class="co">#&gt;       ID Distance    id   BMI   sex</span></a>
-<a class="sourceLine" id="cb7-4" data-line-number="4"><span class="co">#&gt;    &lt;int&gt;    &lt;dbl&gt; &lt;int&gt; &lt;dbl&gt; &lt;int&gt;</span></a>
-<a class="sourceLine" id="cb7-5" data-line-number="5"><span class="co">#&gt;  1     1    0.773     1  24.6     1</span></a>
-<a class="sourceLine" id="cb7-6" data-line-number="6"><span class="co">#&gt;  2     1    0.734     1  24.6     1</span></a>
-<a class="sourceLine" id="cb7-7" data-line-number="7"><span class="co">#&gt;  3     1    0.997     1  24.6     1</span></a>
-<a class="sourceLine" id="cb7-8" data-line-number="8"><span class="co">#&gt;  4     1    0.470     1  24.6     1</span></a>
-<a class="sourceLine" id="cb7-9" data-line-number="9"><span class="co">#&gt;  5     1    0.523     1  24.6     1</span></a>
-<a class="sourceLine" id="cb7-10" data-line-number="10"><span class="co">#&gt;  6     2    0.369     2  22.9     1</span></a>
-<a class="sourceLine" id="cb7-11" data-line-number="11"><span class="co">#&gt;  7     2    0.533     2  22.9     1</span></a>
-<a class="sourceLine" id="cb7-12" data-line-number="12"><span class="co">#&gt;  8     2    0.779     2  22.9     1</span></a>
-<a class="sourceLine" id="cb7-13" data-line-number="13"><span class="co">#&gt;  9     2    0.723     2  22.9     1</span></a>
-<a class="sourceLine" id="cb7-14" data-line-number="14"><span class="co">#&gt; 10     2    0.375     2  22.9     1</span></a>
+<a class="sourceLine" id="cb7-2" data-line-number="2"><span class="co">#&gt; # A tibble: 9,550 x 4</span></a>
+<a class="sourceLine" id="cb7-3" data-line-number="3"><span class="co">#&gt;       ID Distance   BMI   sex</span></a>
+<a class="sourceLine" id="cb7-4" data-line-number="4"><span class="co">#&gt;    &lt;int&gt;    &lt;dbl&gt; &lt;dbl&gt; &lt;int&gt;</span></a>
+<a class="sourceLine" id="cb7-5" data-line-number="5"><span class="co">#&gt;  1     1    0.773  24.6     1</span></a>
+<a class="sourceLine" id="cb7-6" data-line-number="6"><span class="co">#&gt;  2     1    0.734  24.6     1</span></a>
+<a class="sourceLine" id="cb7-7" data-line-number="7"><span class="co">#&gt;  3     1    0.997  24.6     1</span></a>
+<a class="sourceLine" id="cb7-8" data-line-number="8"><span class="co">#&gt;  4     1    0.470  24.6     1</span></a>
+<a class="sourceLine" id="cb7-9" data-line-number="9"><span class="co">#&gt;  5     1    0.523  24.6     1</span></a>
+<a class="sourceLine" id="cb7-10" data-line-number="10"><span class="co">#&gt;  6     2    0.369  22.9     1</span></a>
+<a class="sourceLine" id="cb7-11" data-line-number="11"><span class="co">#&gt;  7     2    0.533  22.9     1</span></a>
+<a class="sourceLine" id="cb7-12" data-line-number="12"><span class="co">#&gt;  8     2    0.779  22.9     1</span></a>
+<a class="sourceLine" id="cb7-13" data-line-number="13"><span class="co">#&gt;  9     2    0.723  22.9     1</span></a>
+<a class="sourceLine" id="cb7-14" data-line-number="14"><span class="co">#&gt; 10     2    0.375  22.9     1</span></a>
 <a class="sourceLine" id="cb7-15" data-line-number="15"><span class="co">#&gt; # … with 9,540 more rows</span></a></code></pre></div>
+<p>Similarly, it is often the case - in my work at least - that some sort of model involving both the built environment data and the subject level data is needed. This means that information is incorporated at the subject level. This could manifest in, for example, the construction of a subject design matrix.</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/utils/str.html">str</a></span>(<span class="kw"><a href="../reference/subject_design.html">subject_design</a></span>(bdf,BMI <span class="op">~</span><span class="st"> </span>sex))</a>
+<a class="sourceLine" id="cb8-2" data-line-number="2"><span class="co">#&gt; List of 2</span></a>
+<a class="sourceLine" id="cb8-3" data-line-number="3"><span class="co">#&gt;  $ y: Named num [1:1000] 24.6 22.9 24.4 24.4 25.6 ...</span></a>
+<a class="sourceLine" id="cb8-4" data-line-number="4"><span class="co">#&gt;   ..- attr(*, "names")= chr [1:1000] "1" "2" "3" "4" ...</span></a>
+<a class="sourceLine" id="cb8-5" data-line-number="5"><span class="co">#&gt;  $ X: num [1:1000, 1:2] 1 1 1 1 1 1 1 1 1 1 ...</span></a>
+<a class="sourceLine" id="cb8-6" data-line-number="6"><span class="co">#&gt;   ..- attr(*, "dimnames")=List of 2</span></a>
+<a class="sourceLine" id="cb8-7" data-line-number="7"><span class="co">#&gt;   .. ..$ : chr [1:1000] "1" "2" "3" "4" ...</span></a>
+<a class="sourceLine" id="cb8-8" data-line-number="8"><span class="co">#&gt;   .. ..$ : chr [1:2] "(Intercept)" "sex"</span></a>
+<a class="sourceLine" id="cb8-9" data-line-number="9"><span class="co">#&gt;   ..- attr(*, "assign")= int [1:2] 0 1</span></a></code></pre></div>
+<div id="longitudinal-example" class="section level3">
+<h3 class="hasAnchor">
+<a href="#longitudinal-example" class="anchor"></a>Longitudinal Example</h3>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb9-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/utils/data.html">data</a></span>(<span class="st">"longitudinal_HFS"</span>)</a>
+<a class="sourceLine" id="cb9-2" data-line-number="2">longitudinal_HFS</a>
+<a class="sourceLine" id="cb9-3" data-line-number="3"><span class="co">#&gt; Subject Data:</span></a>
+<a class="sourceLine" id="cb9-4" data-line-number="4"><span class="co">#&gt; ---------------------------:</span></a>
+<a class="sourceLine" id="cb9-5" data-line-number="5"><span class="co">#&gt; Observations:  596</span></a>
+<a class="sourceLine" id="cb9-6" data-line-number="6"><span class="co">#&gt; Columns:  6</span></a>
+<a class="sourceLine" id="cb9-7" data-line-number="7"><span class="co">#&gt; Num Subjects:  300</span></a>
+<a class="sourceLine" id="cb9-8" data-line-number="8"><span class="co">#&gt; </span></a>
+<a class="sourceLine" id="cb9-9" data-line-number="9"><span class="co">#&gt; BEF Data:</span></a>
+<a class="sourceLine" id="cb9-10" data-line-number="10"><span class="co">#&gt; ---------------------------:</span></a>
+<a class="sourceLine" id="cb9-11" data-line-number="11"><span class="co">#&gt; Number of Features:  1</span></a>
+<a class="sourceLine" id="cb9-12" data-line-number="12"><span class="co">#&gt; Features: </span></a>
+<a class="sourceLine" id="cb9-13" data-line-number="13"><span class="co">#&gt;   Name      Measures</span></a>
+<a class="sourceLine" id="cb9-14" data-line-number="14"><span class="co">#&gt; 1  HFS Distance-Time</span></a></code></pre></div>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb10-1" data-line-number="1"><span class="kw"><a href="../reference/plot_pointrange.html">plot_pointrange</a></span>(longitudinal_HFS,<span class="st">"HFS"</span>,<span class="st">"Distance"</span>)</a>
+<a class="sourceLine" id="cb10-2" data-line-number="2"><span class="co">#&gt; Warning: Removed 24 rows containing missing values (geom_pointrange).</span></a></code></pre></div>
+<p><img src="Introduction_files/figure-html/long_plot-1.png" width="700"></p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb11-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/utils/str.html">str</a></span>(<span class="kw"><a href="../reference/longitudinal_design.html">longitudinal_design</a></span>(longitudinal_HFS,BMI <span class="op">~</span><span class="st"> </span>sex <span class="op">+</span><span class="st"> </span>(<span class="dv">1</span><span class="op">|</span>ID)),<span class="dt">max.level=</span><span class="dv">1</span>)</a>
+<a class="sourceLine" id="cb11-2" data-line-number="2"><span class="co">#&gt; List of 3</span></a>
+<a class="sourceLine" id="cb11-3" data-line-number="3"><span class="co">#&gt;  $ y    : num [1:596] 25.2 25.7 28.2 26.1 23.3 ...</span></a>
+<a class="sourceLine" id="cb11-4" data-line-number="4"><span class="co">#&gt;  $ X    : num [1:596, 1:2] 1 1 1 1 1 1 1 1 1 1 ...</span></a>
+<a class="sourceLine" id="cb11-5" data-line-number="5"><span class="co">#&gt;   ..- attr(*, "dimnames")=List of 2</span></a>
+<a class="sourceLine" id="cb11-6" data-line-number="6"><span class="co">#&gt;   ..- attr(*, "assign")= int [1:2] 0 1</span></a>
+<a class="sourceLine" id="cb11-7" data-line-number="7"><span class="co">#&gt;   ..- attr(*, "msgScaleX")= chr(0) </span></a>
+<a class="sourceLine" id="cb11-8" data-line-number="8"><span class="co">#&gt;  $ glmod:List of 6</span></a></code></pre></div>
 </div>
 </div>
   </div>
@@ -171,9 +210,9 @@
 <li>
 <a href="#introduction">Introduction</a><ul class="nav nav-pills nav-stacked">
 <li><a href="#simple-descriptives">Simple Descriptives</a></li>
-      <li><a href="#other-packages">Other packages</a></li>
       </ul>
 </li>
+      <li><a href="#other-packages">Other packages</a></li>
       </ul>
 </div>
       </div>

@@ -47,8 +47,7 @@ bdf <- benvo(subject_data = FFR_subjects,
              bef_data = list(FFR_distances),
              bef_names = "FFR",
              joining_id = "id",
-             distance_col = "Distance",
-             exposed_time_col = c(NULL))
+             distance_col = "Distance")
 bdf
 ```
 ## Simple Descriptives
@@ -64,17 +63,42 @@ Finally, as one last descriptive offering, we can plot a pointrange of the dista
 
 
 ```{r plot}
-plot_pointrange(bdf,c("FFR"))
+plot_pointrange(bdf,"FFR","Distance")
 ```
 
 
-## Other packages
+# Other packages
 
 While the above descriptive statistics are nice, the real power of using `benvos` is that they offer 
 functions like `joinvo` to easily join the subject and bef data frames, which can be useful in setting up the data for models in other packages. Below we'll use the `joinvo` function, passing the benvo, bef character label, and `TRUE` to the tibble argument, denoting that we want a tibble object returned from the function.
 
 ```{r}
 joinvo(bdf,"FFR",tibble=T)
+```
+
+Similarly, it is often the case - in my work at least - that some sort of model involving both the built environment data and the subject level data is needed. This means that information is incorporated at the subject level. This could manifest in, for example, the construction of 
+a subject design matrix.
+
+```{r subjectdesign_example}
+str(subject_design(bdf,BMI ~ sex))
+```
+
+### Longitudinal Example
+
+```{r longitudinal_example}
+data("longitudinal_HFS")
+longitudinal_HFS
+```
+
+
+```{r long_plot}
+plot_pointrange(longitudinal_HFS,"HFS","Distance")
+```
+
+
+
+```{r longitudinal_design_ex}
+str(longitudinal_design(longitudinal_HFS,BMI ~ sex + (1|ID)),max.level=1)
 ```
 
 

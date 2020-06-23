@@ -8,17 +8,17 @@
 #' @param bef_names character vector of data frames
 #' @param joining_id character vector containing strings in both subject and bef data frames used to join data
 #' @param distance_col character vector containing strings
-#' in bef_data frames where Distance measures are stored. NULL if there is no distance measure.
+#' in bef_data frames where Distance measures are stored. NA if there is no distance measure.
 #' @param exposed_time_col character vector containing strings
-#' in bef_data frames where Distance measures are stored. NULL if there is no time measure.
+#' in bef_data frames where Time measures are stored. NA if there is no time measure.
 #' @importFrom methods new
 #'
 benvo <- function(subject_data,
 				  bef_data,
 				  bef_names,
 				  joining_id,
-				  distance_col = NULL,
-				  exposed_time_col = NULL){
+				  distance_col = rep(NA,length(bef_data)),
+				  exposed_time_col = rep(NA,length(bef_data))){
 
 	subject_data <- as.data.frame(subject_data)
 	## --  Checks
@@ -35,15 +35,17 @@ benvo <- function(subject_data,
 	if(length(joining_id)==1){
 		ID_names <- c("ID")
 		subject_data$ID <- subject_data[,joining_id]
+		subject_data <- subject_data[,!(names(subject_data) %in% joining_id)]
 	}
 	else if(length(joining_id)==2){
 		ID_names <- c("ID","Measurement")
-		subject_data$ID <- subject_data[,joining_id[,1]]
-		subject_data$Measurement <- subject_data[,joining_id[,2]]
+		subject_data$ID <- subject_data[,joining_id[1]]
+		subject_data$Measurement <- subject_data[,joining_id[2]]
+		subject_data <- subject_data[,!(names(subject_data) %in% joining_id)]
 	}
 	else
-		stop("joining ID can only have 1 or 2 names for cross sectional or longitudinal
-			 data respectively")
+		stop("joining ID can only have 1 or 2 names 
+			 for cross sectional or longitudinal data respectively")
 
 	## Processing / Standardize Distance/Time Columns
 	components <- vector(mode="character",length = Q)
@@ -52,17 +54,17 @@ benvo <- function(subject_data,
 	for(i in 1:Q){
 	  col_names <- ID_names
 	  cols_to_keep <- c(joining_id)
-	  if(!is.null(distance_col[i])){
+	  if(!is.na(distance_col[i])){
 	    col_names <- c(col_names,"Distance")
 	    cols_to_keep <- c(cols_to_keep,distance_col[i])
-	    components[i] <- c("Space")
-	    if(!is.null(exposed_time_col[i])){
+	    components[i] <- c("Distance")
+	    if(!is.na(exposed_time_col[i])){
 	      col_names <- c(col_names,"Time")
 	      cols_to_keep <- c(cols_to_keep,exposed_time_col[i])
-	      components <- c("Space-Time")
+	      components <- c("Distance-Time")
 	    }
 	  }
-	  if(!is.null(exposed_time_col[i])){
+	  else if(!is.na(exposed_time_col[i])){
 	    components <- c("Time")
 	    cols_to_keep <- c(cols_to_keep,exposed_time_col[i])
 	    col_names <- c(col_names,"Time")
@@ -91,11 +93,13 @@ check_bef_data <- function(bef_names,bef_data){
 	stopifnot(all(sapply(bef_data,is.data.frame)))
 }
 
-check_col<- function(col,Q){
-	if(!is.null(col))
-		if(length(col)!=Q)
-			stop("There must be an element in distance_col
-				 for each entry in the bef_data list.
-				 Leave NULL for those bef_data
-				 without distance measures")
-}
+check_col <- function(col,Q){
+		if(any(!is.na(col))){
+			if(length(col)!=Q){
+				stop("There must be an element in distance_col
+					 for each entry in the bef_data list.
+					 Leave NA for those bef_data
+					 without distance measures",.call=F)
+			}
+		}
+	}

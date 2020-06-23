@@ -14,7 +14,7 @@
 #' @slot bef_names 
 #'      character vector containing the names of the BEFs
 #' @slot components
-#'	    character vector containing the Space and/or Time data measured for each BEF
+#'	    character vector containing the Distances and/or Time data measured for each BEF
 #'
 #' @export
 #'

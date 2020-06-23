@@ -2,13 +2,10 @@
 % Please edit documentation in R/AllMethods.R
 \name{bef_summary}
 \alias{bef_summary}
-\title{benvo Summary Method}
+\title{Benvo BEF Summary Generic}
 \usage{
 bef_summary(x)
 }
-\arguments{
-\item{x}{a benvo object}
-}
 \description{
-benvo Summary Method
+Benvo BEF Summary Generic
 }

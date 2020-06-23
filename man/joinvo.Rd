@@ -2,17 +2,10 @@
 % Please edit documentation in R/AllMethods.R
 \name{joinvo}
 \alias{joinvo}
-\title{Join bef and subject data}
+\title{Join bef and subject data in benvos}
 \usage{
-joinvo(x, bef_name, tibble = F)
-}
-\arguments{
-\item{x}{benvo object}
-
-\item{bef_name}{string of bef data to join on in bef_data}
-
-\item{tibble}{boolean value of whether or not to return a data.frame or tibble}
+joinvo(x, bef_name, component = "Space", tibble = F)
 }
 \description{
-Join bef and subject data
+Join bef and subject data in benvos
 }

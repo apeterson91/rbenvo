@@ -2,13 +2,10 @@
 % Please edit documentation in R/AllMethods.R
 \name{joining_ID}
 \alias{joining_ID}
-\title{benvo joining ID}
+\title{Return the joining ID of the benvo}
 \usage{
 joining_ID(x)
 }
-\arguments{
-\item{x}{benvo object}
-}
 \description{
-benvo joining ID
+Return the joining ID of the benvo
 }

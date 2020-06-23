@@ -5,12 +5,12 @@
 \alias{subject_design,Benvo-method}
 \title{Extract Subject Design Matrix}
 \usage{
-\S4method{subject_design}{Benvo}(formula, x, ...)
+\S4method{subject_design}{Benvo}(x, formula, ...)
 }
 \arguments{
-\item{formula}{similar to \code{\link[stats]{lm}}.}
-
 \item{x}{benvo object}
+
+\item{formula}{similar to \code{\link[stats]{lm}}.}
 
 \item{...}{other arguments passed to the model frame}
 }

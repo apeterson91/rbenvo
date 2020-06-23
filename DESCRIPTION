@@ -14,11 +14,13 @@ Imports:
     dplyr,
     magrittr,
     tidyr,
-    purrr
+    purrr,
+    lme4
 RoxygenNote: 6.1.1
 Depends:
 	R (>= 2.10)
 Suggests: 
     knitr,
-    rmarkdown
+    rmarkdown,
+    testthat (>= 2.1.0)
 VignetteBuilder: knitr

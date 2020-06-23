@@ -4,8 +4,9 @@
 \alias{benvo}
 \title{Create a benvo object}
 \usage{
-benvo(subject_data, bef_data, bef_names, joining_id, distance_col = NULL,
-  exposed_time_col = NULL)
+benvo(subject_data, bef_data, bef_names, joining_id,
+  distance_col = rep(NULL, length(bef_data)),
+  exposed_time_col = rep(NULL, length(bef_data)))
 }
 \arguments{
 \item{subject_data}{data.frame containing subject level covariates.}

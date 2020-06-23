@@ -2,17 +2,10 @@
 % Please edit documentation in R/AllMethods.R
 \name{subject_design}
 \alias{subject_design}
-\title{Extract Subject Design Matrix}
+\title{Subject Design Matrix}
 \usage{
-subject_design(formula, x, ...)
-}
-\arguments{
-\item{formula}{similar to \code{\link[stats]{lm}}.}
-
-\item{x}{benvo object}
-
-\item{...}{other arguments passed to the model frame}
+subject_design(x, formula, ...)
 }
 \description{
-Extract Subject Design Matrix
+Subject Design Matrix
 }

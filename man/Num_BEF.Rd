@@ -2,13 +2,10 @@
 % Please edit documentation in R/AllMethods.R
 \name{num_BEF}
 \alias{num_BEF}
-\title{Number of Built Environment Features}
+\title{Number of BEF data frames}
 \usage{
 num_BEF(x)
 }
-\arguments{
-\item{x}{a benvo object}
-}
 \description{
-Number of Built Environment Features
+Number of BEF data frames
 }
