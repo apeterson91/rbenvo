@@ -6,7 +6,7 @@
 
 ## About
 
-rbenvo is package that creates S4 class objects and methods for
+`rbenvo` is package that creates S4 class objects and methods for
 built environment data to ease the use of working with these data 
 and improve interoperability with other R packages developing methods in this 
 same space.
@@ -16,7 +16,7 @@ same space.
 
 ### Development Version
 
- Currently this package is only available via Github. In order to install the software use the following 
+As this package is under active development, it is currently only available via Github. In order to install `rbenvo`  use the following 
  lines of R code
 
  ```r
@@ -30,7 +30,7 @@ install_github("apeterson91/rbenvo",dependencies = TRUE)
 
 ## Contributing
 
- Examples and code contributions are welcome. Feel free to start/address a feature in the issue tracker and I'll be notified shortly. 
+ Examples and code contributions are welcome. Feel free to start/address a feature in the issue tracker and I'll be in touch shortly. 
 
 #### Code of Conduct
 

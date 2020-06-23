@@ -122,8 +122,8 @@
     </div>
 
     <pre class="usage"><span class='fu'>benvo</span>(<span class='no'>subject_data</span>, <span class='no'>bef_data</span>, <span class='no'>bef_names</span>, <span class='no'>joining_id</span>,
-  <span class='kw'>distance_col</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span>(<span class='kw'>NULL</span>, <span class='fu'><a href='https://rdrr.io/r/base/length.html'>length</a></span>(<span class='no'>bef_data</span>)),
-  <span class='kw'>exposed_time_col</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span>(<span class='kw'>NULL</span>, <span class='fu'><a href='https://rdrr.io/r/base/length.html'>length</a></span>(<span class='no'>bef_data</span>)))</pre>
+  <span class='kw'>distance_col</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span>(<span class='fl'>NA</span>, <span class='fu'><a href='https://rdrr.io/r/base/length.html'>length</a></span>(<span class='no'>bef_data</span>)), <span class='kw'>exposed_time_col</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span>(<span class='fl'>NA</span>,
+  <span class='fu'><a href='https://rdrr.io/r/base/length.html'>length</a></span>(<span class='no'>bef_data</span>)))</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -147,12 +147,12 @@
     <tr>
       <th>distance_col</th>
       <td><p>character vector containing strings
-in bef_data frames where Distance measures are stored. NULL if there is no distance measure.</p></td>
+in bef_data frames where Distance measures are stored. NA if there is no distance measure.</p></td>
     </tr>
     <tr>
       <th>exposed_time_col</th>
       <td><p>character vector containing strings
-in bef_data frames where Distance measures are stored. NULL if there is no time measure.</p></td>
+in bef_data frames where Time measures are stored. NA if there is no time measure.</p></td>
     </tr>
     </table>
 
