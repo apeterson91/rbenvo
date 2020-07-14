@@ -4,7 +4,8 @@
 \alias{joinvo}
 \title{Join bef and subject data in benvos}
 \usage{
-joinvo(x, bef_name, component = "Distance", tibble = F)
+joinvo(x, bef_name, component = "Distance", tibble = F,
+  NA_to_zero = F)
 }
 \arguments{
 \item{x}{benvo object}
@@ -14,7 +15,10 @@ joinvo(x, bef_name, component = "Distance", tibble = F)
 \item{component}{one of c("Distance","Time","Distance-Time") indicating which column(s) of the bef dataset should be returned}
 
 \item{tibble}{boolean value of whether or not to return a data.frame or tibble}
+
+\item{NA_to_zero}{replaces NA values with zeros - potentially useful when constructing design matrices}
 }
 \description{
 Join bef and subject data in benvos
 }
+\keyword{internal}

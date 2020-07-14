@@ -16,3 +16,4 @@ longitudinal_design(x, formula, ...)
 \description{
 Longitudinal design dataframe
 }
+\keyword{internal}

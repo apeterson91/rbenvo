@@ -12,3 +12,4 @@ num_BEF(x)
 \description{
 Number of BEF data frames
 }
+\keyword{internal}

@@ -75,9 +75,37 @@ setMethod(f = "bef_summary",
 	return(invisible(dfr))
 })
 
+#' Between - Within Construction
+#'
+#' @param x benvo object
+#' @param M matrix to construct between/within measures
+#' @keywords internal
+#' 
+setGeneric("bwinvo",function(x,M) standardGeneric("bwinvo"))
+
+#' Between - Within Construction
+#'
+#' @param x benvo object
+#' @param M matrix to construct between/within measures
+#' @export 
+#' 
+setMethod("bwinvo","Benvo",function(x,M){
+	
+	stopifnot(x@longitudinal)
+	smat <- Matrix::fac2sparse(x@subject_data$ID)
+	if(nrow(M)!=ncol(smat))
+		stop("rows in M are inappropriate")
+	num <- apply(smat,1,sum)
+	Xb <- apply((smat %*% M) ,2, function(x) x/num)
+	Xb <- as.matrix(Matrix::t(smat) %*% Xb)
+	Xw <- as.matrix(M - Xb)
+	return(list(between = Xb, within = Xw))
+})
+
 #' Return the joining ID of the benvo
 #'
 #' @param x benvo object 
+#' @keywords internal
 #'
 setGeneric("joining_ID",function(x) standardGeneric("joining_ID"))
 
@@ -98,6 +126,7 @@ setMethod("joining_ID","Benvo",function(x){
 
 #' BEF component look up
 #'
+#' @keywords internal
 #' @param x benvo object
 #' @param bef_name bef_name string
 #'
@@ -124,6 +153,7 @@ setMethod("component_lookup","Benvo",function(x,bef_name){
 #' Number of BEF data frames
 #'
 #' @param x a benvo object
+#' @keywords internal
 #'
 setGeneric("num_BEF",function(x) standardGeneric("num_BEF") )
 
@@ -174,6 +204,7 @@ setMethod("subject_design","Benvo",function(x,formula,...){
 
 #' Longitudinal design dataframe
 #'
+#' @keywords internal
 #' @param formula similar to \code{\link[lme4]{glmer}}.
 #' @param x benvo object
 #' @param ... other arguments passed to the model frame
@@ -213,15 +244,51 @@ setMethod("longitudinal_design","Benvo",function(x,formula,...){
 
 })
 
+#' Aggregate Matrix to Subject or Subject - Measurement Level
+#' 
+#' @keywords internal
+#' @param x benvo object
+#' @param M matrix to aggregate
+#' @param stap_term relevant stap term
+#' @param component one of c("Distance","Time","Distance-Time") indicating which column(s) of the bef dataset should be returned
+#'
+setGeneric("aggrenvo",function(x,M,stap_term,component) standardGeneric("aggrenvo"))
+
+
+#' Aggregate Matrix to Subject or Subject - Measurement Level
+#'
+#' @export
+#' @param x benvo object
+#' @param M matrix to aggregate
+#' @param stap_term relevant stap term
+#' @param component one of c("Distance","Time","Distance-Time") indicating which column(s) of the bef dataset should be returned
+#' 
+setMethod("aggrenvo","Benvo",function(x,M,stap_term,component){	
+
+	jndf <- joinvo(x,stap_term,component)
+	if(x@longitudinal){
+		jndf$BENVO_NEWID_ <- paste0(jndf$ID,"_",jndf$Measurement)
+		lvls <- unique(jndf$BENVO_NEWID_)
+		jndf$BENVO_NEWID_ <- factor(jndf$BENVO_NEWID_, levels = lvls)
+		AggMat <- Matrix::fac2sparse(jndf$BENVO_NEWID_)
+	}
+	else
+		AggMat <- Matrix::fac2sparse(jndf[,joining_ID(x)])
+	stopifnot(nrow(M) == ncol(AggMat))
+	X <- as.matrix(AggMat %*% M)
+	return(X)
+})
 
 #' Join bef and subject data in benvos
 #'
+#' @keywords internal
 #' @param x benvo object
 #' @param bef_name string of bef data to join on in bef_data
 #' @param component one of c("Distance","Time","Distance-Time") indicating which column(s) of the bef dataset should be returned
 #' @param tibble boolean value of whether or not to return a data.frame or tibble
+#' @param NA_to_zero replaces NA values with zeros - potentially useful when constructing design matrices
 #'
-setGeneric("joinvo",function(x,bef_name,component = "Distance",tibble = F) standardGeneric("joinvo"))
+setGeneric("joinvo",function(x,bef_name,component = "Distance",tibble = F,NA_to_zero = F) standardGeneric("joinvo"))
 
 #' Join bef and subject data in benvos
 #'
@@ -231,14 +298,17 @@ setGeneric("joinvo",function(x,bef_name,component = "Distance",tibble = F) stand
 #' @param bef_name string of bef data to join on in bef_data
 #' @param component one of c("Distance","Time","Distance-Time") indicating which column(s) of the bef dataset should be returned
 #' @param tibble boolean value of whether or not to return a data.frame or tibble
+#' @param NA_to_zero replaces NA values with zeros - potentially useful when constructing design matrices
 #'
-setMethod("joinvo","Benvo", function(x,bef_name,component = "Distance",tibble = F){
+setMethod("joinvo","Benvo", function(x,bef_name,component = "Distance",tibble = F,NA_to_zero = F){
 
 
-	Distance <- Time <- ID <- NULL
 	stopifnot(component %in% c("Distance","Time","Distance-Time"))
+	Distance <- Time <- ID <- NULL
+
 	ix <- which(x@bef_names == bef_name)
 	stopifnot(grepl(component,x@components[ix]))
+
 	col <- switch(component,
 		   "Distance" = "Distance",
 		   "Time" = "Time",
@@ -250,6 +320,8 @@ setMethod("joinvo","Benvo", function(x,bef_name,component = "Distance",tibble = 
 
 	to_keep <- c(joining_ID(x),intersect(union(col,colnames(x@subject_data)),colnames(jdf)))
 	jdf %>% dplyr::select(!!to_keep) -> jdf
+	if(NA_to_zero)
+		jdf <- jdf %>% dplyr::mutate_at(col,function(x) tidyr::replace_na(x,0))
 
 	if(tibble)
 		return(tibble::as_tibble(jdf))

@@ -93,11 +93,11 @@
 <p>The subject dataframe should look familiar. This is a tidy dataset with an ID and two subject-level measures: BMI and sex.</p>
 <div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/utils/head.html">head</a></span>(FFR_subjects,<span class="dv">5</span>)</a>
 <a class="sourceLine" id="cb2-2" data-line-number="2"><span class="co">#&gt;   id      BMI sex</span></a>
-<a class="sourceLine" id="cb2-3" data-line-number="3"><span class="co">#&gt; 1  1 24.56035   1</span></a>
-<a class="sourceLine" id="cb2-4" data-line-number="4"><span class="co">#&gt; 2  2 22.93270   1</span></a>
-<a class="sourceLine" id="cb2-5" data-line-number="5"><span class="co">#&gt; 3  3 24.41697   0</span></a>
-<a class="sourceLine" id="cb2-6" data-line-number="6"><span class="co">#&gt; 4  4 24.40904   1</span></a>
-<a class="sourceLine" id="cb2-7" data-line-number="7"><span class="co">#&gt; 5  5 25.57902   0</span></a></code></pre></div>
+<a class="sourceLine" id="cb2-3" data-line-number="3"><span class="co">#&gt; 1  1 28.88282   1</span></a>
+<a class="sourceLine" id="cb2-4" data-line-number="4"><span class="co">#&gt; 2  2 32.98662   1</span></a>
+<a class="sourceLine" id="cb2-5" data-line-number="5"><span class="co">#&gt; 3  3 46.94367   0</span></a>
+<a class="sourceLine" id="cb2-6" data-line-number="6"><span class="co">#&gt; 4  4 30.17669   1</span></a>
+<a class="sourceLine" id="cb2-7" data-line-number="7"><span class="co">#&gt; 5  5 43.31416   0</span></a></code></pre></div>
 <p>The distance dataframe is a tidy “long” dataframe, containing multiple nearby BEF exposures per subject</p>
 <div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/utils/head.html">head</a></span>(FFR_distances,<span class="dv">5</span>)</a>
 <a class="sourceLine" id="cb3-2" data-line-number="2"><span class="co">#&gt;   id  Distance</span></a>
@@ -148,21 +148,21 @@
 <a class="sourceLine" id="cb7-2" data-line-number="2"><span class="co">#&gt; # A tibble: 9,550 x 4</span></a>
 <a class="sourceLine" id="cb7-3" data-line-number="3"><span class="co">#&gt;       ID Distance   BMI   sex</span></a>
 <a class="sourceLine" id="cb7-4" data-line-number="4"><span class="co">#&gt;    &lt;int&gt;    &lt;dbl&gt; &lt;dbl&gt; &lt;int&gt;</span></a>
-<a class="sourceLine" id="cb7-5" data-line-number="5"><span class="co">#&gt;  1     1    0.773  24.6     1</span></a>
-<a class="sourceLine" id="cb7-6" data-line-number="6"><span class="co">#&gt;  2     1    0.734  24.6     1</span></a>
-<a class="sourceLine" id="cb7-7" data-line-number="7"><span class="co">#&gt;  3     1    0.997  24.6     1</span></a>
-<a class="sourceLine" id="cb7-8" data-line-number="8"><span class="co">#&gt;  4     1    0.470  24.6     1</span></a>
-<a class="sourceLine" id="cb7-9" data-line-number="9"><span class="co">#&gt;  5     1    0.523  24.6     1</span></a>
-<a class="sourceLine" id="cb7-10" data-line-number="10"><span class="co">#&gt;  6     2    0.369  22.9     1</span></a>
-<a class="sourceLine" id="cb7-11" data-line-number="11"><span class="co">#&gt;  7     2    0.533  22.9     1</span></a>
-<a class="sourceLine" id="cb7-12" data-line-number="12"><span class="co">#&gt;  8     2    0.779  22.9     1</span></a>
-<a class="sourceLine" id="cb7-13" data-line-number="13"><span class="co">#&gt;  9     2    0.723  22.9     1</span></a>
-<a class="sourceLine" id="cb7-14" data-line-number="14"><span class="co">#&gt; 10     2    0.375  22.9     1</span></a>
+<a class="sourceLine" id="cb7-5" data-line-number="5"><span class="co">#&gt;  1     1    0.773  28.9     1</span></a>
+<a class="sourceLine" id="cb7-6" data-line-number="6"><span class="co">#&gt;  2     1    0.734  28.9     1</span></a>
+<a class="sourceLine" id="cb7-7" data-line-number="7"><span class="co">#&gt;  3     1    0.997  28.9     1</span></a>
+<a class="sourceLine" id="cb7-8" data-line-number="8"><span class="co">#&gt;  4     1    0.470  28.9     1</span></a>
+<a class="sourceLine" id="cb7-9" data-line-number="9"><span class="co">#&gt;  5     1    0.523  28.9     1</span></a>
+<a class="sourceLine" id="cb7-10" data-line-number="10"><span class="co">#&gt;  6     2    0.369  33.0     1</span></a>
+<a class="sourceLine" id="cb7-11" data-line-number="11"><span class="co">#&gt;  7     2    0.533  33.0     1</span></a>
+<a class="sourceLine" id="cb7-12" data-line-number="12"><span class="co">#&gt;  8     2    0.779  33.0     1</span></a>
+<a class="sourceLine" id="cb7-13" data-line-number="13"><span class="co">#&gt;  9     2    0.723  33.0     1</span></a>
+<a class="sourceLine" id="cb7-14" data-line-number="14"><span class="co">#&gt; 10     2    0.375  33.0     1</span></a>
 <a class="sourceLine" id="cb7-15" data-line-number="15"><span class="co">#&gt; # … with 9,540 more rows</span></a></code></pre></div>
 <p>Similarly, it is often the case - in my work at least - that some sort of model involving both the built environment data and the subject level data is needed. This means that information is incorporated at the subject level. This could manifest in, for example, the construction of a subject design matrix. Below I’ll demonstrate how this works in a cross sectional as well as longitudinal framework, whilst highlighting how some of the previous functions take advantage of the longitudinal structure.</p>
 <div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/utils/str.html">str</a></span>(<span class="kw"><a href="../reference/subject_design.html">subject_design</a></span>(bdf,BMI <span class="op">~</span><span class="st"> </span>sex))</a>
 <a class="sourceLine" id="cb8-2" data-line-number="2"><span class="co">#&gt; List of 2</span></a>
-<a class="sourceLine" id="cb8-3" data-line-number="3"><span class="co">#&gt;  $ y: Named num [1:1000] 24.6 22.9 24.4 24.4 25.6 ...</span></a>
+<a class="sourceLine" id="cb8-3" data-line-number="3"><span class="co">#&gt;  $ y: Named num [1:1000] 28.9 33 46.9 30.2 43.3 ...</span></a>
 <a class="sourceLine" id="cb8-4" data-line-number="4"><span class="co">#&gt;   ..- attr(*, "names")= chr [1:1000] "1" "2" "3" "4" ...</span></a>
 <a class="sourceLine" id="cb8-5" data-line-number="5"><span class="co">#&gt;  $ X: num [1:1000, 1:2] 1 1 1 1 1 1 1 1 1 1 ...</span></a>
 <a class="sourceLine" id="cb8-6" data-line-number="6"><span class="co">#&gt;   ..- attr(*, "dimnames")=List of 2</span></a>
@@ -207,7 +207,7 @@
 <p><img src="Introduction_files/figure-html/long_plot-1.png" width="700"></p>
 <div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb12-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/utils/str.html">str</a></span>(<span class="kw"><a href="../reference/longitudinal_design.html">longitudinal_design</a></span>(longitudinal_HFS,BMI <span class="op">~</span><span class="st"> </span>sex <span class="op">+</span><span class="st"> </span>(<span class="dv">1</span><span class="op">|</span>ID)),<span class="dt">max.level=</span><span class="dv">1</span>)</a>
 <a class="sourceLine" id="cb12-2" data-line-number="2"><span class="co">#&gt; List of 3</span></a>
-<a class="sourceLine" id="cb12-3" data-line-number="3"><span class="co">#&gt;  $ y    : num [1:596] 25.2 25.7 28.2 26.1 23.3 ...</span></a>
+<a class="sourceLine" id="cb12-3" data-line-number="3"><span class="co">#&gt;  $ y    : num [1:596] 28.1 29.4 29.7 30.6 28 ...</span></a>
 <a class="sourceLine" id="cb12-4" data-line-number="4"><span class="co">#&gt;  $ X    : num [1:596, 1:2] 1 1 1 1 1 1 1 1 1 1 ...</span></a>
 <a class="sourceLine" id="cb12-5" data-line-number="5"><span class="co">#&gt;   ..- attr(*, "dimnames")=List of 2</span></a>
 <a class="sourceLine" id="cb12-6" data-line-number="6"><span class="co">#&gt;   ..- attr(*, "assign")= int [1:2] 0 1</span></a>

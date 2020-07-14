@@ -123,7 +123,7 @@
 
     <pre class="usage"><span class='co'># S4 method for Benvo</span>
 <span class='fu'><a href='joinvo.html'>joinvo</a></span>(<span class='no'>x</span>, <span class='no'>bef_name</span>, <span class='kw'>component</span> <span class='kw'>=</span> <span class='st'>"Distance"</span>,
-  <span class='kw'>tibble</span> <span class='kw'>=</span> <span class='no'>F</span>)</pre>
+  <span class='kw'>tibble</span> <span class='kw'>=</span> <span class='no'>F</span>, <span class='kw'>NA_to_zero</span> <span class='kw'>=</span> <span class='no'>F</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -143,6 +143,10 @@
     <tr>
       <th>tibble</th>
       <td><p>boolean value of whether or not to return a data.frame or tibble</p></td>
+    </tr>
+    <tr>
+      <th>NA_to_zero</th>
+      <td><p>replaces NA values with zeros - potentially useful when constructing design matrices</p></td>
     </tr>
     </table>
 

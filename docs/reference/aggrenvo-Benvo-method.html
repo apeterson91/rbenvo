@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Join bef and subject data in benvos — joinvo • rbenvo</title>
+<title>Aggregate Matrix to Subject or Subject - Measurement Level — aggrenvo,Benvo-method • rbenvo</title>
 
 
 <!-- jquery -->
@@ -35,8 +35,8 @@
 
 
 
-<meta property="og:title" content="Join bef and subject data in benvos — joinvo" />
-<meta property="og:description" content="Join bef and subject data in benvos" />
+<meta property="og:title" content="Aggregate Matrix to Subject or Subject - Measurement Level — aggrenvo,Benvo-method" />
+<meta property="og:description" content="Aggregate Matrix to Subject or Subject - Measurement Level" />
 <meta name="twitter:card" content="summary" />
 
 
@@ -112,17 +112,17 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Join bef and subject data in benvos</h1>
+    <h1>Aggregate Matrix to Subject or Subject - Measurement Level</h1>
     
-    <div class="hidden name"><code>joinvo.Rd</code></div>
+    <div class="hidden name"><code>aggrenvo-Benvo-method.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Join bef and subject data in benvos</p>
+    <p>Aggregate Matrix to Subject or Subject - Measurement Level</p>
     </div>
 
-    <pre class="usage"><span class='fu'>joinvo</span>(<span class='no'>x</span>, <span class='no'>bef_name</span>, <span class='kw'>component</span> <span class='kw'>=</span> <span class='st'>"Distance"</span>, <span class='kw'>tibble</span> <span class='kw'>=</span> <span class='no'>F</span>,
-  <span class='kw'>NA_to_zero</span> <span class='kw'>=</span> <span class='no'>F</span>)</pre>
+    <pre class="usage"><span class='co'># S4 method for Benvo</span>
+<span class='fu'><a href='aggrenvo.html'>aggrenvo</a></span>(<span class='no'>x</span>, <span class='no'>M</span>, <span class='no'>stap_term</span>, <span class='no'>component</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -132,20 +132,16 @@
       <td><p>benvo object</p></td>
     </tr>
     <tr>
-      <th>bef_name</th>
-      <td><p>string of bef data to join on in bef_data</p></td>
+      <th>M</th>
+      <td><p>matrix to aggregate</p></td>
+    </tr>
+    <tr>
+      <th>stap_term</th>
+      <td><p>relevant stap term</p></td>
     </tr>
     <tr>
       <th>component</th>
       <td><p>one of c("Distance","Time","Distance-Time") indicating which column(s) of the bef dataset should be returned</p></td>
-    </tr>
-    <tr>
-      <th>tibble</th>
-      <td><p>boolean value of whether or not to return a data.frame or tibble</p></td>
-    </tr>
-    <tr>
-      <th>NA_to_zero</th>
-      <td><p>replaces NA values with zeros - potentially useful when constructing design matrices</p></td>
     </tr>
     </table>
 
