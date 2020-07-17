@@ -36,8 +36,13 @@
 
 
 <meta property="og:title" content="Benvo data objects — Benvo-class" />
-<meta property="og:description" content="A custom data structure for handling point pattern built environment data. 
-Consists of two dataframes (1) subject and (2) subject - BEF with a joining id(s)." />
+<meta property="og:description" content="A custom data structure for handling point pattern built environment data.
+Consists of two dataframes (1) subject and (2) subject - BEF with a joining id(s).
+Whether using the benvo constructor helper function or the raw
+Benvo class constructor, certain constraints are maintained within the class.
+Namely,(1) there must be a bef name and component for each bef data frame.
+(2) Both bef_data and subject data must inherit
+from class data.frame. (3) Components must be one of c(&quot;Distance&quot;,&quot;Time&quot;,&quot;Distance-Time&quot;)" />
 <meta name="twitter:card" content="summary" />
 
 
@@ -119,8 +124,13 @@ Consists of two dataframes (1) subject and (2) subject - BEF with a joining id(s
     </div>
 
     <div class="ref-description">
-    <p>A custom data structure for handling point pattern built environment data. 
-Consists of two dataframes (1) subject and (2) subject - BEF with a joining id(s).</p>
+    <p>A custom data structure for handling point pattern built environment data.
+Consists of two dataframes (1) subject and (2) subject - BEF with a joining id(s).
+Whether using the <code><a href='benvo.html'>benvo</a></code> constructor helper function or the raw
+<code>Benvo</code> class constructor, certain constraints are maintained within the class.
+Namely,(1) there must be a bef name and component for each bef data frame.
+(2) Both bef_data and subject data must inherit
+from class data.frame. (3) Components must be one of c("Distance","Time","Distance-Time")</p>
     </div>
 
 

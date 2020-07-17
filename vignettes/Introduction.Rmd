@@ -5,6 +5,7 @@ vignette: >
   %\VignetteIndexEntry{Getting Started with Benvos}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
+  %\VignetteDepends{ggplot2}
 ---
 
 ```{r, include = FALSE}
@@ -24,6 +25,8 @@ contain some measure of exposure (space/time) that describe how long and how clo
 
 ```{r setup,message=F,results=F}
 library(rbenvo)
+library(ggplot2)
+theme_set(theme_bw())
 data("FFR_distances")
 data("FFR_subjects")
 ```
@@ -87,7 +90,7 @@ str(subject_design(bdf,BMI ~ sex))
 ### Longitudinal Example
 
 For our longitudinal example we'll look at a dataset that imagines a hypothetical set of grocery or "Healthy Food Stores"(HFS)  near subjects. Subjects or grocery stores may move over
-time so this will be reflected in our data.
+time so this will be reflected in our data. Below we'll repeat the similar descriptives from above, highlighting the differences in a longitudinal `benvo`.
 ```{r longitudinal_example}
 data("longitudinal_HFS")
 longitudinal_HFS
@@ -102,10 +105,15 @@ bef_summary(longitudinal_HFS)
 plot_pointrange(longitudinal_HFS,"HFS","Distance")
 ```
 
-
+Analogous to `subject_design` there is also the `longitudinal_design` function which effectively allows for `lme4` style formulas to be used, incorporating subject or group level effects from the `subject_data` in the `benvo` and returning a `glmod` object along with the corresponding `X` and `y` design matrix and outcome vector, respectively.
 
 ```{r longitudinal_design_ex}
 str(longitudinal_design(longitudinal_HFS,BMI ~ sex + (1|ID)),max.level=1)
 ```
 
+## Further Information
 
+This completes this preliminary introduction to the `rbenvo` package. For current uses please see the [`rsstap`](https://apeterson91.github.io/rsstap/) or  [`rstapDP`](https://apeterson91.github.io/rstapDP/) packages. I've found that having these data structures greatly simplifies my code and allows for data to be organized more easily. If you're working with similar data, I hope you find the same!
+
+
+I'm hoping to add more functions and classes soon that will make it easy to construct benvos from latitude-longitude coordinates or `sf` BEF data structures. Stay tuned for these updates.

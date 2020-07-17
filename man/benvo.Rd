@@ -26,3 +26,12 @@ in bef_data frames where Time measures are stored. NA if there is no time measur
 \description{
 Create a benvo object
 }
+\details{
+benvo is a helper constructor function which creates nicely formatted Benvo objects. 
+In particular, note that the \code{benvo} function will explicitly alter the data you provide, creating a new
+numeric joining ID to enable easy aggregation and use with other methods. This alteration will not occur 
+if calling the raw constructor function \code{\link[rbenvo]{Benvo}}, though it will check for it.
+}
+\seealso{
+\code{\link[rbenvo]{Benvo}}
+}

@@ -6,8 +6,13 @@
 \alias{Benvo}
 \title{Benvo data objects}
 \description{
-A custom data structure for handling point pattern built environment data. 
+A custom data structure for handling point pattern built environment data.
 Consists of two dataframes (1) subject and (2) subject - BEF with a joining id(s).
+Whether using the \code{\link[rbenvo]{benvo}} constructor helper function or the raw
+\code{\link[rbenvo]{Benvo}} class constructor, certain constraints are maintained within the class.
+Namely,(1) there must be a bef name and component for each bef data frame.
+(2) Both bef_data and subject data must inherit
+from class data.frame. (3) Components must be one of c("Distance","Time","Distance-Time")
 }
 \section{Slots}{
 

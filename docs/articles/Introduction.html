@@ -88,24 +88,31 @@
 <p>This vignette serves to introduce the philosophy and structure of the <code>rbenvo</code> package, which impliments <code>Benvo</code> classes: Built Environment Objects. These classes make working with built environment data easier by offering a common interface to do so. We’ll illustrate some of the very basics of how to use benvo’s in this vignette as well as give some references as to how it might be used in other packages or settings.</p>
 <p>We’ll begin by loading the library and the two example datasets involving subjects living near Fast Food Restaurants (FFR). One of the two datasets will be for the subject level information, <code>FFR_subjects</code>, the other will contain some measure of exposure (space/time) that describe how long and how close subjects are located near the nearby Built Environment Features (BEFs).</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(rbenvo)</a>
-<a class="sourceLine" id="cb1-2" data-line-number="2"><span class="kw"><a href="https://rdrr.io/r/utils/data.html">data</a></span>(<span class="st">"FFR_distances"</span>)</a>
-<a class="sourceLine" id="cb1-3" data-line-number="3"><span class="kw"><a href="https://rdrr.io/r/utils/data.html">data</a></span>(<span class="st">"FFR_subjects"</span>)</a></code></pre></div>
+<a class="sourceLine" id="cb1-2" data-line-number="2"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(ggplot2)</a>
+<a class="sourceLine" id="cb1-3" data-line-number="3"><span class="co">#&gt; Warning: package 'ggplot2' was built under R version 3.6.2</span></a>
+<a class="sourceLine" id="cb1-4" data-line-number="4"><span class="kw"><a href="https://ggplot2.tidyverse.org/reference/theme_get.html">theme_set</a></span>(<span class="kw"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html">theme_bw</a></span>())</a>
+<a class="sourceLine" id="cb1-5" data-line-number="5"><span class="kw"><a href="https://rdrr.io/r/utils/data.html">data</a></span>(<span class="st">"FFR_distances"</span>)</a>
+<a class="sourceLine" id="cb1-6" data-line-number="6"><span class="kw"><a href="https://rdrr.io/r/utils/data.html">data</a></span>(<span class="st">"FFR_subjects"</span>)</a></code></pre></div>
 <p>The subject dataframe should look familiar. This is a tidy dataset with an ID and two subject-level measures: BMI and sex.</p>
 <div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/utils/head.html">head</a></span>(FFR_subjects,<span class="dv">5</span>)</a>
-<a class="sourceLine" id="cb2-2" data-line-number="2"><span class="co">#&gt;   id      BMI sex</span></a>
-<a class="sourceLine" id="cb2-3" data-line-number="3"><span class="co">#&gt; 1  1 28.88282   1</span></a>
-<a class="sourceLine" id="cb2-4" data-line-number="4"><span class="co">#&gt; 2  2 32.98662   1</span></a>
-<a class="sourceLine" id="cb2-5" data-line-number="5"><span class="co">#&gt; 3  3 46.94367   0</span></a>
-<a class="sourceLine" id="cb2-6" data-line-number="6"><span class="co">#&gt; 4  4 30.17669   1</span></a>
-<a class="sourceLine" id="cb2-7" data-line-number="7"><span class="co">#&gt; 5  5 43.31416   0</span></a></code></pre></div>
+<a class="sourceLine" id="cb2-2" data-line-number="2"><span class="co">#&gt; # A tibble: 5 x 3</span></a>
+<a class="sourceLine" id="cb2-3" data-line-number="3"><span class="co">#&gt;      id   BMI   sex</span></a>
+<a class="sourceLine" id="cb2-4" data-line-number="4"><span class="co">#&gt;   &lt;int&gt; &lt;dbl&gt; &lt;int&gt;</span></a>
+<a class="sourceLine" id="cb2-5" data-line-number="5"><span class="co">#&gt; 1     1  28.9     1</span></a>
+<a class="sourceLine" id="cb2-6" data-line-number="6"><span class="co">#&gt; 2     2  33.0     1</span></a>
+<a class="sourceLine" id="cb2-7" data-line-number="7"><span class="co">#&gt; 3     3  46.9     0</span></a>
+<a class="sourceLine" id="cb2-8" data-line-number="8"><span class="co">#&gt; 4     4  30.2     1</span></a>
+<a class="sourceLine" id="cb2-9" data-line-number="9"><span class="co">#&gt; 5     5  43.3     0</span></a></code></pre></div>
 <p>The distance dataframe is a tidy “long” dataframe, containing multiple nearby BEF exposures per subject</p>
 <div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/utils/head.html">head</a></span>(FFR_distances,<span class="dv">5</span>)</a>
-<a class="sourceLine" id="cb3-2" data-line-number="2"><span class="co">#&gt;   id  Distance</span></a>
-<a class="sourceLine" id="cb3-3" data-line-number="3"><span class="co">#&gt; 1  1 0.7731216</span></a>
-<a class="sourceLine" id="cb3-4" data-line-number="4"><span class="co">#&gt; 2  1 0.7339080</span></a>
-<a class="sourceLine" id="cb3-5" data-line-number="5"><span class="co">#&gt; 3  1 0.9966941</span></a>
-<a class="sourceLine" id="cb3-6" data-line-number="6"><span class="co">#&gt; 4  1 0.4702982</span></a>
-<a class="sourceLine" id="cb3-7" data-line-number="7"><span class="co">#&gt; 5  1 0.5233440</span></a></code></pre></div>
+<a class="sourceLine" id="cb3-2" data-line-number="2"><span class="co">#&gt; # A tibble: 5 x 2</span></a>
+<a class="sourceLine" id="cb3-3" data-line-number="3"><span class="co">#&gt;      id Distance</span></a>
+<a class="sourceLine" id="cb3-4" data-line-number="4"><span class="co">#&gt;   &lt;int&gt;    &lt;dbl&gt;</span></a>
+<a class="sourceLine" id="cb3-5" data-line-number="5"><span class="co">#&gt; 1     1    0.773</span></a>
+<a class="sourceLine" id="cb3-6" data-line-number="6"><span class="co">#&gt; 2     1    0.734</span></a>
+<a class="sourceLine" id="cb3-7" data-line-number="7"><span class="co">#&gt; 3     1    0.997</span></a>
+<a class="sourceLine" id="cb3-8" data-line-number="8"><span class="co">#&gt; 4     1    0.470</span></a>
+<a class="sourceLine" id="cb3-9" data-line-number="9"><span class="co">#&gt; 5     1    0.523</span></a></code></pre></div>
 <p>In order to create a benvo we’ll pass the two dataframes to the <code><a href="../reference/benvo.html">benvo()</a></code> function, wrapping the FFR_distances data frame in a list. We’ll also pass the BEF name we want, along with the joining id name and the name of the column that contains the distance measures.</p>
 <div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1">bdf &lt;-<span class="st"> </span><span class="kw"><a href="../reference/benvo.html">benvo</a></span>(<span class="dt">subject_data =</span> FFR_subjects,</a>
 <a class="sourceLine" id="cb4-2" data-line-number="2">             <span class="dt">bef_data =</span> <span class="kw"><a href="https://rdrr.io/r/base/list.html">list</a></span>(FFR_distances),</a>
@@ -147,7 +154,7 @@
 <div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" data-line-number="1"><span class="kw"><a href="../reference/joinvo.html">joinvo</a></span>(bdf,<span class="st">"FFR"</span>,<span class="dt">tibble=</span>T)</a>
 <a class="sourceLine" id="cb7-2" data-line-number="2"><span class="co">#&gt; # A tibble: 9,550 x 4</span></a>
 <a class="sourceLine" id="cb7-3" data-line-number="3"><span class="co">#&gt;       ID Distance   BMI   sex</span></a>
-<a class="sourceLine" id="cb7-4" data-line-number="4"><span class="co">#&gt;    &lt;int&gt;    &lt;dbl&gt; &lt;dbl&gt; &lt;int&gt;</span></a>
+<a class="sourceLine" id="cb7-4" data-line-number="4"><span class="co">#&gt;    &lt;dbl&gt;    &lt;dbl&gt; &lt;dbl&gt; &lt;int&gt;</span></a>
 <a class="sourceLine" id="cb7-5" data-line-number="5"><span class="co">#&gt;  1     1    0.773  28.9     1</span></a>
 <a class="sourceLine" id="cb7-6" data-line-number="6"><span class="co">#&gt;  2     1    0.734  28.9     1</span></a>
 <a class="sourceLine" id="cb7-7" data-line-number="7"><span class="co">#&gt;  3     1    0.997  28.9     1</span></a>
@@ -172,7 +179,7 @@
 <div id="longitudinal-example" class="section level3">
 <h3 class="hasAnchor">
 <a href="#longitudinal-example" class="anchor"></a>Longitudinal Example</h3>
-<p>For our longitudinal example we’ll look at a dataset that imagines a hypothetical set of grocery or “Healthy Food Stores”(HFS) near subjects. Subjects or grocery stores may move over time so this will be reflected in our data.</p>
+<p>For our longitudinal example we’ll look at a dataset that imagines a hypothetical set of grocery or “Healthy Food Stores”(HFS) near subjects. Subjects or grocery stores may move over time so this will be reflected in our data. Below we’ll repeat the similar descriptives from above, highlighting the differences in a longitudinal <code>benvo</code>.</p>
 <div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb9-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/utils/data.html">data</a></span>(<span class="st">"longitudinal_HFS"</span>)</a>
 <a class="sourceLine" id="cb9-2" data-line-number="2">longitudinal_HFS</a>
 <a class="sourceLine" id="cb9-3" data-line-number="3"><span class="co">#&gt; Subject Data:</span></a>
@@ -205,6 +212,7 @@
 <div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb11-1" data-line-number="1"><span class="kw"><a href="../reference/plot_pointrange.html">plot_pointrange</a></span>(longitudinal_HFS,<span class="st">"HFS"</span>,<span class="st">"Distance"</span>)</a>
 <a class="sourceLine" id="cb11-2" data-line-number="2"><span class="co">#&gt; Warning: Removed 24 rows containing missing values (geom_pointrange).</span></a></code></pre></div>
 <p><img src="Introduction_files/figure-html/long_plot-1.png" width="700"></p>
+<p>Analogous to <code>subject_design</code> there is also the <code>longitudinal_design</code> function which effectively allows for <code>lme4</code> style formulas to be used, incorporating subject or group level effects from the <code>subject_data</code> in the <code>benvo</code> and returning a <code>glmod</code> object along with the corresponding <code>X</code> and <code>y</code> design matrix and outcome vector, respectively.</p>
 <div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb12-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/utils/str.html">str</a></span>(<span class="kw"><a href="../reference/longitudinal_design.html">longitudinal_design</a></span>(longitudinal_HFS,BMI <span class="op">~</span><span class="st"> </span>sex <span class="op">+</span><span class="st"> </span>(<span class="dv">1</span><span class="op">|</span>ID)),<span class="dt">max.level=</span><span class="dv">1</span>)</a>
 <a class="sourceLine" id="cb12-2" data-line-number="2"><span class="co">#&gt; List of 3</span></a>
 <a class="sourceLine" id="cb12-3" data-line-number="3"><span class="co">#&gt;  $ y    : num [1:596] 28.1 29.4 29.7 30.6 28 ...</span></a>
@@ -213,6 +221,12 @@
 <a class="sourceLine" id="cb12-6" data-line-number="6"><span class="co">#&gt;   ..- attr(*, "assign")= int [1:2] 0 1</span></a>
 <a class="sourceLine" id="cb12-7" data-line-number="7"><span class="co">#&gt;   ..- attr(*, "msgScaleX")= chr(0) </span></a>
 <a class="sourceLine" id="cb12-8" data-line-number="8"><span class="co">#&gt;  $ glmod:List of 6</span></a></code></pre></div>
+</div>
+<div id="further-information" class="section level2">
+<h2 class="hasAnchor">
+<a href="#further-information" class="anchor"></a>Further Information</h2>
+<p>This completes this preliminary introduction to the <code>rbenvo</code> package. For current uses please see the <a href="https://apeterson91.github.io/rsstap/"><code>rsstap</code></a> or <a href="https://apeterson91.github.io/rstapDP/"><code>rstapDP</code></a> packages. I’ve found that having these data structures greatly simplifies my code and allows for data to be organized more easily. If you’re working with similar data, I hope you find the same!</p>
+<p>I’m hoping to add more functions and classes soon that will make it easy to construct benvos from latitude-longitude coordinates or <code>sf</code> BEF data structures. Stay tuned for these updates.</p>
 </div>
 </div>
   </div>
@@ -228,7 +242,11 @@
 <li><a href="#simple-descriptives">Simple Descriptives</a></li>
       </ul>
 </li>
-      <li><a href="#other-packages">Other packages</a></li>
+      <li>
+<a href="#other-packages">Other packages</a><ul class="nav nav-pills nav-stacked">
+<li><a href="#further-information">Further Information</a></li>
+      </ul>
+</li>
       </ul>
 </div>
       </div>

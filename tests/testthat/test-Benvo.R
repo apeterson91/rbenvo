@@ -56,8 +56,8 @@ test_that("Benvo accepts appropriate structures",{
                       distance_col = "Distance",
                       exposed_time_col = "Time",joining_id = "id"))
   expect_silent(new("Benvo",
-                    subject_data=FFR_subjects,
-                    bef_data=list(FFR_distances),
+                    subject_data=FFR_subjects %>% dplyr::rename(ID=id),
+                    bef_data=list(FFR_distances %>% dplyr::rename(ID=id)),
                     longitudinal=F,
                     bef_names= "FFR",
                     components="Distance"))

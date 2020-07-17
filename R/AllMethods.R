@@ -44,13 +44,14 @@ print_benvo <- function(object){
 #' Benvo BEF Summary Generic
 #'
 #' @param x a benvo object
+#' @keywords internal
 #'
 setGeneric("bef_summary", function(x) standardGeneric("bef_summary"))
 
 #' benvo BEF Summary Method
 #'
 #' @export
-#' @param x a benvo object
+#' @describeIn bef_summary
 #'
 setMethod(f = "bef_summary",
 	signature="Benvo",
@@ -75,7 +76,7 @@ setMethod(f = "bef_summary",
 	return(invisible(dfr))
 })
 
-#' Between - Within Construction
+#' Between - Within Construction Generic
 #'
 #' @param x benvo object
 #' @param M matrix to construct between/within measures
@@ -83,10 +84,10 @@ setMethod(f = "bef_summary",
 #' 
 setGeneric("bwinvo",function(x,M) standardGeneric("bwinvo"))
 
-#' Between - Within Construction
+
+#' Between - Within Construction 
 #'
-#' @param x benvo object
-#' @param M matrix to construct between/within measures
+#' @describeIn bwinvo between within decomposition of longitudinal matrix M according to benvo subject-bef data
 #' @export 
 #' 
 setMethod("bwinvo","Benvo",function(x,M){
@@ -113,7 +114,7 @@ setGeneric("joining_ID",function(x) standardGeneric("joining_ID"))
 #' benvo joining ID
 #'
 #' @export
-#' @param x benvo object
+#' @describeIn joining_ID  return appropriate benvo joining ID
 #'
 setMethod("joining_ID","Benvo",function(x){
 
@@ -134,10 +135,8 @@ setGeneric("component_lookup",function(x,bef_name) standardGeneric("component_lo
 
 #' Component look up
 #'
-#' returns the measure (Distance/Time) that's associated with the input BEF
 #' @export
-#' @param x benvo object
-#' @param bef_name bef_name string
+#' @describeIn component_lookup returns the measure (Distance/Time) that's associated with the input BEF
 #'
 setMethod("component_lookup","Benvo",function(x,bef_name){
 
@@ -160,7 +159,7 @@ setGeneric("num_BEF",function(x) standardGeneric("num_BEF") )
 #' Number of Built Environment Features
 #'
 #' @export
-#' @param x a benvo object
+#' @describeIn num_BEF return the number of bef data frames
 #'
 setMethod("num_BEF","Benvo",function(x){
 	return(length(x@bef_names))})
@@ -171,6 +170,7 @@ setMethod("num_BEF","Benvo",function(x){
 #' @param formula similar to \code{\link[stats]{lm}}.
 #' @param x benvo object
 #' @param ... other arguments passed to the model frame
+#' @keywords internal
 #'
 setGeneric("subject_design",function(x,formula,...) standardGeneric("subject_design"))
 
@@ -178,9 +178,7 @@ setGeneric("subject_design",function(x,formula,...) standardGeneric("subject_des
 #' Extract Subject Design Matrix
 #'
 #' @export
-#' @param formula similar to \code{\link[stats]{lm}}.
-#' @param x benvo object
-#' @param ... other arguments passed to the model frame
+#' @describeIn subject_design subject design method
 #' @importFrom stats is.empty.model model.response model.matrix
 #'
 setMethod("subject_design","Benvo",function(x,formula,...){
@@ -216,9 +214,7 @@ setGeneric("longitudinal_design",function(x,formula,...) standardGeneric("longit
 #'
 #' For use with \code{\link[lme4]{glmer}} type formulas/models
 #' @export
-#' @param formula similar to \code{\link[lme4]{glmer}}.
-#' @param x benvo object
-#' @param ... other arguments passed to the model frame
+#' @describeIn longitudinal_design longitudinal design method
 #' @importFrom lme4 glmerControl
 #'
 setMethod("longitudinal_design","Benvo",function(x,formula,...){
@@ -332,6 +328,7 @@ setMethod("joinvo","Benvo", function(x,bef_name,component = "Distance",tibble = 
 #' Pointrange plot
 #'
 #' @export
+#' @keywords internal
 #' @param x benvo object
 #' @param BEF BEF specification
 #' @param component one of c("Distance","Time") indicating which column(s) of the bef dataset should be returned
@@ -342,9 +339,7 @@ setGeneric("plot_pointrange", function(x,BEF,component)  standardGeneric("plot_p
 #' Pointrange plot
 #'
 #' @export
-#' @param x benvo object
-#' @param BEF BEF specification
-#' @param component one of c("Distance","Time") indicating which column(s) of the bef dataset should be returned
+#' @describeIn plot_pointrange pointrange plot for bef data
 #'
 setMethod("plot_pointrange","Benvo",function(x,BEF,component){
 

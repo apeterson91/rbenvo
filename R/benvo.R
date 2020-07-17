@@ -12,6 +12,11 @@
 #' @param exposed_time_col character vector containing strings
 #' in bef_data frames where Time measures are stored. NA if there is no time measure.
 #' @importFrom methods new
+#' @seealso \code{\link[rbenvo]{Benvo}} 
+#' @details benvo is a helper constructor function which creates nicely formatted Benvo objects. 
+#' In particular, note that the \code{benvo} function will explicitly alter the data you provide, creating a new
+#' numeric joining ID to enable easy aggregation and use with other methods. This alteration will not occur 
+#' if calling the raw constructor function \code{\link[rbenvo]{Benvo}}, though it will check for it.
 #'
 benvo <- function(subject_data,
 				  bef_data,
@@ -34,13 +39,13 @@ benvo <- function(subject_data,
 	## ------
 	if(length(joining_id)==1){
 		ID_names <- c("ID")
-		subject_data$ID <- subject_data[,joining_id]
+		subject_data$ID <- as.numeric(factor(subject_data[,joining_id]))
 		subject_data <- subject_data[,!(names(subject_data) %in% joining_id)]
 	}
 	else if(length(joining_id)==2){
 		ID_names <- c("ID","Measurement")
-		subject_data$ID <- subject_data[,joining_id[1]]
-		subject_data$Measurement <- subject_data[,joining_id[2]]
+		subject_data$ID <- as.numeric(factor(subject_data[,joining_id[1]]))
+		subject_data$Measurement <- as.numeric(factor(subject_data[,joining_id[2]]))
 		subject_data <- subject_data[,!(names(subject_data) %in% joining_id)]
 	}
 	else
