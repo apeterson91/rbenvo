@@ -2,10 +2,12 @@
 % Please edit documentation in R/AllMethods.R
 \name{joinvo}
 \alias{joinvo}
-\title{Join bef and subject data in benvos}
+\alias{joinvo,Benvo-method}
+\title{Join BEF and subject data within a benvo}
 \usage{
-joinvo(x, bef_name, component = "Distance", tibble = F,
-  NA_to_zero = F)
+joinvo(x, bef_name, component = "Distance", tibble = F, NA_to_zero = F)
+
+\S4method{joinvo}{Benvo}(x, bef_name, component = "Distance", tibble = F, NA_to_zero = F)
 }
 \arguments{
 \item{x}{benvo object}
@@ -19,6 +21,13 @@ joinvo(x, bef_name, component = "Distance", tibble = F,
 \item{NA_to_zero}{replaces NA values with zeros - potentially useful when constructing design matrices}
 }
 \description{
-Join bef and subject data in benvos
+Join BEF and subject data within a benvo
 }
-\keyword{internal}
+\details{
+Joins the subject dataframe within a benvo to the supplied BEF dataframe keeping the selected component
+}
+\section{Methods (by class)}{
+\itemize{
+\item \code{Benvo}: method
+}}
+

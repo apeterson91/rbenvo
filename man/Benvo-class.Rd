@@ -7,7 +7,7 @@
 \title{Benvo data objects}
 \description{
 A custom data structure for handling point pattern built environment data.
-Consists of two dataframes (1) subject and (2) subject - BEF with a joining id(s).
+Consists of two types of dataframes (1) subject and (2) subject - BEF with a joining id(s).
 Whether using the \code{\link[rbenvo]{benvo}} constructor helper function or the raw
 \code{\link[rbenvo]{Benvo}} class constructor, certain constraints are maintained within the class.
 Namely,(1) there must be a bef name and component for each bef data frame.
@@ -19,7 +19,7 @@ from class data.frame. (3) Components must be one of c("Distance","Time","Distan
 \describe{
 \item{\code{subject_data}}{data.frame containing subject level covariates.}
 
-\item{\code{bef_data}}{data.frame containing subject - bef distance/time data}
+\item{\code{bef_data}}{list containing subject - bef distance/time data frames}
 
 \item{\code{longitudinal}}{boolean value indicating whether the Benvo holds longitudinal data}
 

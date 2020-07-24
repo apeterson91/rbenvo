@@ -178,7 +178,7 @@ setGeneric("subject_design",function(x,formula,...) standardGeneric("subject_des
 #' Extract Subject Design Matrix
 #'
 #' @export
-#' @describeIn subject_design subject design method
+#' @describeIn subject_design  method
 #' @importFrom stats is.empty.model model.response model.matrix
 #'
 setMethod("subject_design","Benvo",function(x,formula,...){
@@ -195,14 +195,14 @@ setMethod("subject_design","Benvo",function(x,formula,...){
 
 	y <- model.response(mf,"numeric")
 	X <-  model.matrix(mt,mf)
-	out <- list(y=y,X=X)
+	out <- list(y=y,X=X,model_frame=mf)
 	return(out)
 
 })
 
 #' Longitudinal design dataframe
 #'
-#' @keywords internal
+#' For use with \code{\link[lme4]{glmer}} type formulas/models
 #' @param formula similar to \code{\link[lme4]{glmer}}.
 #' @param x benvo object
 #' @param ... other arguments passed to the model frame
@@ -210,11 +210,9 @@ setMethod("subject_design","Benvo",function(x,formula,...){
 setGeneric("longitudinal_design",function(x,formula,...) standardGeneric("longitudinal_design"))
 
 
-#' Extract Longitudinal Design Matrices
 #'
-#' For use with \code{\link[lme4]{glmer}} type formulas/models
 #' @export
-#' @describeIn longitudinal_design longitudinal design method
+#' @describeIn longitudinal_design  method
 #' @importFrom lme4 glmerControl
 #'
 setMethod("longitudinal_design","Benvo",function(x,formula,...){
@@ -242,7 +240,6 @@ setMethod("longitudinal_design","Benvo",function(x,formula,...){
 
 #' Aggregate Matrix to Subject or Subject - Measurement Level
 #' 
-#' @keywords internal
 #' @param x benvo object
 #' @param M matrix to aggregate
 #' @param stap_term relevant stap term
@@ -251,13 +248,9 @@ setMethod("longitudinal_design","Benvo",function(x,formula,...){
 setGeneric("aggrenvo",function(x,M,stap_term,component) standardGeneric("aggrenvo"))
 
 
-#' Aggregate Matrix to Subject or Subject - Measurement Level
 #'
 #' @export
-#' @param x benvo object
-#' @param M matrix to aggregate
-#' @param stap_term relevant stap term
-#' @param component one of c("Distance","Time","Distance-Time") indicating which column(s) of the bef dataset should be returned
+#' @describeIn aggrenvo method
 #' 
 setMethod("aggrenvo","Benvo",function(x,M,stap_term,component){	
 
@@ -275,9 +268,9 @@ setMethod("aggrenvo","Benvo",function(x,M,stap_term,component){
 	return(X)
 })
 
-#' Join bef and subject data in benvos
+#' Join BEF and subject data within a benvo
 #'
-#' @keywords internal
+#' @details Joins the subject dataframe within a benvo to the supplied BEF dataframe keeping the selected component
 #' @param x benvo object
 #' @param bef_name string of bef data to join on in bef_data
 #' @param component one of c("Distance","Time","Distance-Time") indicating which column(s) of the bef dataset should be returned
@@ -286,15 +279,10 @@ setMethod("aggrenvo","Benvo",function(x,M,stap_term,component){
 #'
 setGeneric("joinvo",function(x,bef_name,component = "Distance",tibble = F,NA_to_zero = F) standardGeneric("joinvo"))
 
-#' Join bef and subject data in benvos
 #'
 #' @export
 #' @importFrom stats quantile median
-#' @param x benvo object
-#' @param bef_name string of bef data to join on in bef_data
-#' @param component one of c("Distance","Time","Distance-Time") indicating which column(s) of the bef dataset should be returned
-#' @param tibble boolean value of whether or not to return a data.frame or tibble
-#' @param NA_to_zero replaces NA values with zeros - potentially useful when constructing design matrices
+#' @describeIn joinvo method
 #'
 setMethod("joinvo","Benvo", function(x,bef_name,component = "Distance",tibble = F,NA_to_zero = F){
 
@@ -326,31 +314,35 @@ setMethod("joinvo","Benvo", function(x,bef_name,component = "Distance",tibble = 
 })
 
 #' Pointrange plot
+#' 
+#' Plots the sorted distribution intervals of distances and times across subjects
 #'
 #' @export
-#' @keywords internal
 #' @param x benvo object
 #' @param BEF BEF specification
 #' @param component one of c("Distance","Time") indicating which column(s) of the bef dataset should be returned
+#' @param p The probability of distances/times that should be included in interval
 #'
-setGeneric("plot_pointrange", function(x,BEF,component)  standardGeneric("plot_pointrange") )
+setGeneric("plot_pointrange", function(x,BEF,component, p = 0.95)  standardGeneric("plot_pointrange") )
 
 
-#' Pointrange plot
 #'
 #' @export
-#' @describeIn plot_pointrange pointrange plot for bef data
+#' @describeIn plot_pointrange method
 #'
-setMethod("plot_pointrange","Benvo",function(x,BEF,component){
+setMethod("plot_pointrange","Benvo",function(x,BEF,component, p = 0.95){
 
 	Distance <- Lower <- Median <- Upper <- ID <- Measure <-  Measurement <- NULL
 	jdf <- joinvo(x,BEF,component,tibble=T)
 
+	l <- .5 - (p/2)
+	u <- .5 + (p/2)
+
 	if(x@longitudinal)
 		jdf %>% dplyr::group_by(ID,Measurement) %>%
-			dplyr::summarise(Lower = quantile(Distance,0.025,na.rm=T),
+			dplyr::summarise(Lower = quantile(Distance,l,na.rm=T),
 							 Median = median(Distance,na.rm=T),
-							 Upper = quantile(Distance,0.975,na.rm=T)) %>%
+							 Upper = quantile(Distance,u,na.rm=T)) %>%
 		ggplot2::ggplot(ggplot2::aes(x=ID,y=Median))  +
 		ggplot2::geom_pointrange(ggplot2::aes(ymin=Lower,ymax=Upper)) +
 		ggplot2::ylab(component) + ggplot2::theme(strip.background=ggplot2::element_blank()) +  

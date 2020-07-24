@@ -4,11 +4,13 @@
 \name{longitudinal_HFS}
 \alias{longitudinal_HFS}
 \title{Small benvo for use in \pkg{benvo} longitudinal examples and vignettes.}
-\format{A benvo with 1000 subjects and nearby simulated FFRs
+\format{
+A benvo with 1000 subjects and nearby simulated FFRs
 \describe{
-\item{\code{HFS_subjects }}{:see HFS_subjects dataset}
-\item{\code{HFS_subjects}}{:see HFS_distances dataset}
-}}
+\item{\code{HFS_subjects }}{see HFS_subjects dataset}
+\item{\code{HFS_subjects}}{see HFS_distances dataset}
+}
+}
 \usage{
 longitudinal_HFS
 }

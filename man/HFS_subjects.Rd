@@ -4,15 +4,17 @@
 \name{HFS_subjects}
 \alias{HFS_subjects}
 \title{Longitudinal Dataset for use in \pkg{benvo} examples and vignettes.}
-\format{A data frame with 596 rows and 4 columns
+\format{
+A data frame with 596 rows and 4 columns
 \describe{
-\item{\code{id}}{:The subject unique identifier}
-\item{\code{measurement}}{:The subject repeat measurement id}
-\item{\code{sex}}{:The measurement unique identifier}
-\item{\code{BMI}}{:The Built Environment Unique identifier}
-\item{\code{subj_effect}}{:subject specific intercept used in simulating BMI }
-\item{\code{exposure}}{:The hypothetical Healthy Food Store exposure effect}
-}}
+\item{\code{id}}{The subject unique identifier}
+\item{\code{measurement}}{The subject repeat measurement id}
+\item{\code{sex}}{The measurement unique identifier}
+\item{\code{BMI}}{The Built Environment Unique identifier}
+\item{\code{subj_effect}}{subject specific intercept used in simulating BMI }
+\item{\code{exposure}}{The hypothetical Healthy Food Store exposure effect}
+}
+}
 \usage{
 HFS_subjects
 }

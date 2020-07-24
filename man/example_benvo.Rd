@@ -4,11 +4,13 @@
 \name{example_benvo}
 \alias{example_benvo}
 \title{Small benvo for use in \pkg{benvo} examples and vignettes.}
-\format{A benvo with 1000 subjects and nearby simulated FFRs
+\format{
+A benvo with 1000 subjects and nearby simulated FFRs
 \describe{
-\item{\code{FFR_subjects }}{:see FFR_subjects dataset}
-\item{\code{FFR_distances}}{:see FFR_distances dataset}
-}}
+\item{\code{FFR_subjects }}{see FFR_subjects dataset}
+\item{\code{FFR_distances}}{see FFR_distances dataset}
+}
+}
 \usage{
 example_benvo
 }

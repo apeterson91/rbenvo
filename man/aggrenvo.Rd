@@ -2,9 +2,12 @@
 % Please edit documentation in R/AllMethods.R
 \name{aggrenvo}
 \alias{aggrenvo}
+\alias{aggrenvo,Benvo-method}
 \title{Aggregate Matrix to Subject or Subject - Measurement Level}
 \usage{
 aggrenvo(x, M, stap_term, component)
+
+\S4method{aggrenvo}{Benvo}(x, M, stap_term, component)
 }
 \arguments{
 \item{x}{benvo object}
@@ -18,4 +21,8 @@ aggrenvo(x, M, stap_term, component)
 \description{
 Aggregate Matrix to Subject or Subject - Measurement Level
 }
-\keyword{internal}
+\section{Methods (by class)}{
+\itemize{
+\item \code{Benvo}: method
+}}
+
