@@ -2,6 +2,7 @@
 
 export("%>%")
 export(benvo)
+export(bwinvo)
 export(plot_pointrange)
 exportClasses(Benvo)
 exportMethods(aggrenvo)

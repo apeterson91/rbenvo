@@ -40,13 +40,15 @@ benvo <- function(subject_data,
 	if(length(joining_id)==1){
 		ID_names <- c("ID")
 		subject_data$ID <- as.numeric(factor(subject_data[,joining_id]))
-		subject_data <- subject_data[,!(names(subject_data) %in% joining_id)]
+		if(joining_id !="ID")
+			subject_data <- subject_data[,!(names(subject_data) %in% joining_id)]
 	}
 	else if(length(joining_id)==2){
 		ID_names <- c("ID","Measurement")
 		subject_data$ID <- as.numeric(factor(subject_data[,joining_id[1]]))
 		subject_data$Measurement <- as.numeric(factor(subject_data[,joining_id[2]]))
-		subject_data <- subject_data[,!(names(subject_data) %in% joining_id)]
+		if(all(joining_id != c("ID","Measurement")))
+			subject_data <- subject_data[,!(names(subject_data) %in% joining_id)]
 	}
 	else
 		stop("joining ID can only have 1 or 2 names 

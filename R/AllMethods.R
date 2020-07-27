@@ -78,6 +78,7 @@ setMethod(f = "bef_summary",
 
 #' Between - Within Construction Generic
 #'
+#' @export
 #' @param x benvo object
 #' @param M matrix to construct between/within measures
 #' @keywords internal
@@ -254,17 +255,24 @@ setGeneric("aggrenvo",function(x,M,stap_term,component) standardGeneric("aggrenv
 #' 
 setMethod("aggrenvo","Benvo",function(x,M,stap_term,component){	
 
-	jndf <- joinvo(x,stap_term,component)
+	jndf <- joinvo(x,stap_term,component,NA_to_zero = F)
 	if(x@longitudinal){
 		jndf$BENVO_NEWID_ <- paste0(jndf$ID,"_",jndf$Measurement)
 		lvls <- unique(jndf$BENVO_NEWID_)
 		jndf$BENVO_NEWID_ <- factor(jndf$BENVO_NEWID_, levels = lvls)
 		AggMat <- Matrix::fac2sparse(jndf$BENVO_NEWID_)
+		zeromat <- jndf %>% dplyr::group_by(ID,Measurement) %>% 
+		dplyr::summarise_at(component,function(x) 1*all(!is.na(x))) %>% 
+		dplyr::pull(component) %>% diag(.)
 	}
-	else
+	else{
 		AggMat <- Matrix::fac2sparse(jndf[,joining_ID(x)])
+		zeromat <- jndf %>% dplyr::group_by(ID) %>% 
+				dplyr::summarise_at(component,function(x) 1*all(!is.na(x))) %>% 
+				dplyr::pull(component) %>% diag(.)
+	}
 	stopifnot(nrow(M) == ncol(AggMat))
-	X <- as.matrix(AggMat %*% M)
+	X <- as.matrix(zeromat %*% AggMat %*% M)
 	return(X)
 })
 
