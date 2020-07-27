@@ -5,9 +5,9 @@
 \alias{aggrenvo,Benvo-method}
 \title{Aggregate Matrix to Subject or Subject - Measurement Level}
 \usage{
-aggrenvo(x, M, stap_term, component, NA_to_zero = F)
+aggrenvo(x, M, stap_term, component)
 
-\S4method{aggrenvo}{Benvo}(x, M, stap_term, component, NA_to_zero = F)
+\S4method{aggrenvo}{Benvo}(x, M, stap_term, component)
 }
 \arguments{
 \item{x}{benvo object}

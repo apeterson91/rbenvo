@@ -160,7 +160,7 @@ setGeneric("num_BEF",function(x) standardGeneric("num_BEF") )
 #' Number of Built Environment Features
 #'
 #' @export
-#' @describeIn num_BEF return the number of bef data frames
+#' @describeIn num_BEF 
 #'
 setMethod("num_BEF","Benvo",function(x){
 	return(length(x@bef_names))})
@@ -255,6 +255,7 @@ setGeneric("aggrenvo",function(x,M,stap_term,component) standardGeneric("aggrenv
 #' 
 setMethod("aggrenvo","Benvo",function(x,M,stap_term,component){	
 
+	ID <- Measurement <- . <- NULL
 	jndf <- joinvo(x,stap_term,component,NA_to_zero = F)
 	if(component=="Distance-Time")
 		component_ <- c("Distance") ## Fine to use just one since zero exposure variable will equate to zero exposure in the other
