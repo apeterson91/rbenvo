@@ -277,7 +277,7 @@ setMethod("aggrenvo","Benvo",function(x,M,stap_term,component){
 				dplyr::pull(component_) %>% diag(.)
 	}
 	stopifnot(nrow(M) == ncol(AggMat))
-	X <- as.matrix(zeromat %*% AggMat %*% M)
+	X <- as.matrix(zeromat %*% (AggMat %*% M))
 	return(X)
 })
 
