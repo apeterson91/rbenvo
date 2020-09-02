@@ -6,10 +6,9 @@
 
 ## About
 
-`rbenvo` is package that creates S4 class objects and methods for
-built environment data to ease the use of working with these data 
-and improve interoperability with other R packages developing methods in this 
-same space.
+`rbenvo` is package of S4 classes  and methods for built environment data. 
+They are designed to ease the use of working with these nonstandard data  structures and 
+improve interoperability with other R packages developing methods in this same space (see eg. [rstapDP](https://apeterson91.github.io/rstapDP/)).
 
 
 ## Installation

@@ -50,7 +50,7 @@ setValidity("Benvo",function(object){
 					"There must be a common id between the subject_data and all bef_data data frames"
 				}
 				if(object@longitudinal){
-					if(!(c("ID","Measurement") %in% intersect(colnames(object@subject_data),Reduce(intersect,lapply(object@bef_data,colnames))) )){
+					if(!all((c("ID","Measurement") %in% intersect(colnames(object@subject_data),Reduce(intersect,lapply(object@bef_data,colnames)))) )){
 						"'ID' and 'Measurement' columns must be included in any longitudinal benvo"
 					}else if(!is.numeric(object@subject_data$ID) ||
 				     !is.numeric(object@subject_data$Measurement) ||

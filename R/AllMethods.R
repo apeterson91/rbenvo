@@ -300,6 +300,7 @@ setGeneric("joinvo",function(x,bef_name,component = "Distance",tibble = F,NA_to_
 setMethod("joinvo","Benvo", function(x,bef_name,component = "Distance",tibble = F,NA_to_zero = F){
 
 
+	##TODO: Make option for subject design data to be constructed from joined data
 	stopifnot(component %in% c("Distance","Time","Distance-Time"))
 	Distance <- Time <- ID <- NULL
 
@@ -356,7 +357,7 @@ setMethod("plot_pointrange","Benvo",function(x,BEF,component, p = 0.95){
 			dplyr::summarise(Lower = quantile(Distance,l,na.rm=T),
 							 Median = median(Distance,na.rm=T),
 							 Upper = quantile(Distance,u,na.rm=T)) %>%
-		ggplot2::ggplot(ggplot2::aes(x=ID,y=Median))  +
+		ggplot2::ggplot(ggplot2::aes(x=forcats::fct_reorder(ID,Median),y=Median))  +
 		ggplot2::geom_pointrange(ggplot2::aes(ymin=Lower,ymax=Upper)) +
 		ggplot2::ylab(component) + ggplot2::theme(strip.background=ggplot2::element_blank()) +  
 		  ggplot2::coord_flip() + ggplot2::facet_wrap(~Measurement)-> p
@@ -365,7 +366,7 @@ setMethod("plot_pointrange","Benvo",function(x,BEF,component, p = 0.95){
 			dplyr::summarise(Lower = quantile(Distance,0.025,na.rm=T),
 							 Median = median(Distance,na.rm=T),
 							 Upper = quantile(Distance,0.975,na.rm=T)) %>%
-		ggplot2::ggplot(ggplot2::aes(x=ID,y=Median))  +
+		ggplot2::ggplot(ggplot2::aes(x=forcats::fct_reorder(ID,Median),y=Median))  +
 		ggplot2::geom_pointrange(ggplot2::aes(ymin=Lower,ymax=Upper)) +
 		ggplot2::ylab(component) + 
 		  ggplot2::coord_flip() -> p

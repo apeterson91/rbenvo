@@ -16,7 +16,8 @@ Imports:
     tidyr,
     purrr,
     lme4,
-    Matrix
+    Matrix,
+    forcats
 RoxygenNote: 7.1.1
 Depends:
 	R (>= 2.10)
