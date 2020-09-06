@@ -4,109 +4,113 @@
 #'
 #' @param subject_data
 #'      data.frame containing subject level covariates.
-#' @param bef_data list of BEF data frames
-#' @param bef_names character vector of data frames
-#' @param joining_id character vector containing strings in both subject and bef data frames used to join data
-#' @param distance_col character vector containing strings
-#' in bef_data frames where Distance measures are stored. NA if there is no distance measure.
-#' @param exposed_time_col character vector containing strings
-#' in bef_data frames where Time measures are stored. NA if there is no time measure.
+#' @param bef_data named list of BEF data frames
+#' @param by optional key
 #' @importFrom methods new
-#' @seealso \code{\link[rbenvo]{Benvo}} 
-#' @details benvo is a helper constructor function which creates nicely formatted Benvo objects. 
+#' @seealso \code{\link[rbenvo]{Benvo}}
+#' @details benvo is a helper constructor function which creates nicely formatted Benvo objects.
 #' In particular, note that the \code{benvo} function will explicitly alter the data you provide, creating a new
-#' numeric joining ID to enable easy aggregation and use with other methods. This alteration will not occur 
+#' numeric joining ID to enable easy aggregation and use with other methods. This alteration will not occur
 #' if calling the raw constructor function \code{\link[rbenvo]{Benvo}}, though it will check for it.
 #'
 benvo <- function(subject_data,
 				  bef_data,
-				  bef_names,
-				  joining_id,
-				  distance_col = rep(NA,length(bef_data)),
-				  exposed_time_col = rep(NA,length(bef_data))){
+				  by = NULL){
 
 	subject_data <- as.data.frame(subject_data)
 	## --  Checks
-	if(!all(sapply(bef_data,is.data.frame)))
-	  stop("All components of bef_data must be a data.frame")
-	check_bef_data(bef_names,bef_data)
-	stopifnot(joining_id %in% colnames(subject_data))
-	stopifnot(joining_id %in% Reduce(intersect,lapply(bef_data,colnames) ))
-
-	Q <- length(bef_names)
-	check_col(distance_col,Q)
-	check_col(exposed_time_col,Q)
-	## ------
-	if(length(joining_id)==1){
-		ID_names <- c("ID")
-		subject_data$ID <- as.numeric(factor(subject_data[,joining_id]))
-		if(joining_id !="ID")
-			subject_data <- subject_data[,!(names(subject_data) %in% joining_id)]
+	bef_names <- get_bef_names(bef_data)
+	ids <- check_by(subject_data,bef_data)
+	if(!is.null(by)){
+		if(!length(intersect(ids,by)) || !(length(by) %in% c(1,2)))
+			stop("argument by=", by, "is not a member of the common columns between all bef data and subject data")
+		ids <- by
 	}
-	else if(length(joining_id)==2){
-		ID_names <- c("ID","Measurement")
-		subject_data$ID <- as.numeric(factor(subject_data[,joining_id[1]]))
-		subject_data$Measurement <- as.numeric(factor(subject_data[,joining_id[2]]))
-		if(all(joining_id != c("ID","Measurement")))
-			subject_data <- subject_data[,!(names(subject_data) %in% joining_id)]
-	}
-	else
-		stop("joining ID can only have 1 or 2 names 
-			 for cross sectional or longitudinal data respectively")
-
-	## Processing / Standardize Distance/Time Columns
-	components <- vector(mode="character",length = Q)
-
-
-	for(i in 1:Q){
-	  col_names <- ID_names
-	  cols_to_keep <- c(joining_id)
-	  if(!is.na(distance_col[i])){
-	    col_names <- c(col_names,"Distance")
-	    cols_to_keep <- c(cols_to_keep,distance_col[i])
-	    components[i] <- c("Distance")
-	    if(!is.na(exposed_time_col[i])){
-	      col_names <- c(col_names,"Time")
-	      cols_to_keep <- c(cols_to_keep,exposed_time_col[i])
-	      components <- c("Distance-Time")
-	    }
-	  }
-	  else if(!is.na(exposed_time_col[i])){
-	    components <- c("Time")
-	    cols_to_keep <- c(cols_to_keep,exposed_time_col[i])
-	    col_names <- c(col_names,"Time")
-	  }
-	  bef_data[[i]] <- bef_data[[i]][,cols_to_keep]
-	  colnames(bef_data[[i]]) <- col_names
-	}
-
+	check_ids(ids,subject_data,bef_data)
 	## ------
 
-	bdf <- new("Benvo",subject_data = subject_data,
-					  bef_data = bef_data,
-					  longitudinal = (length(joining_id)>1),
-					  bef_names = bef_names,
-					  components = components)
+	components <- sapply(bef_data,extract_components)
+
+
+	bdf <- new("Benvo",
+			   subject_data = subject_data,
+			   bef_data = bef_data,
+			   longitudinal = (length(ids)>1),
+			   bef_names = bef_names,
+			   components = components,
+				id = ids)
 }
 
-check_bef_data <- function(bef_names,bef_data){
 
-	P <- length(bef_names)
-	Q <- length(bef_data)
-	if(P!=Q)
-		stop("There must be a BEF for each
-			 data.frame in bef_data")
-	stopifnot(is.list(bef_data))
-	stopifnot(all(sapply(bef_data,is.data.frame)))
+## Internal ------------------------------------------------------
+get_common_ids <- function(subject_data,bef_data){
+	scnames <- colnames(subject_data)
+	bcnames <- Reduce(intersect,lapply(bef_data,colnames))
+	by <- intersect(scnames,bcnames)
+	return(by)
 }
 
-check_col <- function(col,Q){
-		if(any(!is.na(col))){
-			if(length(col)!=Q){
-				stop("There must be an element in distance_col
-					 for each entry in the bef_data list.
-					 Leave NA for those bef_data
-					 without distance measures",.call=F)
-			}
+get_bef_names <- function(bef_data){
+
+	nms <- names(bef_data)
+	if(is.null(nms)){
+		message("No BEF Names assigned, assigning generic names: `BEF_1`,...")
+		nms <- paste0("BEF_",1:length(bef_data))
+	}
+	return(nms)
+}
+
+check_by <- function(subject_data,bef_data){
+
+
+	by <- get_common_ids(subject_data,bef_data)
+	if(!length(by))
+		stop("There must be at least one ID common between subject and BEF data")
+	if(length(by)>2)
+		stop("Benvos are currently limited to having at most 2 common IDs between subject and BEF data")
+	if(length(by)==2){
+	  if(length(unique(subject_data[,by[1]])) >length(unique(subject_data[,by[2]])))
+		  by <- by
+		else
+		  by <- c(by[2],by[1])
+	}
+	return(by)
+}
+
+extract_components <- function(dt){
+		nms <- colnames(dt)
+		rslt <- c("Distance","Time") %in% nms
+		if(all(rslt==FALSE))
+			stop("There must be one column labeled `Distance` or `Time` in each bef_data dataframe")
+		if(all(rslt==TRUE))
+			return(c("Distance-Time"))
+		if(rslt[1] == TRUE)
+			return("Distance")
+		if(rslt[2]==TRUE)
+			return("Time")
+}
+
+# Warns users if id columns are not integer or character, OR not consistently typed across bef_data.
+check_ids <- function(ids,sdf,bdf){
+
+	types <- sapply(ids,function(x) class(sdf[,x]))
+	types_2 <- sapply(ids,function(x) lapply(bdf,function(y) class(y[,x,drop=TRUE])))
+	check_type <- function(types,id, dftype){
+		if(!(all(types=="integer") || (all(types=="character"))) ){
+			st <- glue::glue("Your {dftype} data column {id} is of type {types}.
+							 This may lead to erroneous behavior depending on how it is coerced in joins.
+							 Change your id to integer or character for better behavior.")
+			warning(st)
 		}
 	}
+	check_type(types,ids,"subject")
+	types_2 <- Reduce(cbind,types_2)
+	if(is.matrix(types_2)){
+		t22 <- types_2[,2]
+		t21 <- types_2[,1]
+		check_type(t22,ids[2],"bef")
+		check_type(t21,ids[1],"bef")
+	}else
+		check_type(types_2,ids,"bef")
+}
+

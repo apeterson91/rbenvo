@@ -6,5 +6,5 @@ test_that("Aggrenvo works", {
 
 M_ <- aggrenvo(longitudinal_HFS,M,"HFS","Distance")
 test_that("bw_construction works",{
-  expect_equivalent(10,bwinvo(longitudinal_HFS,M_)$between[1,1])
+  expect_equivalent(11,bwinvo(longitudinal_HFS,M_)$between[1,1])
 })

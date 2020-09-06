@@ -24,10 +24,6 @@ usethis::use_data(FFR_subjects, overwrite = TRUE)
 usethis::use_data(FFR_distances, overwrite = TRUE)
 
 example_benvo <- rbenvo::benvo(subject_data = as.data.frame(FFR_subjects),
-                               bef_data = list(FFR_distances),
-                               bef_names = "FFR",
-                               joining_id = "id",
-                               distance_col = "Distance",
-                               exposed_time_col = NA)
+                               bef_data = list(FFR=FFR_distances))
 
 usethis::use_data(example_benvo, overwrite = TRUE)

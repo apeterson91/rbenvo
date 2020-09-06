@@ -26,5 +26,8 @@ from class data.frame. (3) Components must be one of c("Distance","Time","Distan
 \item{\code{bef_names}}{character vector containing the names of the BEFs}
 
 \item{\code{components}}{character vector containing the Distances and/or Time data measured for each BEF}
+
+\item{\code{id}}{character vector of length 1 or 2 that determines how subjects are joined. Note that
+for repeated measures data it is understood that id[1] is the subject id and id[2] is the measurement/visit id}
 }}
 

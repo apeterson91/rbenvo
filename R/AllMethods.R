@@ -24,7 +24,7 @@ print_benvo <- function(object){
 	cat("Columns: ", ncol(object@subject_data))
 	cat("\n")
 	if(object@longitudinal){
-		cat("Num Subjects: ", length(unique(object@subject_data[,joining_ID(object)[1]])))
+		cat("Num Subjects: ", length(unique(object@subject_data[,object@id[1]])))
 		cat("\n")
 	}
 	cat("\n")
@@ -38,6 +38,7 @@ print_benvo <- function(object){
 	cat("Features: ")
 	cat("\n")
 	prettydf <- data.frame(Name = object@bef_names,Measures = object@components)
+	rownames(prettydf) <- NULL
 	print(prettydf)
 }
 
@@ -59,11 +60,11 @@ setMethod(f = "bef_summary",
 
 		BEF <- Measure <- Distance_Time <- Measurement <- NULL
 
-	dfr <- purrr::map_dfr(1:(num_BEF(x)),function(y) {x@bef_data[[y]] %>% 
+	dfr <- purrr::map_dfr(1:(num_BEF(x)),function(y) {x@bef_data[[y]] %>%
 						  dplyr::mutate(BEF = x@bef_names[y] ) }) %>%
-		tidyr::gather(dplyr::matches("Distance|Time"),key = "Distance_Time",value="Measure") 
+		tidyr::gather(dplyr::matches("Distance|Time"),key = "Distance_Time",value="Measure")
 	if(x@longitudinal)
-		dfr <- dfr %>% dplyr::group_by(BEF,Distance_Time,Measurement)
+		dfr <- dfr %>% dplyr::group_by_at(c("BEF","Distance_Time",x@id[2]))
 	else
 		dfr <- dfr %>% dplyr::group_by(BEF,Distance_Time)
 	dfr <- dfr %>% dplyr::summarise(Lower = quantile(Measure,0.025,na.rm=T),
@@ -74,56 +75,6 @@ setMethod(f = "bef_summary",
 						)
 	print(dfr)
 	return(invisible(dfr))
-})
-
-#' Between - Within Construction Generic
-#'
-#' @export
-#' @param x benvo object
-#' @param M matrix to construct between/within measures
-#' @keywords internal
-#' 
-setGeneric("bwinvo",function(x,M) standardGeneric("bwinvo"))
-
-
-#' Between - Within Construction 
-#'
-#' @describeIn bwinvo between within decomposition of longitudinal matrix M according to benvo subject-bef data
-#' @export 
-#' 
-setMethod("bwinvo","Benvo",function(x,M){
-	
-	stopifnot(x@longitudinal)
-	smat <- Matrix::fac2sparse(x@subject_data$ID)
-	if(nrow(M)!=ncol(smat))
-		stop("rows in M are inappropriate")
-	num <- apply(smat,1,sum)
-	Xb <- apply((smat %*% M) ,2, function(x) x/num)
-	Xb <- as.matrix(Matrix::t(smat) %*% Xb)
-	Xw <- as.matrix(M - Xb)
-	return(list(between = Xb, within = Xw))
-})
-
-#' Return the joining ID of the benvo
-#'
-#' @param x benvo object 
-#' @keywords internal
-#'
-setGeneric("joining_ID",function(x) standardGeneric("joining_ID"))
-
-
-#' benvo joining ID
-#'
-#' @export
-#' @describeIn joining_ID  return appropriate benvo joining ID
-#'
-setMethod("joining_ID","Benvo",function(x){
-
-	if(x@longitudinal)
-		return(c("ID","Measurement"))
-	else
-		return(c("ID"))
-
 })
 
 #' BEF component look up
@@ -141,14 +92,45 @@ setGeneric("component_lookup",function(x,bef_name) standardGeneric("component_lo
 #'
 setMethod("component_lookup","Benvo",function(x,bef_name){
 
-	ix <- which(x@bef_names == bef_name)
-	out <- switch(x@components[ix],
-		   "Distance" = "Distance",
-		   "Time" = "Time",
-		   "Distance-Time" = c("Distance","Time"))
-	return(out)
+       ix <- which(x@bef_names == bef_name)
+       out <- switch(x@components[ix],
+                  "Distance" = "Distance",
+                  "Time" = "Time",
+                  "Distance-Time" = c("Distance","Time"))
+       return(out)
 
 })
+
+
+#' Between - Within Construction Generic
+#'
+#' @export
+#' @param x benvo object
+#' @param M matrix to construct between/within measures
+#' @keywords internal
+#'
+setGeneric("bwinvo",function(x,M) standardGeneric("bwinvo"))
+
+
+#' Between - Within Construction
+#'
+#' @describeIn bwinvo between within decomposition of longitudinal matrix M according to benvo subject-bef data
+#' @export
+#'
+setMethod("bwinvo","Benvo",function(x,M){
+
+	stopifnot(x@longitudinal)
+	id <- x@id
+	smat <- create_unique_ID_mat(x@subject_data[,id[1]],x@subject_data[,id[2]])
+	if(nrow(M)!=ncol(smat))
+		stop("rows in M are inappropriate")
+	num <- apply(smat,1,sum)
+	Xb <- apply((smat %*% M) ,2, function(x) x/num)
+	Xb <- as.matrix(Matrix::t(smat) %*% Xb)
+	Xw <- as.matrix(M - Xb)
+	return(list(between = Xb, within = Xw))
+})
+
 
 #' Number of BEF data frames
 #'
@@ -160,7 +142,7 @@ setGeneric("num_BEF",function(x) standardGeneric("num_BEF") )
 #' Number of Built Environment Features
 #'
 #' @export
-#' @describeIn num_BEF 
+#' @describeIn num_BEF
 #'
 setMethod("num_BEF","Benvo",function(x){
 	return(length(x@bef_names))})
@@ -240,7 +222,7 @@ setMethod("longitudinal_design","Benvo",function(x,formula,...){
 })
 
 #' Aggregate Matrix to Subject or Subject - Measurement Level
-#' 
+#'
 #' @param x benvo object
 #' @param M matrix to aggregate
 #' @param stap_term relevant stap term
@@ -252,32 +234,36 @@ setGeneric("aggrenvo",function(x,M,stap_term,component) standardGeneric("aggrenv
 #'
 #' @export
 #' @describeIn aggrenvo method
-#' 
-setMethod("aggrenvo","Benvo",function(x,M,stap_term,component){	
+#'
+setMethod("aggrenvo","Benvo",function(x,M,stap_term,component){
 
-	ID <- Measurement <- . <- NULL
+	. <- NULL
 	jndf <- joinvo(x,stap_term,component,NA_to_zero = F)
+	id <- x@id
+
 	if(component=="Distance-Time")
 		component_ <- c("Distance") ## Fine to use just one since zero exposure variable will equate to zero exposure in the other
 	else
 		component_ <- component
+
+
 	if(x@longitudinal){
-		jndf$BENVO_NEWID_ <- paste0(jndf$ID,"_",jndf$Measurement)
-		lvls <- unique(jndf$BENVO_NEWID_)
-		jndf$BENVO_NEWID_ <- factor(jndf$BENVO_NEWID_, levels = lvls)
-		AggMat <- Matrix::fac2sparse(jndf$BENVO_NEWID_)
-		zeromat <- jndf %>% dplyr::group_by(ID,Measurement) %>% 
-		dplyr::summarise_at(component_,function(x) 1*all(!is.na(x))) %>% 
-		dplyr::pull(component_) %>% diag(.)
+		AggMat <- create_unique_ID_mat(jndf[,id[1]],jndf[,id[2]])
+		IDMat <- Matrix::t(create_unique_ID_mat(x@subject_data[,id[1]],x@subject_data[,id[2]]))
+	}else{
+		IDMat <- Matrix::t(create_unique_ID_mat(x@subject_data[,id]))
+		AggMat <- create_unique_ID_mat(jndf[,id])
 	}
-	else{
-		AggMat <- Matrix::fac2sparse(jndf[,joining_ID(x)])
-		zeromat <- jndf %>% dplyr::group_by(ID) %>% 
-				dplyr::summarise_at(component_,function(x) 1*all(!is.na(x))) %>% 
-				dplyr::pull(component_) %>% diag(.)
-	}
+	zeromat <- jndf %>% dplyr::group_by_at(id)  %>%
+			dplyr::summarise_at(component_,function(x) 1*all(!is.na(x))) %>%
+			dplyr::pull(component_) %>%
+			diag(.) %>%
+			Matrix::Matrix()
+
+	AggMat <- IDMat %*% zeromat %*% AggMat
 	stopifnot(nrow(M) == ncol(AggMat))
-	X <- as.matrix(zeromat %*% (AggMat %*% M))
+	stopifnot(nrow(x@subject_data) == nrow(AggMat))
+	X <- as.matrix((AggMat %*% M))
 	return(X)
 })
 
@@ -285,26 +271,26 @@ setMethod("aggrenvo","Benvo",function(x,M,stap_term,component){
 #'
 #' @details Joins the subject dataframe within a benvo to the supplied BEF dataframe keeping the selected component
 #' @param x benvo object
-#' @param bef_name string of bef data to join on in bef_data
+#' @param term string of bef name to join on in bef_data
 #' @param component one of c("Distance","Time","Distance-Time") indicating which column(s) of the bef dataset should be returned
 #' @param tibble boolean value of whether or not to return a data.frame or tibble
 #' @param NA_to_zero replaces NA values with zeros - potentially useful when constructing design matrices
 #'
-setGeneric("joinvo",function(x,bef_name,component = "Distance",tibble = F,NA_to_zero = F) standardGeneric("joinvo"))
+setGeneric("joinvo",function(x,term,component = "Distance",tibble = F,NA_to_zero = F) standardGeneric("joinvo"))
 
 #'
 #' @export
 #' @importFrom stats quantile median
 #' @describeIn joinvo method
 #'
-setMethod("joinvo","Benvo", function(x,bef_name,component = "Distance",tibble = F,NA_to_zero = F){
+setMethod("joinvo","Benvo", function(x,term,component = "Distance",tibble = F,NA_to_zero = F){
 
 
-	##TODO: Make option for subject design data to be constructed from joined data
 	stopifnot(component %in% c("Distance","Time","Distance-Time"))
-	Distance <- Time <- ID <- NULL
+	Distance <- Time <- NULL
 
-	ix <- which(x@bef_names == bef_name)
+	ix <- which(x@bef_names == term)
+	id <- x@id
 	stopifnot(grepl(component,x@components[ix]))
 
 	col <- switch(component,
@@ -314,10 +300,8 @@ setMethod("joinvo","Benvo", function(x,bef_name,component = "Distance",tibble = 
 	if(length(ix)!=1)
 		stop("only one BEF name may be supplied")
 
-	jdf <- merge(x@bef_data[[ix]],x@subject_data,all.y = T, by.x = joining_ID(x), by.y= joining_ID(x))
+	jdf <- merge(x@bef_data[[ix]],x@subject_data[,id, drop=F],all.y = T, by.x = id, by.y= id)
 
-	to_keep <- c(joining_ID(x),intersect(union(col,colnames(x@subject_data)),colnames(jdf)))
-	jdf %>% dplyr::select(!!to_keep) -> jdf
 	if(NA_to_zero)
 		jdf <- jdf %>% dplyr::mutate_at(col,function(x) tidyr::replace_na(x,0))
 
@@ -327,50 +311,73 @@ setMethod("joinvo","Benvo", function(x,bef_name,component = "Distance",tibble = 
 		return(jdf)
 })
 
-#' Pointrange plot
-#' 
+#' Benvo plots 
+#'
 #' Plots the sorted distribution intervals of distances and times across subjects
 #'
 #' @export
 #' @param x benvo object
-#' @param BEF BEF specification
-#' @param component one of c("Distance","Time") indicating which column(s) of the bef dataset should be returned
+#' @param term name of BEF to plot. If NULL plots the first component listed in the Benvo.
+#' @param component one of c("Distance","Time") indicating which measure to use. Defaults to Distance if both measures are available, otherwise uses the only option.
 #' @param p The probability of distances/times that should be included in interval
 #'
-setGeneric("plot_pointrange", function(x,BEF,component, p = 0.95)  standardGeneric("plot_pointrange") )
+setMethod("plot","Benvo", function(x,term = NULL,component = NULL, p = 0.95){
 
+	Distance <- Lower <- Median <- Upper <- Measure <- NULL
 
-#'
-#' @export
-#' @describeIn plot_pointrange method
-#'
-setMethod("plot_pointrange","Benvo",function(x,BEF,component, p = 0.95){
+	if(is.null(term)){
+		ix <- 1
+		term <- x@bef_names[1]
+	}else{
+		ix <- which(x@bef_names == term )
+		if(!length(ix))
+			stop("Term is not a member of this benvo")
+	}
+	if(is.null(component)){
+		component <- x@components[ix]
+		if(component == "Distance-Time")
+			component <- "Distance"
+	}
+	else
+		stopifnot(component %in% component_lookup(x,term))
 
-	Distance <- Lower <- Median <- Upper <- ID <- Measure <-  Measurement <- NULL
-	jdf <- joinvo(x,BEF,component,tibble=T)
+	jdf <- joinvo(x,term,component,tibble=T)
+	id <- x@id
 
 	l <- .5 - (p/2)
 	u <- .5 + (p/2)
 
-	if(x@longitudinal)
-		jdf %>% dplyr::group_by(ID,Measurement) %>%
-			dplyr::summarise(Lower = quantile(Distance,l,na.rm=T),
-							 Median = median(Distance,na.rm=T),
-							 Upper = quantile(Distance,u,na.rm=T)) %>%
-		ggplot2::ggplot(ggplot2::aes(x=forcats::fct_reorder(ID,Median),y=Median))  +
-		ggplot2::geom_pointrange(ggplot2::aes(ymin=Lower,ymax=Upper)) +
-		ggplot2::ylab(component) + ggplot2::theme(strip.background=ggplot2::element_blank()) +  
-		  ggplot2::coord_flip() + ggplot2::facet_wrap(~Measurement)-> p
-	  else{
-		jdf %>% dplyr::group_by(ID) %>%
-			dplyr::summarise(Lower = quantile(Distance,0.025,na.rm=T),
-							 Median = median(Distance,na.rm=T),
-							 Upper = quantile(Distance,0.975,na.rm=T)) %>%
-		ggplot2::ggplot(ggplot2::aes(x=forcats::fct_reorder(ID,Median),y=Median))  +
-		ggplot2::geom_pointrange(ggplot2::aes(ymin=Lower,ymax=Upper)) +
-		ggplot2::ylab(component) + 
-		  ggplot2::coord_flip() -> p
-	  }
+	jdf %>% 
+		dplyr::mutate_at({id},factor) %>% 
+		dplyr::group_by_at(id) %>%
+		dplyr::summarise(Lower = quantile(Distance,l,na.rm=T),
+						 Median = median(Distance,na.rm=T),
+						 Upper = quantile(Distance,u,na.rm=T)) %>%
+	ggplot2::ggplot(ggplot2::aes(x=forcats::fct_reorder({id},Median),y=Median))  +
+	ggplot2::geom_pointrange(ggplot2::aes(ymin=Lower,ymax=Upper),alpha=0.4) +
+	ggplot2::xlab(id) + 
+	ggplot2::ylab(component) + 
+	ggplot2::theme(strip.background=ggplot2::element_blank(),
+				   axis.text.y = ggplot2::element_blank(),
+				   axis.ticks.y = ggplot2::element_blank()) +
+	  ggplot2::coord_flip()  -> p
+	if(x@longitudinal){
+		measurement <- id[2]
+		p <- p + ggplot2::facet_wrap(~{measurement})
+	}
+
 
 	return(p)
+
 })
+
+
+## Internal ----------------------------
+
+create_unique_ID_mat <- function(id_one,id_two = NULL){
+	tmp <- paste0(id_one,"_",id_two)
+	lvls <- unique(tmp)
+	new_id <- factor(tmp,levels=lvls)
+	Matrix::fac2sparse(new_id)
+}
+

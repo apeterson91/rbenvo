@@ -5,14 +5,14 @@
 \alias{joinvo,Benvo-method}
 \title{Join BEF and subject data within a benvo}
 \usage{
-joinvo(x, bef_name, component = "Distance", tibble = F, NA_to_zero = F)
+joinvo(x, term, component = "Distance", tibble = F, NA_to_zero = F)
 
-\S4method{joinvo}{Benvo}(x, bef_name, component = "Distance", tibble = F, NA_to_zero = F)
+\S4method{joinvo}{Benvo}(x, term, component = "Distance", tibble = F, NA_to_zero = F)
 }
 \arguments{
 \item{x}{benvo object}
 
-\item{bef_name}{string of bef data to join on in bef_data}
+\item{term}{string of bef name to join on in bef_data}
 
 \item{component}{one of c("Distance","Time","Distance-Time") indicating which column(s) of the bef dataset should be returned}
 

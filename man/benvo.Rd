@@ -4,37 +4,22 @@
 \alias{benvo}
 \title{Create a benvo object}
 \usage{
-benvo(
-  subject_data,
-  bef_data,
-  bef_names,
-  joining_id,
-  distance_col = rep(NA, length(bef_data)),
-  exposed_time_col = rep(NA, length(bef_data))
-)
+benvo(subject_data, bef_data, by = NULL)
 }
 \arguments{
 \item{subject_data}{data.frame containing subject level covariates.}
 
-\item{bef_data}{list of BEF data frames}
+\item{bef_data}{named list of BEF data frames}
 
-\item{bef_names}{character vector of data frames}
-
-\item{joining_id}{character vector containing strings in both subject and bef data frames used to join data}
-
-\item{distance_col}{character vector containing strings
-in bef_data frames where Distance measures are stored. NA if there is no distance measure.}
-
-\item{exposed_time_col}{character vector containing strings
-in bef_data frames where Time measures are stored. NA if there is no time measure.}
+\item{by}{optional key}
 }
 \description{
 Create a benvo object
 }
 \details{
-benvo is a helper constructor function which creates nicely formatted Benvo objects. 
+benvo is a helper constructor function which creates nicely formatted Benvo objects.
 In particular, note that the \code{benvo} function will explicitly alter the data you provide, creating a new
-numeric joining ID to enable easy aggregation and use with other methods. This alteration will not occur 
+numeric joining ID to enable easy aggregation and use with other methods. This alteration will not occur
 if calling the raw constructor function \code{\link[rbenvo]{Benvo}}, though it will check for it.
 }
 \seealso{

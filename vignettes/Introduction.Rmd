@@ -38,19 +38,16 @@ The subject dataframe should look familiar. This is a tidy dataset with an ID an
 head(FFR_subjects,5)
 ```
 
-The distance dataframe is a tidy "long" dataframe, containing multiple nearby BEF exposures per subject
+The distance dataframe is a tidy "long" dataframe, containing multiple nearby BEF exposures per subject. Note that there *must be* at least two columns in every BEF dataset added to a benvo. One for the id and one for the Distance/Time data measured. Additionally, the latter columns must be named as "Distance" or "Time",as benvo's use these titles to perform their methods.
 ```{r befdf}
 head(FFR_distances,5)
 ```
 
-In order to create a benvo we'll pass the two dataframes to the `benvo()` function, wrapping the FFR_distances data frame in a list. We'll also pass the BEF name we want, along with the joining id name and the name of the column that contains the distance measures.
+In order to create a benvo we'll pass the two dataframes to the `benvo()` function, wrapping the FFR_distances data frame in a list. 
 
 ```{r mkbenvo}
 bdf <- benvo(subject_data = FFR_subjects,
-             bef_data = list(FFR_distances),
-             bef_names = "FFR",
-             joining_id = "id",
-             distance_col = "Distance")
+             bef_data = list(FFR=FFR_distances))
 bdf
 ```
 ## Simple Descriptives
@@ -61,12 +58,12 @@ We can see from the above a simple summary of the kind of feature that we have d
 bef_summary(bdf)
 ```
 
-Finally, as one last descriptive offering, we can plot a pointrange of the distances for each subject using the 
-`plot_pointrange` function and passing the BEF label we want plotted. You'll see that there are several observations missing, since not every subject lives near a FFR.
+Finally, as one last descriptive offering, we can plot a point-range of the distances for each subject using the 
+`plot` function and passing the BEF label we want plotted. You'll see that there are several observations missing, since not every subject lives near a FFR.
 
 
 ```{r plot}
-plot_pointrange(bdf,"FFR","Distance")
+plot(bdf)
 ```
 
 
@@ -102,13 +99,13 @@ bef_summary(longitudinal_HFS)
 
 
 ```{r long_plot}
-plot_pointrange(longitudinal_HFS,"HFS","Distance")
+plot(longitudinal_HFS,term ="HFS",component = "Distance", p = 0.9)
 ```
 
 Analogous to `subject_design` there is also the `longitudinal_design` function which effectively allows for `lme4` style formulas to be used, incorporating subject or group level effects from the `subject_data` in the `benvo` and returning a `glmod` object along with the corresponding `X` and `y` design matrix and outcome vector, respectively.
 
 ```{r longitudinal_design_ex}
-str(longitudinal_design(longitudinal_HFS,BMI ~ sex + (1|ID)),max.level=1)
+str(longitudinal_design(longitudinal_HFS,BMI ~ sex + (1|id)),max.level=1)
 ```
 
 ## Further Information
