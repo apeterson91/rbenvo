@@ -9,9 +9,9 @@
 #' @importFrom methods new
 #' @seealso \code{\link[rbenvo]{Benvo}}
 #' @details benvo is a helper constructor function which creates nicely formatted Benvo objects.
-#' In particular, note that the \code{benvo} function will explicitly alter the data you provide, creating a new
-#' numeric joining ID to enable easy aggregation and use with other methods. This alteration will not occur
-#' if calling the raw constructor function \code{\link[rbenvo]{Benvo}}, though it will check for it.
+#' In particular, note that the \code{benvo} function will explicitly check the data you provide,
+#' to ensure benvo methods can be performed without error. These checks will not occur if you 
+#' call \code{\link{Benvo}} directly, so caution is warranted.
 #'
 benvo <- function(subject_data,
 				  bef_data,
@@ -22,7 +22,7 @@ benvo <- function(subject_data,
 	bef_names <- get_bef_names(bef_data)
 	ids <- check_by(subject_data,bef_data)
 	if(!is.null(by)){
-		if(!length(intersect(ids,by)) || !(length(by) %in% c(1,2)))
+		if(!length(intersect(ids,by)) == length(union(ids,by)) )
 			stop("argument by=", by, "is not a member of the common columns between all bef data and subject data")
 		ids <- by
 	}
@@ -66,7 +66,7 @@ check_by <- function(subject_data,bef_data){
 	by <- get_common_ids(subject_data,bef_data)
 	if(!length(by))
 		stop("There must be at least one ID common between subject and BEF data")
-	if(length(by)>2)
+	if(length(by)>2 || length(by)<0)
 		stop("Benvos are currently limited to having at most 2 common IDs between subject and BEF data")
 	if(length(by)==2){
 	  if(length(unique(subject_data[,by[1]])) >length(unique(subject_data[,by[2]])))
