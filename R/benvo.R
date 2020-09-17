@@ -6,6 +6,7 @@
 #'      data.frame containing subject level covariates.
 #' @param bef_data named list of BEF data frames
 #' @param by optional key
+#' @importFrom dplyr tibble
 #' @details benvo is a constructor function which creates benvo objects.
 #' In particular, note that the \code{benvo} function will explicitly check the data you provide,
 #' to ensure benvo methods can be performed without error.

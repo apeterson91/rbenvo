@@ -3,7 +3,7 @@
 \name{activate}
 \alias{activate}
 \alias{active}
-\title{Activate specific data frame}
+\title{Determine the context of subsequent manipulation}
 \usage{
 activate(x, what)
 
@@ -14,9 +14,12 @@ active(x)
 
 \item{what}{name of df to activate}
 }
+\value{
+a benvo
+}
 \description{
 A benvo is a essentially a small relational database
 with a specific one-to-many structure between the subject table and each BEF tables.
 In order to know which data frame is of interest for displaying/manipulating at any given time
-use the activate function (akin to \code{\link{tidygraph}{activate}}) to do so.
+use the activate function (akin to \code{\link[tidygraph]{activate}}) to do so.
 }

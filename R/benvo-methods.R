@@ -238,6 +238,3 @@ component_check <- function(x, term, component){
 
 }
 
-active_names <- function(x){
-	c("subject",bef_names(x))
-}
