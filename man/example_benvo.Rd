@@ -3,6 +3,7 @@
 \docType{data}
 \name{example_benvo}
 \alias{example_benvo}
+\alias{FFbenvo}
 \title{Small benvo for use in \pkg{benvo} examples and vignettes.}
 \format{
 A benvo with 1000 subjects and nearby simulated FFRs
@@ -12,7 +13,7 @@ A benvo with 1000 subjects and nearby simulated FFRs
 }
 }
 \usage{
-example_benvo
+FFbenvo
 }
 \description{
 Small benvo for use in \pkg{benvo} examples and vignettes.

@@ -18,7 +18,11 @@ Imports:
     lme4,
     Matrix,
     forcats,
-    glue
+    glue,
+    sf,
+    lubridate,
+    rlang,
+    tidygraph
 RoxygenNote: 7.1.1
 Depends:
 	R (>= 2.10)

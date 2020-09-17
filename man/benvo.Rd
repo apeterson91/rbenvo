@@ -17,11 +17,7 @@ benvo(subject_data, bef_data, by = NULL)
 Create a benvo object
 }
 \details{
-benvo is a helper constructor function which creates nicely formatted Benvo objects.
-In particular, note that the \code{benvo} function will explicitly alter the data you provide, creating a new
-numeric joining ID to enable easy aggregation and use with other methods. This alteration will not occur
-if calling the raw constructor function \code{\link[rbenvo]{Benvo}}, though it will check for it.
-}
-\seealso{
-\code{\link[rbenvo]{Benvo}}
+benvo is a constructor function which creates benvo objects.
+In particular, note that the \code{benvo} function will explicitly check the data you provide,
+to ensure benvo methods can be performed without error.
 }

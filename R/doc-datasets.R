@@ -40,7 +40,7 @@
 #' }
 #' 
 #' 
-"example_benvo"
+"FFbenvo"
 
 #' Longitudinal Dataset for use in \pkg{benvo} examples and vignettes.
 #'
@@ -85,3 +85,38 @@
 #' }
 #' 
 "longitudinal_HFS"
+
+
+#' California Public Schools Fitnessgram Data
+#'
+#' @name LA_schools
+#' 
+#' @details data downloaded from the CA department of education website, subset to include just those schools in Los Angeles.
+#'
+#' @format A dataframe with 308 rows and 8 columns
+#' \describe{
+#' \item{\code{Perc5c}}{Proportion of Obese 5th Graders}
+#' \item{\code{NoStud5}}{Number of 5th  Graders in the class}
+#' \item{\code{Charter}}{Factor variable indicating whether or not school is a charter school or not}
+#' \item{\code{cdscode}}{School identifier}
+#' \item{\code{City}}{Self Explanatory}
+#' \item{\code{County}}{Self Explanatory}
+#' \item{\code{Latitude}}{Self Explanatory}
+#' \item{\code{Longitude}}{Self Explanatory}
+#' }
+"LA_schools"
+
+#' California Public Schools Fitnessgram Data
+#'
+#' @name LA_restaurants
+#' 
+#' @details data downloaded from the openstreetmap overpass api, subset to include just those restaurants in Los Angeles.
+#'
+#' @format A dataframe with 8101 rows and 4 columns
+#' \describe{
+#' \item{\code{name}}{Restaurant Name}
+#' \item{\code{osm_id}}{openstreetmap unique id}
+#' \item{\code{Latitude}}{Self Explanatory}
+#' \item{\code{Longitude}}{Self Explanatory}
+#' }
+"LA_restaurants"

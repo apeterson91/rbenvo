@@ -20,9 +20,6 @@ visit_num <- dplyr::mutate(visit_num,exposure  = exposure)
 
 sjdf <- dplyr::left_join(sjdf,visit_num)
 
-as_tibble(gd) %>%
-  mutate(Exposure = -1*pweibull(Distance,shape=5,scale=.6,lower.tail=FALSE)*pweibull(Time,shape=1,scale=1.3,lower.tail=TRUE)) %>%
-  ggplot(aes(x=Distance,y=Time,z=Exposure)) + geom_contour()
 
 sjdf$BMI <- 33 +  sjdf$sex* -2.2 +  sjdf$exposure  + sjdf$subj_effect + rnorm(num_obs)
 

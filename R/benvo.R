@@ -6,43 +6,44 @@
 #'      data.frame containing subject level covariates.
 #' @param bef_data named list of BEF data frames
 #' @param by optional key
-#' @importFrom methods new
-#' @seealso \code{\link[rbenvo]{Benvo}}
-#' @details benvo is a helper constructor function which creates nicely formatted Benvo objects.
+#' @details benvo is a constructor function which creates benvo objects.
 #' In particular, note that the \code{benvo} function will explicitly check the data you provide,
-#' to ensure benvo methods can be performed without error. These checks will not occur if you 
-#' call \code{\link{Benvo}} directly, so caution is warranted.
+#' to ensure benvo methods can be performed without error.
 #'
 benvo <- function(subject_data,
 				  bef_data,
 				  by = NULL){
 
-	subject_data <- as.data.frame(subject_data)
-	## --  Checks
+	check_dfs(subject_data,bef_data)
 	bef_names <- get_bef_names(bef_data)
-	ids <- check_by(subject_data,bef_data)
-	if(!is.null(by)){
-		if(!length(intersect(ids,by)) == length(union(ids,by)) )
-			stop("argument by=", by, "is not a member of the common columns between all bef data and subject data")
-		ids <- by
-	}
-	check_ids(ids,subject_data,bef_data)
-	## ------
+	ids <- get_ids(subject_data,bef_data, by)
 
 	components <- sapply(bef_data,extract_components)
+	bef_sf_attr <- sapply(bef_data,function(x) inherits(x,'sf'))
+	
+	out <- list(subject_data = subject_data,
+				bef_data = bef_data)
 
 
-	bdf <- new("Benvo",
-			   subject_data = subject_data,
-			   bef_data = bef_data,
-			   longitudinal = (length(ids)>1),
-			   bef_names = bef_names,
-			   components = components,
-				id = ids)
+	structure(out,
+			  bef_sf = bef_sf_attr,
+			  subject_sf = inherits(subject_data,'sf'),
+			  longitudinal = (length(ids)>1),
+			  bef_names = bef_names,
+			  components = components,
+			  active = "subject",
+			  id = ids,
+			  class = "benvo")
 }
 
 
 ## Internal ------------------------------------------------------
+check_dfs <- function(subject_data,bef_data){
+	stopifnot(is.data.frame(subject_data))
+	if(!is.list(bef_data))
+	if(!all(sapply(bef_data,is.data.frame)))
+		stop("All entries in bef_data must be data.frames")
+}
 get_common_ids <- function(subject_data,bef_data){
 	scnames <- colnames(subject_data)
 	bcnames <- Reduce(intersect,lapply(bef_data,colnames))
@@ -60,21 +61,33 @@ get_bef_names <- function(bef_data){
 	return(nms)
 }
 
-check_by <- function(subject_data,bef_data){
+get_ids <- function(subject_data,bef_data,by){
 
 
-	by <- get_common_ids(subject_data,bef_data)
-	if(!length(by))
+	ids <- get_common_ids(subject_data,bef_data)
+	if(!length(ids))
 		stop("There must be at least one ID common between subject and BEF data")
-	if(length(by)>2 || length(by)<0)
+	if(length(ids)>2 || length(ids)<0)
 		stop("Benvos are currently limited to having at most 2 common IDs between subject and BEF data")
-	if(length(by)==2){
-	  if(length(unique(subject_data[,by[1]])) >length(unique(subject_data[,by[2]])))
-		  by <- by
+	if(length(ids)==2){
+	  if(length(unique(subject_data[,ids[1],drop=TRUE])) >length(unique(subject_data[,ids[2],drop=TRUE])))
+		  ids <- ids
 		else
-		  by <- c(by[2],by[1])
+		  ids <- c(ids[2],ids[1])
 	}
-	return(by)
+	ids <- check_by(ids,by)
+	check_ids(ids,subject_data,bef_data)
+	return(ids)
+}
+
+check_by <- function(ids,by){
+	if(!is.null(by)){
+		if(!length(intersect(ids,by)) == length(union(ids,by)) )
+			stop("argument by=", by, "is not a member of the common columns between all bef data and subject data")
+		ids <- by
+		return(by)
+	}
+	return(ids)
 }
 
 extract_components <- function(dt){
@@ -93,7 +106,7 @@ extract_components <- function(dt){
 # Warns users if id columns are not integer or character, OR not consistently typed across bef_data.
 check_ids <- function(ids,sdf,bdf){
 
-	types <- sapply(ids,function(x) class(sdf[,x]))
+	types <- sapply(ids,function(x) class(sdf[,x,drop=TRUE]))
 	types_2 <- sapply(ids,function(x) lapply(bdf,function(y) class(y[,x,drop=TRUE])))
 	check_type <- function(types,id, dftype){
 		if(!(all(types=="integer") || (all(types=="character"))) ){
