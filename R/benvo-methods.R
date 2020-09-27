@@ -62,7 +62,7 @@ subject_has_sf <- function(x){
 #' @rdname benvo-methods
 #' @export
 bef_has_sf <- function(x,term){
-	ix <- check_term(term)
+	ix <- term_check(term)
 	if(attr(x,"bef_sf")[ix])
 		return(TRUE)
 	else
