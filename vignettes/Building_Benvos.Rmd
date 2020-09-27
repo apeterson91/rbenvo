@@ -3,6 +3,7 @@ title: "Building Benvos"
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{Building Benvos}
+  %\VignetteDepends{rsstap}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
