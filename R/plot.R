@@ -90,7 +90,7 @@ plot_map <- function(x,term = NULL){
 	}else{
 		term_check(x,term)
 	}
-	if(!all(c(subject_has_sf(x),bef_has_sf(x,pre_bef(term) ) ) ) )
+	if(!all(c(subject_has_sf(x),bef_has_sf(x,term) ) ) )
 		stop("No sf data to plot")
 
 	geometry <- Class <- NULL
