@@ -4,7 +4,7 @@
 \alias{plot_map}
 \title{Spatial Plot of benvo}
 \usage{
-plot_map(x, term)
+plot_map(x, term = NULL)
 }
 \arguments{
 \item{x}{benvo object}
@@ -12,5 +12,5 @@ plot_map(x, term)
 \item{term}{BEF term}
 }
 \description{
-Spatial Plot of benvo
+Provides a plot of benvo subjects and (one) BEF's locations
 }

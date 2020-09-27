@@ -1,0 +1,148 @@
+---
+title: "Building Benvos"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Building Benvos}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r setup,results='hide',message=FALSE,warning=FALSE}
+library(rbenvo)
+```
+
+# Motivation
+
+In the [Introductory vignette](https://apeterson91.github.io/rbenvo/articles/Introduction.html), the `benvo` class was introduced using subject and built environment feature (BEF) data that had already been joined and calculated. An alternative way to construct `benvo`'s (as of v1.0.0) is to calculate the distances and times from the Subject and BEF data iteratively. This requires that the data be stored either as an `sf` object for distance calculation and/or there be date/time information. In this vignette, I'll demonstrate how to program this iterative construction beginning with an example where there is spatial data, covering temporal data subsequently.
+
+## Spatial Data
+
+
+We'll begin with a look at two datasets composed of subject and BEF data respectively that can be procured publicly via the California Department of Education and the [`osmdata` package](https://github.com/ropensci/osmdata) respectively (See [here](https://github.com/apeterson91/rbenvo/blob/master/data-raw/CA.R) for how I downloaded these data).  The former dataset contains information on 5th, 7th and 9th graders' obesity at schools through the state of California, though we'll focus on those schools and restaurants in Los Angeles for ease of exposition.
+
+```{r LA_data}
+LA_schools
+```
+The latter dataset contains businesses labeled as "Fast Food" in the Los Angeles Area, by users of [openstreetmap](https://www.openstreetmap.org/), a crowd-sourcing map tool which allows users to document different areas of their environment. 
+
+```{r}
+LA_FF
+```
+In order to prepare these data for use in a `benvo`, we'll convert them to `sf` objects using the `sf::st:as_sf()` function as follows. Note that while these data are `sfc_POINT` objects, they could be any `sf` object, provided they have a location and a measure of distance can be calculated between the subject and bef data frames.
+
+```{r convert_demo}
+LA_schools <- sf::st_as_sf(LA_schools,coords=c("Longitude","Latitude"),crs=4326)
+```
+
+```{r convert_hide,echo=F}
+FFR <- sf::st_as_sf(LA_FF,coords=c("Latitude","Longitude"),crs=4326)
+```
+
+To create a benvo, we use the same `benvo()` function as used with pre-calculated data, but we now specify the unique subject id so the object can correctly link future data tables.
+```{r}
+benvo(LA_schools,by='cdscode')
+```
+In order to construct the new table of subj-BEF distances and incorporate the bef table into the relational data structure of the `benvo`, the appropriately named `add_BEF()` function works much like it sounds. We can then `activate` the restaurant table in order to look at the distances.
+
+```{r}
+benvo(LA_schools,by='cdscode') %>% 
+  add_BEF(FFR,bef_id = 'osm_id') %>% 
+  activate(FFR) -> bdf
+bdf
+```
+
+As can be seen here, the `add_BEF()` function uses the `sf::st_distance`  function by default which returns a distance (great circle distance in this case) according to the coordinate reference system set for the `sf` objects. In this case the units are meters , but we can convert them to km and remove those pairings that are greater than 10km using the `dplyr` verbs adapted to function on whatever table is currently active in the `benvo`. Since we have repeat measurements for each school we have multiple distances for each school when we only need 1, so we'll use a combination of  [filter](https://dplyr.tidyverse.org/reference/filter.html)  and [distinct](https://dplyr.tidyverse.org/reference/distinct_all.html?q=distinct) to remove the duplicate and extraneous (>10 km) distances:
+
+```{r,dplyrverbs}
+bdf <- bdf %>% 
+  mutate(Distance = as.numeric(Distance/1E3)) %>% 
+  filter(Distance<=10) %>% 
+  distinct(cdscode,osm_id,Distance)
+bdf
+```
+
+While we could get a sense of the distribution of distances using the `plot_pointrange()` function as illustrated in the [Introductory vignette](https://apeterson91.github.io/rbenvo/articles/Introduction.html), instead, here we'll use the `plot_map()` function, via the `plot` which will produce a ggplot object of the spatial objects distinguished as BEF or subject by color on a map defined by the boundaries of the combined `sf` objects, using `ggmap` to request the underlying stamen map. 
+
+```{r}
+plot(bdf,'map') + ggplot2::theme_bw() + ggplot2::theme_void() 
+```
+
+Finally, while `benvo`'s are useful for making the construction and manipulation of built environment data easier, as shown above, they also facilitate the use of this relational data for model fitting via, for example the [`rsstap` package](http://apeterson91.github.io/rsstap), which we can use to estimate the association of restaurant proximity to schools with the probability of obesity at those schools.
+
+We'll fit a *simple* model below, with the emphasis here on simple since we're using open street map data, which may be considered less than authoritative and, additionally, we are not including relevant covariates such as parent's education and income which have been shown to affect a child's propensity to be obese. So this model is more for illustrative purposes, rather than offering anything approaching definitive. 
+
+```{r,results='hide'}
+library(rsstap)
+fit <- sstap_glmer(cbind(NoStud_OverweightObese,NoStud_NotOverweightObese) ~ Charter + Grade + sap(FFR)  + (1|cdscode),
+         benvo=bdf,
+         family=binomial())
+```
+
+
+Plotting the results below, we can see that the model estimates an increase in the odds of a child's obesity for each FFR placed within roughly one kilometer of the school. A result that, while not fully credible at the 95\% level, may not surprise us.
+```{r}
+plot(fit)
+```
+
+
+Having looked at how `benvo`'s handle spatial data, we'll now turn to temporal data.
+
+## Temporal Data
+
+Similar to how one may have spatial data available for built environment features and subjects it's also possible to have temporal data, describing the time a subject spent at a specific location. Depending on the analysis spatial and temporal structures can both be quite complex, as before we'll illustrate how temporal data can be incorporated into a benvo with cross-sectional temporal data where each subject is only associated with one time point. More complex temporal data, where there are multiple time points associated with each subject, as in the case of longitudinal data, will be incorporated in a future release.
+
+
+### Temporal Data Simulation
+
+
+We'll begin by simulating dates for the Los Angeles Schools that have fifth graders and Fast Food Restaurant data. We'll set all schools to start sometime in the fall, and have the business arbitrarily open and close sometime after 2015. 
+```{r setup dates}
+set.seed(342431)
+LA_schools_five  <-  LA_schools %>% filter(Grade==5)
+origin <- lubridate::as_date("2018-08-01")
+school_start <- origin+sample(1:120,size = nrow(LA_schools_five),replace = TRUE)
+measure_date <- lubridate::as_date("2019-05-01")
+close_date <- measure_date
+business_start_date <- origin + sample(-786:786,size = nrow(LA_FF),replace = TRUE)
+business_close_date <- business_start_date + sapply((lubridate::today()-business_start_date),function(x) sample(1:x,1))
+FFR <- LA_FF %>% 
+  mutate(open=business_start_date,close=business_close_date)
+schools <- LA_schools_five %>% mutate(open=school_start,measure=measure_date,close=close_date)
+```
+
+
+We create the benvo using the same function as before, but now including the optional arguments that specify the start,measurement, and stop date columns for each subject observation which are each vectors of `lubridate::Date` objects. These must be named similarly in any subsequent BEF table that is then added, as in the FFR example here. The `benvo()` function uses these date columns to then construct the time exposed, labeled as Time and exposure lag (time between the end of the exposure period and the current measurement date)
+```{r create_benvo}
+bdf <- benvo(schools,
+      start_date_col="open",
+      measurement_date="measure",
+      stop_date_col="close",by='cdscode') %>% 
+  add_BEF(FFR,bef_id = 'osm_id')
+```
+
+We can look at the constructed times, by activating the FFR table. 
+```{r}
+bdf %>% activate(FFR) %>% 
+  select(-open,-close) ## for better display
+```
+Similar to how the distances were calculated in specific units from the `sf::st_distance()` function, the ``lubridate`` function calculates differences in times according to the granularity of the data. Here since we have information available in days, we calculate differences in units of days. These can be altered according to user preference, as before using the dplyr verb functions and converting times according to the functions in the [lubridate package](https://lubridate.tidyverse.org/reference/lubridate-package.html).
+
+
+To finish off this section we'll highlight a timeline plot that is currently available for visualizing the temporal exposure for subjects. The plot below shows when the different schools opened and closed. Since we're showing all schools were closed and measured at the same time, we have a uniform line at the right side. This is just a feature of how we constructed the data, but it could be different. As the starting times show variability on the left hand side of the plot, it is not hard to imagine a setting in which there'd be similar variability for closing and measure times.
+
+
+```{r timeline}
+plot(bdf,'time')
+```
+
+
+## Summary
+
+This vignette demonstrated how to construct `benvo`s iteratively using raw location and temporal data of subject and BEFs as well as how to manipulate and display the constructed data. We also showed a quick example highlighting how these objects are used in other packages, like `rsstap`, to understand how BEF's may impact human health in a sample analysis using data that can be accessed publicly from the internet. It is my hope that this package makes working with the very particular relational structure of built environment data, easier and more accessible for those interested in studying it.

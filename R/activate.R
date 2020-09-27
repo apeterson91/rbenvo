@@ -37,17 +37,31 @@ active <- function(x)
 get_active <- function(x){
 	if(active(x)=="subject")
 		return(x$subject_data)
-	else
+	else if(bef_is_active(x))
 		return(x$bef_data[[active(x)]])
+	else
+		return(x$sub_bef_data[[active(x)]])
 }
 
 # Internal -------------------------
 
 check_activate <- function(x,value){
 	if(!(value %in% active_names(x)))
-		stop(paste0(value," is not a table in this benvo. For a list of possible tables use `bef_names()` "))
+		stop(value," is not a table in this benvo. For a list of possible tables use `bef_names()` ")
 }
 
 active_names <- function(x){
-	c("subject",bef_names(x))
+	c("subject",bef_names(x),paste0("bef_",bef_names(x)))
+}
+
+pre_bef <- function(x){
+	paste0("bef_",x)
+}
+
+no_pre_bef <- function(x){
+	stringr::str_replace(x,"_bef","")
+}
+
+bef_is_active <- function(x){
+	stringr::str_detect(active(x),"^bef_")
 }

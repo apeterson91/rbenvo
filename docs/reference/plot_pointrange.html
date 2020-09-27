@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Pointrange plot — plot_pointrange • rbenvo</title>
+<title>Plot Pointrange — plot_pointrange • rbenvo</title>
 
 
 <!-- jquery -->
@@ -39,8 +39,8 @@
 
 
 
-<meta property="og:title" content="Pointrange plot — plot_pointrange" />
-<meta property="og:description" content="Plots the sorted distribution intervals of distances and times across subjects" />
+<meta property="og:title" content="Plot Pointrange — plot_pointrange" />
+<meta property="og:description" content="Plot Pointrange" />
 
 
 
@@ -72,7 +72,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">rbenvo</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.0</span>
       </span>
     </div>
 
@@ -95,6 +95,9 @@
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
+      <a href="../articles/Building_Benvos.html">Building Benvos</a>
+    </li>
+    <li>
       <a href="../articles/Introduction.html">Getting Started with Benvos</a>
     </li>
   </ul>
@@ -115,19 +118,16 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Pointrange plot</h1>
+    <h1>Plot Pointrange</h1>
     
     <div class="hidden name"><code>plot_pointrange.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Plots the sorted distribution intervals of distances and times across subjects</p>
+    <p>Plot Pointrange</p>
     </div>
 
-    <pre class="usage"><span class='fu'>plot_pointrange</span>(<span class='no'>x</span>, <span class='no'>BEF</span>, <span class='no'>component</span>, <span class='kw'>p</span> <span class='kw'>=</span> <span class='fl'>0.95</span>)
-
-<span class='co'># S4 method for Benvo</span>
-<span class='fu'>plot_pointrange</span>(<span class='no'>x</span>, <span class='no'>BEF</span>, <span class='no'>component</span>, <span class='kw'>p</span> <span class='kw'>=</span> <span class='fl'>0.95</span>)</pre>
+    <pre class="usage"><span class='fu'>plot_pointrange</span>(<span class='no'>x</span>, <span class='kw'>term</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>component</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>p</span> <span class='kw'>=</span> <span class='fl'>0.95</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -137,12 +137,12 @@
       <td><p>benvo object</p></td>
     </tr>
     <tr>
-      <th>BEF</th>
-      <td><p>BEF specification</p></td>
+      <th>term</th>
+      <td><p>name of BEF to plot. If NULL plots the first component listed in the Benvo.</p></td>
     </tr>
     <tr>
       <th>component</th>
-      <td><p>one of c("Distance","Time") indicating which column(s) of the bef dataset should be returned</p></td>
+      <td><p>one of c("Distance","Time") indicating which measure to use. Defaults to Distance if both measures are available, otherwise uses the only option.</p></td>
     </tr>
     <tr>
       <th>p</th>
@@ -150,12 +150,6 @@
     </tr>
     </table>
 
-    <h2 class="hasAnchor" id="methods-by-class-"><a class="anchor" href="#methods-by-class-"></a>Methods (by class)</h2>
-
-    
-<ul>
-<li><p><code>Benvo</code>: method</p></li>
-</ul>
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

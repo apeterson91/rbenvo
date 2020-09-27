@@ -72,7 +72,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">rbenvo</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.0</span>
       </span>
     </div>
 
@@ -94,6 +94,9 @@
     <span class="caret"></span>
   </a>
   <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="../articles/Building_Benvos.html">Building Benvos</a>
+    </li>
     <li>
       <a href="../articles/Introduction.html">Getting Started with Benvos</a>
     </li>
@@ -124,14 +127,7 @@
     <p>Create a benvo object</p>
     </div>
 
-    <pre class="usage"><span class='fu'>benvo</span>(
-  <span class='no'>subject_data</span>,
-  <span class='no'>bef_data</span>,
-  <span class='no'>bef_names</span>,
-  <span class='no'>joining_id</span>,
-  <span class='kw'>distance_col</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span>(<span class='fl'>NA</span>, <span class='fu'><a href='https://rdrr.io/r/base/length.html'>length</a></span>(<span class='no'>bef_data</span>)),
-  <span class='kw'>exposed_time_col</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/rep.html'>rep</a></span>(<span class='fl'>NA</span>, <span class='fu'><a href='https://rdrr.io/r/base/length.html'>length</a></span>(<span class='no'>bef_data</span>))
-)</pre>
+    <pre class="usage"><span class='fu'>benvo</span>(<span class='no'>subject_data</span>, <span class='kw'>sub_bef_data</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>by</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='no'>...</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -141,38 +137,28 @@
       <td><p>data.frame containing subject level covariates.</p></td>
     </tr>
     <tr>
-      <th>bef_data</th>
-      <td><p>list of BEF data frames</p></td>
+      <th>sub_bef_data</th>
+      <td><p>named list of data frames that contain subject-bef relevant data.
+NULL by default which returns a "base benvo" Which can be built upon/added to.</p></td>
     </tr>
     <tr>
-      <th>bef_names</th>
-      <td><p>character vector of data frames</p></td>
+      <th>by</th>
+      <td><p>optional key to link subject - sub_bef data. Will use the intersection of column names if not specified directly.</p></td>
     </tr>
     <tr>
-      <th>joining_id</th>
-      <td><p>character vector containing strings in both subject and bef data frames used to join data</p></td>
-    </tr>
-    <tr>
-      <th>distance_col</th>
-      <td><p>character vector containing strings
-in bef_data frames where Distance measures are stored. NA if there is no distance measure.</p></td>
-    </tr>
-    <tr>
-      <th>exposed_time_col</th>
-      <td><p>character vector containing strings
-in bef_data frames where Time measures are stored. NA if there is no time measure.</p></td>
+      <th>...</th>
+      <td><p>optional arguments for specifying date-time columns see <code><a href='set_datetime_cols.html'>set_datetime_cols</a></code></p></td>
     </tr>
     </table>
 
+    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
+
+    <p>benvo object</p>
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p>benvo is a helper constructor function which creates nicely formatted Benvo objects. 
-In particular, note that the <code>benvo</code> function will explicitly alter the data you provide, creating a new
-numeric joining ID to enable easy aggregation and use with other methods. This alteration will not occur 
-if calling the raw constructor function <code><a href='Benvo-class.html'>Benvo</a></code>, though it will check for it.</p>
-    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
-
-    <div class='dont-index'><p><code><a href='Benvo-class.html'>Benvo</a></code></p></div>
+    <p>benvo is a constructor function which creates benvo objects.
+In particular, note that the <code>benvo</code> function will explicitly check the data you provide,
+to ensure benvo methods can be performed without error.</p>
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

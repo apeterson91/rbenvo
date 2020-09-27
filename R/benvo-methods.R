@@ -2,7 +2,9 @@
 #'
 #'
 #' @name benvo-methods
+#' @aliases head tail
 #'
+#' @importFrom utils head tail
 #' @param x a benvo object
 #'
 #'
@@ -49,132 +51,51 @@ component_lookup.benvo <- function(x,term){
 }
 
 #' @rdname benvo-methods
+#' @export
+subject_has_sf <- function(x){
+	if(attr(x,"subject_sf"))
+		return(TRUE)
+	else
+		return(FALSE)
+}
+
+#' @rdname benvo-methods
+#' @export
+bef_has_sf <- function(x,term){
+	ix <- check_term(term)
+	if(attr(x,"bef_sf")[ix])
+		return(TRUE)
+	else
+		return(FALSE)
+}
+
+#' @rdname benvo-methods
 num_BEF <- function(x) UseMethod("num_BEF")
+
+#' @rdname benvo-methods
+#' @export
+#' @param ... optional arguments 
+head.benvo <- function(x,...){
+	if(active(x) == 'subject')
+		return(head(x$subject_data,...))
+	else
+		return(head(x$sub_bef_data[[active(x)]],...))
+}
+
+#' @rdname benvo-methods
+#' @export
+tail.benvo <- function(x,...){
+	if(active(x) == 'subject')
+		return(tail(x$subject_data,...))
+	else
+		return(tail(x$sub_bef_data[[active(x)]],...))
+}
 
 #' @export
 #' @describeIn num_BEF number of BEF data frames
 num_BEF.benvo <- function(x){
-	return(length(x$bef_data))
+	return(length(x$sub_bef_data))
 }
-
-#' Subject Design Matrix
-#'
-#' @param formula similar to \code{\link[stats]{lm}}.
-#' @param x benvo object
-#' @param ... other arguments passed to the model frame
-#' @keywords internal
-#'
-subject_design <- function(x,formula,...) UseMethod("subject_design")
-
-
-#' Extract Subject Design Matrix
-#'
-#' @export
-#' @describeIn subject_design  method
-#' @importFrom stats is.empty.model model.response model.matrix
-#'
-subject_design.benvo <- function(x,formula){
-
-	mf <- match.call(expand.dots=FALSE)
-	mf[[1L]] <- as.name("model.frame")
-	mf$formula <- formula
-	mf$data = x$subject_data
-	mf$drop.unused.levels <- T
-	mf <- eval(mf,parent.frame()) ## evaluate in this environment with current Benvo object
-	mt <- attr(mf,"terms")
-	if(is.empty.model(mt))
-	  stop("No intercept or predictors specified.",.call=F)
-
-	y <- model.response(mf,"numeric")
-	X <-  model.matrix(mt,mf)
-	out <- list(y=y,X=X,model_frame=mf)
-	return(out)
-
-}
-
-#' Longitudinal design dataframe
-#'
-#' For use with \code{\link[lme4]{glmer}} type formulas/models
-#' @param formula similar to \code{\link[lme4]{glmer}}.
-#' @param x benvo object
-#' @param ... other arguments passed to the model frame
-#'
-longitudinal_design <- function(x,formula,...) UseMethod("longitudinal_design")
-
-
-#'
-#' @export
-#' @describeIn longitudinal_design  method
-#' @importFrom lme4 glmerControl
-#'
-longitudinal_design <- function(x,formula,...){
-
-  design <- function(formula){
-	  mf <- match.call(expand.dots = TRUE)
-	  mf[[1]] <- quote(lme4::glFormula)
-	  mf$control <- glmerControl(check.nlev.gtreq.5 = "ignore",
-	                             check.nlev.gtr.1 = "stop",
-	                             check.nobs.vs.rankZ = "ignore",
-	                             check.nobs.vs.nlev = "ignore",
-	                             check.nobs.vs.nRE = "ignore" )
-
-	  mf$data = x$subject_data
-	  mf$formula <- formula
-	  mf <- eval(mf,parent.frame())
-	  y <- mf$fr[,as.character(mf$formula[2L])]
-	  X <-  mf$X
-	  out <- list(y=y,X=X,glmod=mf)
-	}
-
-	return(design(formula))
-
-}
-
-
-#' Join BEF and subject data within a benvo
-#'
-#' @export
-#' @details Joins the subject dataframe within a benvo to the supplied BEF dataframe keeping the selected component
-#' @param x benvo object
-#' @param term string of bef name to join on in bef_data
-#' @param component one of c("Distance","Time","Distance-Time") indicating which column(s) of the bef dataset should be returned
-#' @param tibble boolean value of whether or not to return a data.frame or tibble
-#' @param NA_to_zero replaces NA values with zeros - potentially useful when constructing design matrices
-#'
-joinvo <- function(x,term,component = "Distance",tibble = F,NA_to_zero = F) UseMethod("joinvo")
-
-#'
-#' @export
-#' @importFrom stats quantile median
-#' @describeIn joinvo method
-#'
-joinvo.benvo <- function(x,term,component = "Distance",tibble = F,NA_to_zero = F){
-
-
-	stopifnot(component %in% c("Distance","Time","Distance-Time"))
-	Distance <- Time <- NULL
-
-	ix <- term_check(x,term)
-	id <- get_id(x)
-	component_check(x,term,component)
-
-
-	jdf <- dplyr::right_join(x$bef_data[[ix]],x$subject_data[,id, drop=F], by=id)
-
-	if(NA_to_zero){
-		col <- switch(component,
-			   "Distance" = "Distance",
-			   "Time" = "Time",
-			   "Distance-Time" = c("Distance","Time"))
-		jdf <- jdf %>% dplyr::mutate_at(col,function(x) tidyr::replace_na(x,0))
-	}
-
-	if(tibble)
-		return(tibble::as_tibble(jdf))
-	else
-		return(jdf)
-}
-
 
 #' Is a longitudinal benvo
 #'
@@ -189,6 +110,27 @@ is.longitudinal <- function(object) UseMethod("is.longitudinal")
 #'
 is.longitudinal.benvo <- function(object) return(attr(object,"longitudinal"))
 
+
+#' @export
+#' @rdname benvo-methods
+has_subject_dt <- function(x) UseMethod("has_subject_dt")
+
+#' @export
+#' @describeIn  has_subject_dt
+has_subject_dt.benvo <- function(x) return(attr(x,"subject_dt"))
+
+#' @export
+#' @rdname benvo-methods
+has_bef_dt <- function(x,term) UseMethod("has_bef_dt")
+
+#' @export
+#' @describeIn has_bef_dt does bef has datetime info
+has_bef_dt <- function(x,term){
+
+	ix <- term_check(x,term)
+	return(attr(x,"bef_dt")[ix])
+}
+
 #' @rdname benvo-methods
 #' @export
 is.benvo <- function(x) inherits(x,"benvo")
@@ -197,7 +139,12 @@ is.benvo <- function(x) inherits(x,"benvo")
 
 ## Internal ----------------------------
 
+get_date_cols <- function(x) return(sapply(c("measurement_date","start_date_col","stop_date_col"),function(y) attr(x,y)))
+
+
 get_id <- function(x)  return(attr(x,"id"))
+
+bef_id_lookup <- function(x,term) return(attr(x,"bef_id")[term])
 
 create_unique_ID_mat <- function(id_one,id_two = NULL){
 	tmp <- paste0(id_one,"_",id_two)
@@ -220,8 +167,8 @@ term_check <- function(x,term){
 	return(ix)
 }
 
-sf_check <-function(x,term){
-	stopifnot(attr(x,"bef_sf")[term])
+sf_check <-function(x){
+	inherits(x,'sf')
 }
 
 component_check <- function(x, term, component){
@@ -237,4 +184,5 @@ component_check <- function(x, term, component){
 
 
 }
+
 

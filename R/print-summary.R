@@ -41,17 +41,19 @@ summary.benvo <- function(object,...){
 		}
 		cat("\n")
 
-		cat("BEF Data:")
-		cat("\n")
-		cat("---------------------------:")
-		cat("\n")
-		cat("Number of Features: ", num_BEF(object))
-		cat("\n")
-		cat("Features: ")
-		cat("\n")
-		prettydf <- data.frame(Name = bef_names(object),
-							   Measures = attr(object,'components'))
-		rownames(prettydf) <- NULL
-		print(prettydf)
-		return(invisible(prettydf))
+		if(num_BEF(object)>0){
+			cat("BEF Data:")
+			cat("\n")
+			cat("---------------------------:")
+			cat("\n")
+			cat("Number of Features: ", num_BEF(object))
+			cat("\n")
+			cat("Features: ")
+			cat("\n")
+			prettydf <- data.frame(Name = bef_names(object),
+								   Measures = attr(object,'components'))
+			rownames(prettydf) <- NULL
+			print(prettydf)
+			return(invisible(prettydf))
+		}
 }

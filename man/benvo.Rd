@@ -4,14 +4,20 @@
 \alias{benvo}
 \title{Create a benvo object}
 \usage{
-benvo(subject_data, bef_data, by = NULL)
+benvo(subject_data, sub_bef_data = NULL, by = NULL, ...)
 }
 \arguments{
 \item{subject_data}{data.frame containing subject level covariates.}
 
-\item{bef_data}{named list of BEF data frames}
+\item{sub_bef_data}{named list of data frames that contain subject-bef relevant data.
+NULL by default which returns a "base benvo" Which can be built upon/added to.}
 
-\item{by}{optional key}
+\item{by}{optional key to link subject - sub_bef data. Will use the intersection of column names if not specified directly.}
+
+\item{...}{optional arguments for specifying date-time columns see \code{\link{set_datetime_cols}}}
+}
+\value{
+benvo object
 }
 \description{
 Create a benvo object

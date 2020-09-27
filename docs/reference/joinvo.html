@@ -72,7 +72,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">rbenvo</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.0</span>
       </span>
     </div>
 
@@ -94,6 +94,9 @@
     <span class="caret"></span>
   </a>
   <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="../articles/Building_Benvos.html">Building Benvos</a>
+    </li>
     <li>
       <a href="../articles/Introduction.html">Getting Started with Benvos</a>
     </li>
@@ -124,10 +127,10 @@
     <p>Join BEF and subject data within a benvo</p>
     </div>
 
-    <pre class="usage"><span class='fu'>joinvo</span>(<span class='no'>x</span>, <span class='no'>bef_name</span>, <span class='kw'>component</span> <span class='kw'>=</span> <span class='st'>"Distance"</span>, <span class='kw'>tibble</span> <span class='kw'>=</span> <span class='no'>F</span>, <span class='kw'>NA_to_zero</span> <span class='kw'>=</span> <span class='no'>F</span>)
+    <pre class="usage"><span class='fu'>joinvo</span>(<span class='no'>x</span>, <span class='no'>term</span>, <span class='kw'>component</span> <span class='kw'>=</span> <span class='st'>"Distance"</span>, <span class='kw'>NA_to_zero</span> <span class='kw'>=</span> <span class='no'>F</span>)
 
-<span class='co'># S4 method for Benvo</span>
-<span class='fu'>joinvo</span>(<span class='no'>x</span>, <span class='no'>bef_name</span>, <span class='kw'>component</span> <span class='kw'>=</span> <span class='st'>"Distance"</span>, <span class='kw'>tibble</span> <span class='kw'>=</span> <span class='no'>F</span>, <span class='kw'>NA_to_zero</span> <span class='kw'>=</span> <span class='no'>F</span>)</pre>
+<span class='co'># S3 method for benvo</span>
+<span class='fu'>joinvo</span>(<span class='no'>x</span>, <span class='no'>term</span>, <span class='kw'>component</span> <span class='kw'>=</span> <span class='st'>"Distance"</span>, <span class='kw'>NA_to_zero</span> <span class='kw'>=</span> <span class='no'>F</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -137,16 +140,12 @@
       <td><p>benvo object</p></td>
     </tr>
     <tr>
-      <th>bef_name</th>
-      <td><p>string of bef data to join on in bef_data</p></td>
+      <th>term</th>
+      <td><p>string of bef name to join on in sub_bef_data</p></td>
     </tr>
     <tr>
       <th>component</th>
       <td><p>one of c("Distance","Time","Distance-Time") indicating which column(s) of the bef dataset should be returned</p></td>
-    </tr>
-    <tr>
-      <th>tibble</th>
-      <td><p>boolean value of whether or not to return a data.frame or tibble</p></td>
     </tr>
     <tr>
       <th>NA_to_zero</th>
@@ -161,7 +160,7 @@
 
     
 <ul>
-<li><p><code>Benvo</code>: method</p></li>
+<li><p><code>benvo</code>: method</p></li>
 </ul>
 
   </div>

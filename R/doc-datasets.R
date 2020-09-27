@@ -106,11 +106,12 @@
 #' }
 "LA_schools"
 
-#' California Public Schools Fitnessgram Data
+
+#' Los Angeles Fast Food Restaurants
 #'
 #' @name LA_restaurants
 #' 
-#' @details data downloaded from the openstreetmap overpass api, subset to include just those restaurants in Los Angeles.
+#' @details data downloaded from the openstreetmap overpass api classified as "amenity:fast_food".
 #'
 #' @format A dataframe with 8101 rows and 4 columns
 #' \describe{
@@ -119,4 +120,4 @@
 #' \item{\code{Latitude}}{Self Explanatory}
 #' \item{\code{Longitude}}{Self Explanatory}
 #' }
-"LA_restaurants"
+"LA_FF"

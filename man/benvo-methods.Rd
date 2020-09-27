@@ -2,10 +2,18 @@
 % Please edit documentation in R/benvo-methods.R
 \name{benvo-methods}
 \alias{benvo-methods}
+\alias{head}
+\alias{tail}
 \alias{bef_names}
 \alias{components}
 \alias{component_lookup}
+\alias{subject_has_sf}
+\alias{bef_has_sf}
 \alias{num_BEF}
+\alias{head.benvo}
+\alias{tail.benvo}
+\alias{has_subject_dt}
+\alias{has_bef_dt}
 \alias{is.benvo}
 \title{Benvo Methods}
 \usage{
@@ -15,7 +23,19 @@ components(x)
 
 component_lookup(x, term)
 
+subject_has_sf(x)
+
+bef_has_sf(x, term)
+
 num_BEF(x)
+
+\method{head}{benvo}(x, ...)
+
+\method{tail}{benvo}(x, ...)
+
+has_subject_dt(x)
+
+has_bef_dt(x, term)
 
 is.benvo(x)
 }
@@ -23,6 +43,8 @@ is.benvo(x)
 \item{x}{a benvo object}
 
 \item{term}{bef_name string}
+
+\item{...}{optional arguments}
 }
 \description{
 Benvo Methods

@@ -6,8 +6,6 @@
 #' @name rbenvo-package
 #' @aliases rbenvo 
 #'
-#' @import methods
-#' @import stats
 #' 
 #' 
 NULL

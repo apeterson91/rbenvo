@@ -24,6 +24,6 @@ usethis::use_data(FFR_subjects, overwrite = TRUE)
 usethis::use_data(FFR_distances, overwrite = TRUE)
 
 FFbenvo <- rbenvo::benvo(subject_data = FFR_subjects,
-                         bef_data = list(FFR=FFR_distances))
+                         sub_bef_data = list(FFR=FFR_distances))
 
 usethis::use_data(FFbenvo, overwrite = TRUE)

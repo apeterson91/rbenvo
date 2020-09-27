@@ -3,7 +3,8 @@
 \docType{data}
 \name{LA_restaurants}
 \alias{LA_restaurants}
-\title{California Public Schools Fitnessgram Data}
+\alias{LA_FF}
+\title{Los Angeles Fast Food Restaurants}
 \format{
 A dataframe with 8101 rows and 4 columns
 \describe{
@@ -14,12 +15,12 @@ A dataframe with 8101 rows and 4 columns
 }
 }
 \usage{
-LA_restaurants
+LA_FF
 }
 \description{
-California Public Schools Fitnessgram Data
+Los Angeles Fast Food Restaurants
 }
 \details{
-data downloaded from the openstreetmap overpass api, subset to include just those restaurants in Los Angeles.
+data downloaded from the openstreetmap overpass api classified as "amenity:fast_food".
 }
 \keyword{datasets}

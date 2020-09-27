@@ -32,7 +32,7 @@ HFS_distances_times <-purrr::map_dfr(1:length(ldists),function(x) {dplyr::tibble
   dplyr::select(id,measurement,Distance,Time)
 
 longitudinal_HFS <- benvo(subject_data = sjdf,
-                          bef_data = list(HFS=HFS_distances_times))
+                          sub_bef_data = list(HFS=HFS_distances_times))
 
 usethis::use_data(HFS_subjects, overwrite = TRUE)
 usethis::use_data(HFS_distances_times, overwrite = TRUE)

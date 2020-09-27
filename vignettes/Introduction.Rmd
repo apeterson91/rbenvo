@@ -17,11 +17,10 @@ knitr::opts_chunk$set(
 
 # Introduction
 
-This vignette serves to introduce the philosophy and structure of the `rbenvo` package, which impliments `Benvo` classes: Built Environment Objects. These classes make working with built environment data easier by offering a common interface to do so. We'll illustrate some of the very basics of how to use benvo's in this vignette as well
-as give some references as to how it might be used in other packages or settings.
+This vignette serves to introduce the philosophy and structure of the `rbenvo` package, which implements the `benvo` class where `benvo` standards for Built Environment Object. This class makes working with built environment data easier by offering a convenient interface and methods for working with this type of [relational data](https://r4ds.had.co.nz/relational-data.html). We'll illustrate some of the very basics of how to use benvo's in this vignette as well as give some references as to how it might be used in other packages or settings.
 
-We'll begin by loading the library and the two example datasets involving subjects living near Fast Food Restaurants (FFR). One of the two datasets will be for the subject level information, `FFR_subjects`, the other will 
-contain some measure of exposure (space/time) that describe how long and how close subjects are located near the nearby Built Environment Features (BEFs).
+We'll begin by loading the library and the two example data sets involving subjects living near Fast Food Restaurants (FFR). One of the two data sets will be for the subject level information, `FFR_subjects`, the other 
+contains some measure of exposure (Distance/Time) that describe how long and/or how close subjects are located near the Built Environment Features (BEFs).
 
 ```{r setup,message=F,results=F}
 library(rbenvo)
@@ -47,18 +46,31 @@ In order to create a benvo we'll pass the two dataframes to the `benvo()` functi
 
 ```{r mkbenvo}
 bdf <- benvo(subject_data = FFR_subjects,
-             bef_data = list(FFR=FFR_distances))
+             sub_bef_data = list(FFR=FFR_distances),by='id')
+summary(bdf)
+```
+
+And that's it! That's all it takes to create a benvo, which is very particular kind of wrapper function for handling this specific kind of relational data in which there is a [one-to-many](https://en.wikipedia.org/wiki/One-to-many_(data_model)) relationship between the subject data frame and each BEF data frame.
+
+
+## Benvo Methods
+
+While the summary method above gives us a look at the overall `benvo` object, if we simply print the `benvo`, we'll get a view of whatever data frame is *active*.
+```{r summary}
 bdf
 ```
-## Simple Descriptives
 
-We can see from the above a simple summary of the kind of feature that we have data on. If we call the `bef_summary` function we'll get a more detailed understanding of the bef data available.
+This notion of an *active* dataframe is inspired by (or borrowed from, depending on your perspective), the set-up of the [tidygraph](https://github.com/thomasp85/tidygraph/) package which also has a particular kind of relational data structure.
 
-```{r summary}
-bef_summary(bdf)
+Essentially, the *active* dataframe is that dataframe which is currently available for viewing and editing via the popular [dplyr](https://dplyr.tidyverse.org/) verbs.
+
+
+```{r verb_demo}
+bdf %>% activate(FFR) %>% filter(id<=5)
 ```
 
-Finally, as one last descriptive offering, we can plot a point-range of the distances for each subject using the 
+
+There are also a number of helpful plotting functions specific to built environment data built in, as one last descriptive offering, we can plot a point-range of the distances for each subject using the 
 `plot` function and passing the BEF label we want plotted. You'll see that there are several observations missing, since not every subject lives near a FFR.
 
 
@@ -70,10 +82,10 @@ plot(bdf)
 # Other packages
 
 While the above descriptive statistics are nice, the real power of using `benvos` is that they offer 
-functions like `joinvo` to easily join the subject and bef data frames, which can be useful in setting up the data for models in other packages. Below we'll use the `joinvo` function, passing the benvo, bef character label, and `TRUE` to the tibble argument, denoting that we want a tibble object returned from the function.
+functions like `joinvo` to easily join the subject and bef data frames, which can be useful in setting up the data for models in other packages. Below we'll use the `joinvo` function, passing the benvo and bef character label for which table we want joined.
 
 ```{r}
-joinvo(bdf,"FFR",tibble=T)
+joinvo(bdf,"FFR")
 ```
 
 Similarly, it is often the case - in my work at least - that some sort of model involving both the built environment data and the subject level data is needed. This means that information is incorporated at the subject level. This could manifest in, for example, the construction of 
@@ -94,12 +106,16 @@ longitudinal_HFS
 ```
 
 ```{r longitudinal_summary}
-bef_summary(longitudinal_HFS)
+summary(longitudinal_HFS)
 ```
 
 
 ```{r long_plot}
-plot(longitudinal_HFS,term ="HFS",component = "Distance", p = 0.9)
+plot(longitudinal_HFS,
+     plotfun = "pointrange",
+     term ="HFS",
+     component = "Distance",
+     p = 0.9)
 ```
 
 Analogous to `subject_design` there is also the `longitudinal_design` function which effectively allows for `lme4` style formulas to be used, incorporating subject or group level effects from the `subject_data` in the `benvo` and returning a `glmod` object along with the corresponding `X` and `y` design matrix and outcome vector, respectively.
@@ -108,9 +124,11 @@ Analogous to `subject_design` there is also the `longitudinal_design` function w
 str(longitudinal_design(longitudinal_HFS,BMI ~ sex + (1|id)),max.level=1)
 ```
 
+
+
+
 ## Further Information
 
 This completes this preliminary introduction to the `rbenvo` package. For current uses please see the [`rsstap`](https://apeterson91.github.io/rsstap/) or  [`rstapDP`](https://apeterson91.github.io/rstapDP/) packages. I've found that having these data structures greatly simplifies my code and allows for data to be organized more easily. If you're working with similar data, I hope you find the same!
 
 
-I'm hoping to add more functions and classes soon that will make it easy to construct benvos from latitude-longitude coordinates or `sf` BEF data structures. Stay tuned for these updates.

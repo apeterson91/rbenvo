@@ -71,7 +71,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">rbenvo</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.0</span>
       </span>
     </div>
 
@@ -93,6 +93,9 @@
     <span class="caret"></span>
   </a>
   <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="../articles/Building_Benvos.html">Building Benvos</a>
+    </li>
     <li>
       <a href="../articles/Introduction.html">Getting Started with Benvos</a>
     </li>
@@ -140,12 +143,6 @@
       <tr>
         
         <td>
-          <p><code><a href="Benvo-class.html">Benvo-class</a></code> </p>
-        </td>
-        <td><p>Benvo data objects</p></td>
-      </tr><tr>
-        
-        <td>
           <p><code><a href="FFR_distances.html">FFR_distances</a></code> </p>
         </td>
         <td><p>Small dataset for use in <span class="pkg">benvo</span> examples and vignettes.</p></td>
@@ -170,9 +167,45 @@
       </tr><tr>
         
         <td>
+          <p><code><a href="LA_restaurants.html">LA_FF</a></code> </p>
+        </td>
+        <td><p>Los Angeles Fast Food Restaurants</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="LA_schools.html">LA_schools</a></code> </p>
+        </td>
+        <td><p>California Public Schools Fitnessgram Data</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="activate.html">activate()</a></code> <code><a href="activate.html">active()</a></code> </p>
+        </td>
+        <td><p>Determine the context of subsequent manipulation</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="add_BEF.html">add_BEF()</a></code> </p>
+        </td>
+        <td><p>Add Built Environment Feature to Benvo</p></td>
+      </tr><tr>
+        
+        <td>
           <p><code><a href="aggrenvo.html">aggrenvo()</a></code> </p>
         </td>
         <td><p>Aggregate Matrix to Subject or Subject - Measurement Level</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="base_benvo.html">base_benvo()</a></code> </p>
+        </td>
+        <td><p>Base Benvo</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="benvo-methods.html">bef_names()</a></code> <code><a href="benvo-methods.html">components()</a></code> <code><a href="benvo-methods.html">component_lookup()</a></code> <code><a href="benvo-methods.html">subject_has_sf()</a></code> <code><a href="benvo-methods.html">bef_has_sf()</a></code> <code><a href="benvo-methods.html">num_BEF()</a></code> <code><a href="benvo-methods.html">head(<i>&lt;benvo&gt;</i>)</a></code> <code><a href="benvo-methods.html">tail(<i>&lt;benvo&gt;</i>)</a></code> <code><a href="benvo-methods.html">has_subject_dt()</a></code> <code><a href="benvo-methods.html">has_bef_dt()</a></code> <code><a href="benvo-methods.html">is.benvo()</a></code> </p>
+        </td>
+        <td><p>Benvo Methods</p></td>
       </tr><tr>
         
         <td>
@@ -182,7 +215,13 @@
       </tr><tr>
         
         <td>
-          <p><code><a href="example_benvo.html">example_benvo</a></code> </p>
+          <p><code><a href="drop_BEF.html">drop_BEF()</a></code> </p>
+        </td>
+        <td><p>Drop Built Environment Feature from Benvo</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="example_benvo.html">FFbenvo</a></code> </p>
         </td>
         <td><p>Small benvo for use in <span class="pkg">benvo</span> examples and vignettes.</p></td>
       </tr><tr>
@@ -200,15 +239,39 @@
       </tr><tr>
         
         <td>
-          <p><code><a href="longitudinal_design.html">longitudinal_design()</a></code> </p>
+          <p><code><a href="longitudinal_design.html">longitudinal_design()</a></code> <code><a href="longitudinal_design.html">longitudinal_design()</a></code> </p>
         </td>
         <td><p>Longitudinal design dataframe</p></td>
       </tr><tr>
         
         <td>
+          <p><code><a href="plot.benvo.html">plot(<i>&lt;benvo&gt;</i>)</a></code> </p>
+        </td>
+        <td><p>Benvo plots</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="plot_map.html">plot_map()</a></code> </p>
+        </td>
+        <td><p>Spatial Plot of benvo</p></td>
+      </tr><tr>
+        
+        <td>
           <p><code><a href="plot_pointrange.html">plot_pointrange()</a></code> </p>
         </td>
-        <td><p>Pointrange plot</p></td>
+        <td><p>Plot Pointrange</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="plot_timeline.html">plot_timeline()</a></code> </p>
+        </td>
+        <td><p>Temporal Plot of benvo</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="print.benvo.html">print(<i>&lt;benvo&gt;</i>)</a></code> </p>
+        </td>
+        <td><p>benvo Print Method</p></td>
       </tr><tr>
         
         <td>
@@ -218,9 +281,15 @@
       </tr><tr>
         
         <td>
-          <p><code><a href="show-Benvo-method.html">show(<i>&lt;Benvo&gt;</i>)</a></code> </p>
+          <p><code><a href="set_datetime_cols.html">set_datetime_cols()</a></code> </p>
         </td>
-        <td><p>benvo Print Method</p></td>
+        <td><p>Set DateTime Columns</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="summary.benvo.html">summary(<i>&lt;benvo&gt;</i>)</a></code> </p>
+        </td>
+        <td><p>benvo BEF Summary Generic</p></td>
       </tr>
     </tbody>
     </table>

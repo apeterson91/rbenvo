@@ -31,7 +31,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">rbenvo</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.0</span>
       </span>
     </div>
 
@@ -54,6 +54,9 @@
   </a>
   <ul class="dropdown-menu" role="menu">
 <li>
+      <a href="../articles/Building_Benvos.html">Building Benvos</a>
+    </li>
+    <li>
       <a href="../articles/Introduction.html">Getting Started with Benvos</a>
     </li>
   </ul>
@@ -69,7 +72,7 @@
 
       
 
-      </header><div class="row">
+      </header><script src="Introduction_files/accessible-code-block-0.0.1/empty-anchor.js"></script><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>Getting Started with Benvos</h1>
@@ -85,15 +88,15 @@
 <div id="introduction" class="section level1">
 <h1 class="hasAnchor">
 <a href="#introduction" class="anchor"></a>Introduction</h1>
-<p>This vignette serves to introduce the philosophy and structure of the <code>rbenvo</code> package, which impliments <code>Benvo</code> classes: Built Environment Objects. These classes make working with built environment data easier by offering a common interface to do so. We’ll illustrate some of the very basics of how to use benvo’s in this vignette as well as give some references as to how it might be used in other packages or settings.</p>
-<p>We’ll begin by loading the library and the two example datasets involving subjects living near Fast Food Restaurants (FFR). One of the two datasets will be for the subject level information, <code>FFR_subjects</code>, the other will contain some measure of exposure (space/time) that describe how long and how close subjects are located near the nearby Built Environment Features (BEFs).</p>
+<p>This vignette serves to introduce the philosophy and structure of the <code>rbenvo</code> package, which implements the <code>benvo</code> class where <code>benvo</code> standards for Built Environment Object. This class makes working with built environment data easier by offering a convenient interface and methods for working with this type of <a href="https://r4ds.had.co.nz/relational-data.html">relational data</a>. We’ll illustrate some of the very basics of how to use benvo’s in this vignette as well as give some references as to how it might be used in other packages or settings.</p>
+<p>We’ll begin by loading the library and the two example data sets involving subjects living near Fast Food Restaurants (FFR). One of the two data sets will be for the subject level information, <code>FFR_subjects</code>, the other contains some measure of exposure (Distance/Time) that describe how long and/or how close subjects are located near the Built Environment Features (BEFs).</p>
 <div class="sourceCode" id="cb1"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">rbenvo</span>)
 <span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">ggplot2</span>)
 <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme_get.html">theme_set</a></span>(<span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html">theme_bw</a></span>())
 <span class="fu"><a href="https://rdrr.io/r/utils/data.html">data</a></span>(<span class="st">"FFR_distances"</span>)
 <span class="fu"><a href="https://rdrr.io/r/utils/data.html">data</a></span>(<span class="st">"FFR_subjects"</span>)</pre></body></html></div>
 <p>The subject dataframe should look familiar. This is a tidy dataset with an ID and two subject-level measures: BMI and sex.</p>
-<div class="sourceCode" id="cb2"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span>(<span class="no">FFR_subjects</span>,<span class="fl">5</span>)
+<div class="sourceCode" id="cb2"><html><body><pre class="r"><span class="fu"><a href="../reference/benvo-methods.html">head</a></span>(<span class="no">FFR_subjects</span>,<span class="fl">5</span>)
 <span class="co">#&gt; # A tibble: 5 x 3</span>
 <span class="co">#&gt;      id   BMI   sex</span>
 <span class="co">#&gt;   &lt;int&gt; &lt;dbl&gt; &lt;int&gt;</span>
@@ -102,8 +105,8 @@
 <span class="co">#&gt; 3     3  46.9     0</span>
 <span class="co">#&gt; 4     4  30.2     1</span>
 <span class="co">#&gt; 5     5  43.3     0</span></pre></body></html></div>
-<p>The distance dataframe is a tidy “long” dataframe, containing multiple nearby BEF exposures per subject</p>
-<div class="sourceCode" id="cb3"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span>(<span class="no">FFR_distances</span>,<span class="fl">5</span>)
+<p>The distance dataframe is a tidy “long” dataframe, containing multiple nearby BEF exposures per subject. Note that there <em>must be</em> at least two columns in every BEF dataset added to a benvo. One for the id and one for the Distance/Time data measured. Additionally, the latter columns must be named as “Distance” or “Time”,as benvo’s use these titles to perform their methods.</p>
+<div class="sourceCode" id="cb3"><html><body><pre class="r"><span class="fu"><a href="../reference/benvo-methods.html">head</a></span>(<span class="no">FFR_distances</span>,<span class="fl">5</span>)
 <span class="co">#&gt; # A tibble: 5 x 2</span>
 <span class="co">#&gt;      id Distance</span>
 <span class="co">#&gt;   &lt;int&gt;    &lt;dbl&gt;</span>
@@ -112,13 +115,10 @@
 <span class="co">#&gt; 3     1    0.997</span>
 <span class="co">#&gt; 4     1    0.470</span>
 <span class="co">#&gt; 5     1    0.523</span></pre></body></html></div>
-<p>In order to create a benvo we’ll pass the two dataframes to the <code><a href="../reference/benvo.html">benvo()</a></code> function, wrapping the FFR_distances data frame in a list. We’ll also pass the BEF name we want, along with the joining id name and the name of the column that contains the distance measures.</p>
+<p>In order to create a benvo we’ll pass the two dataframes to the <code><a href="../reference/benvo.html">benvo()</a></code> function, wrapping the FFR_distances data frame in a list.</p>
 <div class="sourceCode" id="cb4"><html><body><pre class="r"><span class="no">bdf</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/benvo.html">benvo</a></span>(<span class="kw">subject_data</span> <span class="kw">=</span> <span class="no">FFR_subjects</span>,
-             <span class="kw">bef_data</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span>(<span class="no">FFR_distances</span>),
-             <span class="kw">bef_names</span> <span class="kw">=</span> <span class="st">"FFR"</span>,
-             <span class="kw">joining_id</span> <span class="kw">=</span> <span class="st">"id"</span>,
-             <span class="kw">distance_col</span> <span class="kw">=</span> <span class="st">"Distance"</span>)
-<span class="no">bdf</span>
+             <span class="kw">sub_bef_data</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span>(<span class="kw">FFR</span><span class="kw">=</span><span class="no">FFR_distances</span>),<span class="kw">by</span><span class="kw">=</span><span class="st">'id'</span>)
+<span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span>(<span class="no">bdf</span>)
 <span class="co">#&gt; Subject Data:</span>
 <span class="co">#&gt; ---------------------------:</span>
 <span class="co">#&gt; Observations:  1000</span>
@@ -130,18 +130,47 @@
 <span class="co">#&gt; Features: </span>
 <span class="co">#&gt;   Name Measures</span>
 <span class="co">#&gt; 1  FFR Distance</span></pre></body></html></div>
-<div id="simple-descriptives" class="section level2">
+<p>And that’s it! That’s all it takes to create a benvo, which is very particular kind of wrapper function for handling this specific kind of relational data in which there is a <a href="https://en.wikipedia.org/wiki/One-to-many_(data_model)">one-to-many</a> relationship between the subject data frame and each BEF data frame.</p>
+<div id="benvo-methods" class="section level2">
 <h2 class="hasAnchor">
-<a href="#simple-descriptives" class="anchor"></a>Simple Descriptives</h2>
-<p>We can see from the above a simple summary of the kind of feature that we have data on. If we call the <code>bef_summary</code> function we’ll get a more detailed understanding of the bef data available.</p>
-<div class="sourceCode" id="cb5"><html><body><pre class="r"><span class="fu"><a href="../reference/bef_summary.html">bef_summary</a></span>(<span class="no">bdf</span>)
-<span class="co">#&gt; # A tibble: 1 x 7</span>
-<span class="co">#&gt; # Groups:   BEF [1]</span>
-<span class="co">#&gt;   BEF   Distance_Time  Lower Median Upper Number Num_NA</span>
-<span class="co">#&gt;   &lt;chr&gt; &lt;chr&gt;          &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt;  &lt;int&gt;  &lt;int&gt;</span>
-<span class="co">#&gt; 1 FFR   Distance      0.0278  0.504 0.975   9501      0</span></pre></body></html></div>
-<p>Finally, as one last descriptive offering, we can plot a pointrange of the distances for each subject using the <code>plot_pointrange</code> function and passing the BEF label we want plotted. You’ll see that there are several observations missing, since not every subject lives near a FFR.</p>
-<div class="sourceCode" id="cb6"><html><body><pre class="r"><span class="fu"><a href="../reference/plot_pointrange.html">plot_pointrange</a></span>(<span class="no">bdf</span>,<span class="st">"FFR"</span>,<span class="st">"Distance"</span>)
+<a href="#benvo-methods" class="anchor"></a>Benvo Methods</h2>
+<p>While the summary method above gives us a look at the overall <code>benvo</code> object, if we simply print the <code>benvo</code>, we’ll get a view of whatever data frame is <em>active</em>.</p>
+<div class="sourceCode" id="cb5"><html><body><pre class="r"><span class="no">bdf</span>
+<span class="co">#&gt; Active df:  subject</span>
+<span class="co">#&gt; # A tibble: 1,000 x 3</span>
+<span class="co">#&gt;       id   BMI   sex</span>
+<span class="co">#&gt;    &lt;int&gt; &lt;dbl&gt; &lt;int&gt;</span>
+<span class="co">#&gt;  1     1  28.9     1</span>
+<span class="co">#&gt;  2     2  33.0     1</span>
+<span class="co">#&gt;  3     3  46.9     0</span>
+<span class="co">#&gt;  4     4  30.2     1</span>
+<span class="co">#&gt;  5     5  43.3     0</span>
+<span class="co">#&gt;  6     6  34.1     1</span>
+<span class="co">#&gt;  7     7  35.2     1</span>
+<span class="co">#&gt;  8     8  28.3     0</span>
+<span class="co">#&gt;  9     9  43.2     0</span>
+<span class="co">#&gt; 10    10  44.4     1</span>
+<span class="co">#&gt; # … with 990 more rows</span></pre></body></html></div>
+<p>This notion of an <em>active</em> dataframe is inspired by (or borrowed from, depending on your perspective), the set-up of the <a href="https://github.com/thomasp85/tidygraph/">tidygraph</a> package which also has a particular kind of relational data structure.</p>
+<p>Essentially, the <em>active</em> dataframe is that dataframe which is currently available for viewing and editing via the popular <a href="https://dplyr.tidyverse.org/">dplyr</a> verbs.</p>
+<div class="sourceCode" id="cb6"><html><body><pre class="r"><span class="no">bdf</span> <span class="kw">%&gt;%</span> <span class="fu"><a href="../reference/activate.html">activate</a></span>(<span class="no">FFR</span>) <span class="kw">%&gt;%</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span>(<span class="no">id</span><span class="kw">&lt;=</span><span class="fl">5</span>)
+<span class="co">#&gt; Active df:  FFR</span>
+<span class="co">#&gt; # A tibble: 37 x 2</span>
+<span class="co">#&gt;       id Distance</span>
+<span class="co">#&gt;    &lt;int&gt;    &lt;dbl&gt;</span>
+<span class="co">#&gt;  1     1    0.773</span>
+<span class="co">#&gt;  2     1    0.734</span>
+<span class="co">#&gt;  3     1    0.997</span>
+<span class="co">#&gt;  4     1    0.470</span>
+<span class="co">#&gt;  5     1    0.523</span>
+<span class="co">#&gt;  6     2    0.369</span>
+<span class="co">#&gt;  7     2    0.533</span>
+<span class="co">#&gt;  8     2    0.779</span>
+<span class="co">#&gt;  9     2    0.723</span>
+<span class="co">#&gt; 10     2    0.375</span>
+<span class="co">#&gt; # … with 27 more rows</span></pre></body></html></div>
+<p>There are also a number of helpful plotting functions specific to built environment data built in, as one last descriptive offering, we can plot a point-range of the distances for each subject using the <code>plot</code> function and passing the BEF label we want plotted. You’ll see that there are several observations missing, since not every subject lives near a FFR.</p>
+<div class="sourceCode" id="cb7"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/plot.html">plot</a></span>(<span class="no">bdf</span>)
 <span class="co">#&gt; Warning: Removed 49 rows containing missing values (geom_pointrange).</span></pre></body></html></div>
 <p><img src="Introduction_files/figure-html/plot-1.png" width="700"></p>
 </div>
@@ -149,24 +178,24 @@
 <div id="other-packages" class="section level1">
 <h1 class="hasAnchor">
 <a href="#other-packages" class="anchor"></a>Other packages</h1>
-<p>While the above descriptive statistics are nice, the real power of using <code>benvos</code> is that they offer functions like <code>joinvo</code> to easily join the subject and bef data frames, which can be useful in setting up the data for models in other packages. Below we’ll use the <code>joinvo</code> function, passing the benvo, bef character label, and <code>TRUE</code> to the tibble argument, denoting that we want a tibble object returned from the function.</p>
-<div class="sourceCode" id="cb7"><html><body><pre class="r"><span class="fu"><a href="../reference/joinvo.html">joinvo</a></span>(<span class="no">bdf</span>,<span class="st">"FFR"</span>,<span class="kw">tibble</span><span class="kw">=</span><span class="no">T</span>)
-<span class="co">#&gt; # A tibble: 9,550 x 4</span>
-<span class="co">#&gt;       ID Distance   BMI   sex</span>
-<span class="co">#&gt;    &lt;dbl&gt;    &lt;dbl&gt; &lt;dbl&gt; &lt;int&gt;</span>
-<span class="co">#&gt;  1     1    0.773  28.9     1</span>
-<span class="co">#&gt;  2     1    0.734  28.9     1</span>
-<span class="co">#&gt;  3     1    0.997  28.9     1</span>
-<span class="co">#&gt;  4     1    0.470  28.9     1</span>
-<span class="co">#&gt;  5     1    0.523  28.9     1</span>
-<span class="co">#&gt;  6     2    0.369  33.0     1</span>
-<span class="co">#&gt;  7     2    0.533  33.0     1</span>
-<span class="co">#&gt;  8     2    0.779  33.0     1</span>
-<span class="co">#&gt;  9     2    0.723  33.0     1</span>
-<span class="co">#&gt; 10     2    0.375  33.0     1</span>
+<p>While the above descriptive statistics are nice, the real power of using <code>benvos</code> is that they offer functions like <code>joinvo</code> to easily join the subject and bef data frames, which can be useful in setting up the data for models in other packages. Below we’ll use the <code>joinvo</code> function, passing the benvo and bef character label for which table we want joined.</p>
+<div class="sourceCode" id="cb8"><html><body><pre class="r"><span class="fu"><a href="../reference/joinvo.html">joinvo</a></span>(<span class="no">bdf</span>,<span class="st">"FFR"</span>)
+<span class="co">#&gt; # A tibble: 9,550 x 2</span>
+<span class="co">#&gt;       id Distance</span>
+<span class="co">#&gt;    &lt;int&gt;    &lt;dbl&gt;</span>
+<span class="co">#&gt;  1     1    0.773</span>
+<span class="co">#&gt;  2     1    0.734</span>
+<span class="co">#&gt;  3     1    0.997</span>
+<span class="co">#&gt;  4     1    0.470</span>
+<span class="co">#&gt;  5     1    0.523</span>
+<span class="co">#&gt;  6     2    0.369</span>
+<span class="co">#&gt;  7     2    0.533</span>
+<span class="co">#&gt;  8     2    0.779</span>
+<span class="co">#&gt;  9     2    0.723</span>
+<span class="co">#&gt; 10     2    0.375</span>
 <span class="co">#&gt; # … with 9,540 more rows</span></pre></body></html></div>
 <p>Similarly, it is often the case - in my work at least - that some sort of model involving both the built environment data and the subject level data is needed. This means that information is incorporated at the subject level. This could manifest in, for example, the construction of a subject design matrix. Below I’ll demonstrate how this works in a cross sectional as well as longitudinal framework, whilst highlighting how some of the previous functions take advantage of the longitudinal structure.</p>
-<div class="sourceCode" id="cb8"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/utils/str.html">str</a></span>(<span class="fu"><a href="../reference/subject_design.html">subject_design</a></span>(<span class="no">bdf</span>,<span class="no">BMI</span> ~ <span class="no">sex</span>))
+<div class="sourceCode" id="cb9"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/utils/str.html">str</a></span>(<span class="fu"><a href="../reference/subject_design.html">subject_design</a></span>(<span class="no">bdf</span>,<span class="no">BMI</span> ~ <span class="no">sex</span>))
 <span class="co">#&gt; List of 3</span>
 <span class="co">#&gt;  $ y          : Named num [1:1000] 28.9 33 46.9 30.2 43.3 ...</span>
 <span class="co">#&gt;   ..- attr(*, "names")= chr [1:1000] "1" "2" "3" "4" ...</span>
@@ -196,13 +225,29 @@
 <h3 class="hasAnchor">
 <a href="#longitudinal-example" class="anchor"></a>Longitudinal Example</h3>
 <p>For our longitudinal example we’ll look at a dataset that imagines a hypothetical set of grocery or “Healthy Food Stores”(HFS) near subjects. Subjects or grocery stores may move over time so this will be reflected in our data. Below we’ll repeat the similar descriptives from above, highlighting the differences in a longitudinal <code>benvo</code>.</p>
-<div class="sourceCode" id="cb9"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/utils/data.html">data</a></span>(<span class="st">"longitudinal_HFS"</span>)
+<div class="sourceCode" id="cb10"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/utils/data.html">data</a></span>(<span class="st">"longitudinal_HFS"</span>)
 <span class="no">longitudinal_HFS</span>
+<span class="co">#&gt; Active df:  subject</span>
+<span class="co">#&gt; # A tibble: 596 x 6</span>
+<span class="co">#&gt;       id   sex subj_effect measurement exposure   BMI</span>
+<span class="co">#&gt;    &lt;int&gt; &lt;int&gt;       &lt;dbl&gt;       &lt;int&gt;    &lt;dbl&gt; &lt;dbl&gt;</span>
+<span class="co">#&gt;  1     1     0      0.0974           1    -4.27  28.1</span>
+<span class="co">#&gt;  2     1     0      0.0974           2    -3.30  29.4</span>
+<span class="co">#&gt;  3     1     0      0.0974           3    -5.72  29.7</span>
+<span class="co">#&gt;  4     1     0      0.0974           4    -2.45  30.6</span>
+<span class="co">#&gt;  5     2     1     -0.202            1    -3.15  28.0</span>
+<span class="co">#&gt;  6     2     1     -0.202            2    -6.20  24.5</span>
+<span class="co">#&gt;  7     3     1      0.0641           1    -2.77  28.2</span>
+<span class="co">#&gt;  8     4     1     -0.0627           1    -2.61  27.4</span>
+<span class="co">#&gt;  9     4     1     -0.0627           2    -3.19  26.9</span>
+<span class="co">#&gt; 10     5     0      0.0980           1    -4.52  30.1</span>
+<span class="co">#&gt; # … with 586 more rows</span></pre></body></html></div>
+<div class="sourceCode" id="cb11"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span>(<span class="no">longitudinal_HFS</span>)
 <span class="co">#&gt; Subject Data:</span>
 <span class="co">#&gt; ---------------------------:</span>
 <span class="co">#&gt; Observations:  596</span>
 <span class="co">#&gt; Columns:  6</span>
-<span class="co">#&gt; Num Subjects:  300</span>
+<span class="co">#&gt; Num Subjects:  1</span>
 <span class="co">#&gt; </span>
 <span class="co">#&gt; BEF Data:</span>
 <span class="co">#&gt; ---------------------------:</span>
@@ -210,26 +255,15 @@
 <span class="co">#&gt; Features: </span>
 <span class="co">#&gt;   Name      Measures</span>
 <span class="co">#&gt; 1  HFS Distance-Time</span></pre></body></html></div>
-<div class="sourceCode" id="cb10"><html><body><pre class="r"><span class="fu"><a href="../reference/bef_summary.html">bef_summary</a></span>(<span class="no">longitudinal_HFS</span>)
-<span class="co">#&gt; # A tibble: 10 x 8</span>
-<span class="co">#&gt; # Groups:   BEF, Distance_Time [2]</span>
-<span class="co">#&gt;    BEF   Distance_Time Measurement  Lower Median Upper Number Num_NA</span>
-<span class="co">#&gt;    &lt;chr&gt; &lt;chr&gt;               &lt;int&gt;  &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt;  &lt;int&gt;  &lt;int&gt;</span>
-<span class="co">#&gt;  1 HFS   Distance                1 0.0275  0.486 0.971   2845      0</span>
-<span class="co">#&gt;  2 HFS   Distance                2 0.0278  0.492 0.973   1772      0</span>
-<span class="co">#&gt;  3 HFS   Distance                3 0.0240  0.503 0.959    743      0</span>
-<span class="co">#&gt;  4 HFS   Distance                4 0.0233  0.438 0.988    272      0</span>
-<span class="co">#&gt;  5 HFS   Distance                5 0.0390  0.478 0.962     53      0</span>
-<span class="co">#&gt;  6 HFS   Time                    1 0.131   2.55  4.87    2845      0</span>
-<span class="co">#&gt;  7 HFS   Time                    2 0.156   2.47  4.87    1772      0</span>
-<span class="co">#&gt;  8 HFS   Time                    3 0.130   2.64  4.88     743      0</span>
-<span class="co">#&gt;  9 HFS   Time                    4 0.115   2.71  4.91     272      0</span>
-<span class="co">#&gt; 10 HFS   Time                    5 0.201   2.57  4.65      53      0</span></pre></body></html></div>
-<div class="sourceCode" id="cb11"><html><body><pre class="r"><span class="fu"><a href="../reference/plot_pointrange.html">plot_pointrange</a></span>(<span class="no">longitudinal_HFS</span>,<span class="st">"HFS"</span>,<span class="st">"Distance"</span>)
+<div class="sourceCode" id="cb12"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/plot.html">plot</a></span>(<span class="no">longitudinal_HFS</span>,
+     <span class="kw">plotfun</span> <span class="kw">=</span> <span class="st">"pointrange"</span>,
+     <span class="kw">term</span> <span class="kw">=</span><span class="st">"HFS"</span>,
+     <span class="kw">component</span> <span class="kw">=</span> <span class="st">"Distance"</span>,
+     <span class="kw">p</span> <span class="kw">=</span> <span class="fl">0.9</span>)
 <span class="co">#&gt; Warning: Removed 24 rows containing missing values (geom_pointrange).</span></pre></body></html></div>
 <p><img src="Introduction_files/figure-html/long_plot-1.png" width="700"></p>
 <p>Analogous to <code>subject_design</code> there is also the <code>longitudinal_design</code> function which effectively allows for <code>lme4</code> style formulas to be used, incorporating subject or group level effects from the <code>subject_data</code> in the <code>benvo</code> and returning a <code>glmod</code> object along with the corresponding <code>X</code> and <code>y</code> design matrix and outcome vector, respectively.</p>
-<div class="sourceCode" id="cb12"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/utils/str.html">str</a></span>(<span class="fu"><a href="../reference/longitudinal_design.html">longitudinal_design</a></span>(<span class="no">longitudinal_HFS</span>,<span class="no">BMI</span> ~ <span class="no">sex</span> + (<span class="fl">1</span><span class="kw">|</span><span class="no">ID</span>)),<span class="kw">max.level</span><span class="kw">=</span><span class="fl">1</span>)
+<div class="sourceCode" id="cb13"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/utils/str.html">str</a></span>(<span class="fu"><a href="../reference/longitudinal_design.html">longitudinal_design</a></span>(<span class="no">longitudinal_HFS</span>,<span class="no">BMI</span> ~ <span class="no">sex</span> + (<span class="fl">1</span><span class="kw">|</span><span class="no">id</span>)),<span class="kw">max.level</span><span class="kw">=</span><span class="fl">1</span>)
 <span class="co">#&gt; List of 3</span>
 <span class="co">#&gt;  $ y    : num [1:596] 28.1 29.4 29.7 30.6 28 ...</span>
 <span class="co">#&gt;  $ X    : num [1:596, 1:2] 1 1 1 1 1 1 1 1 1 1 ...</span>
@@ -242,7 +276,6 @@
 <h2 class="hasAnchor">
 <a href="#further-information" class="anchor"></a>Further Information</h2>
 <p>This completes this preliminary introduction to the <code>rbenvo</code> package. For current uses please see the <a href="https://apeterson91.github.io/rsstap/"><code>rsstap</code></a> or <a href="https://apeterson91.github.io/rstapDP/"><code>rstapDP</code></a> packages. I’ve found that having these data structures greatly simplifies my code and allows for data to be organized more easily. If you’re working with similar data, I hope you find the same!</p>
-<p>I’m hoping to add more functions and classes soon that will make it easy to construct benvos from latitude-longitude coordinates or <code>sf</code> BEF data structures. Stay tuned for these updates.</p>
 </div>
 </div>
   </div>
