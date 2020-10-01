@@ -41,7 +41,7 @@ plot_pointrange <- function(x, term = NULL,component = NULL, p = 0.95){
 			component <- component[1]
 	}
 	else
-		stopifnot(component %in% component_lookup(x,term))
+		component_check(x,term, component)
 
 	jdf <- joinvo(x,term,component)
 	id <- get_id(x)

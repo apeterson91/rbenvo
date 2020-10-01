@@ -40,12 +40,9 @@ component_lookup.benvo <- function(x,term){
 
 	ix <- which(bef_names(x) == term)
 
-	components <- attr(x,'components')
+	component <- attr(x,'components')[ix]
 
-	out <- switch(components,
-				  "Distance" = "Distance",
-				  "Time" = "Time",
-				  "Distance-Time" = c("Distance","Time"))
+	out <- translate_component_to_cols(component) 
 
 	return(out)
 }
@@ -110,6 +107,13 @@ is.longitudinal <- function(object) UseMethod("is.longitudinal")
 #'
 is.longitudinal.benvo <- function(object) return(attr(object,"longitudinal"))
 
+#' @rdname benvo-methods
+#' @export
+get_id <- function(x) UseMethod("get_id")
+
+#' @describeIn get_id retrieve benvo joining id
+#' @export
+get_id.benvo <- function(x)  return(attr(x,"id"))
 
 #' @export
 #' @rdname benvo-methods
@@ -142,7 +146,6 @@ is.benvo <- function(x) inherits(x,"benvo")
 get_date_cols <- function(x) return(sapply(c("measurement_date","start_date_col","stop_date_col"),function(y) attr(x,y)))
 
 
-get_id <- function(x)  return(attr(x,"id"))
 
 bef_id_lookup <- function(x,term) return(attr(x,"bef_id")[term])
 
@@ -173,16 +176,17 @@ sf_check <-function(x){
 
 component_check <- function(x, term, component){
 
-	ix <- term_check(x,term)
-	comp <- attr(x,"components")[ix]
-	if(comp == "Distance-Time"){
-		if(!(component %in% c("Distance","Time")))
-			stop(paste0(term," is associated with components Distance and Time, not ",component))
+	if(!(component %in% component_lookup(x,term))){
+		stop("Component:", component, "Not associated with ", term)
 	}
-	else if(!(component %in% comp))
-		stop(paste0(term," is associated with component, ", comp, " not ",component))
+}
 
-
+translate_component_to_cols <-  function(component){
+	out <- switch(component,
+				  "Distance" = "Distance",
+				  "Time" = "Time",
+				  "Distance-Time" = c("Distance","Time"))
+	return(out)
 }
 
 

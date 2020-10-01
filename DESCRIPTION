@@ -1,7 +1,7 @@
 Package: rbenvo
 Type: Package
 Title: Built Environment Objects for Point Pattern Data in R 
-Version: 1.0.1
+Version: 1.0.2
 Authors@R: person("Adam", "Peterson", , "atpvyc@umich.edu", c("aut", "cre"))
 Description: rbenvo is package that holds S3 class objects and methods for built environment data to ease the use of working with these data and improve interoperability with other packages.
 License: GPL-3
@@ -25,15 +25,14 @@ Imports:
     tidygraph,
     ggmap,
     stringr,
-    lwgeom,
-    rsstap
+    lwgeom
 RoxygenNote: 7.1.1
 Depends:
 	R (>= 2.10)
 Suggests: 
     knitr,
     rmarkdown,
-    testthat (>= 2.1.0)
+    testthat (>= 2.1.0),
+    rsstap (>= 0.1.1)
 VignetteBuilder: knitr
 Remotes: 
-    apeterson91/rsstap

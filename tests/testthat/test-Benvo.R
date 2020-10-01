@@ -50,5 +50,9 @@ test_that("Benvo simple methods work",{
                 regexp = "Subjects:")
   expect_invisible(summary(FFbenvo))
   expect_invisible(summary(longitudinal_HFS))
+})
 
+test_that("benvo does not alter entered dfs",{
+  expect_equal(FFR_subjects,FFbenvo$subject_data)
+  expect_equal(FFR_distances,FFbenvo$sub_bef_data[[1]])
 })

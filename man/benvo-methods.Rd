@@ -12,6 +12,7 @@
 \alias{num_BEF}
 \alias{head.benvo}
 \alias{tail.benvo}
+\alias{get_id}
 \alias{has_subject_dt}
 \alias{has_bef_dt}
 \alias{is.benvo}
@@ -32,6 +33,8 @@ num_BEF(x)
 \method{head}{benvo}(x, ...)
 
 \method{tail}{benvo}(x, ...)
+
+get_id(x)
 
 has_subject_dt(x)
 

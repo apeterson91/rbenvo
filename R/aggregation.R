@@ -17,7 +17,6 @@ joinvo <- function(x,term,component = "Distance",NA_to_zero = F) UseMethod("join
 joinvo.benvo <- function(x,term,component = "Distance",NA_to_zero = F){
 
 
-	stopifnot(component %in% c("Distance","Time","Distance-Time"))
 	Distance <- Time <- NULL
 
 	ix <- term_check(x,term)
@@ -30,13 +29,10 @@ joinvo.benvo <- function(x,term,component = "Distance",NA_to_zero = F){
 	else
 		sdf <- x$subject_data[,id,drop=F]
 
-	jdf <- dplyr::right_join(x$sub_bef_data[[ix]],sdf, by=id)
+	jdf <- dplyr::right_join(x$sub_bef_data[[ix]],sdf, by=id) %>% dplyr::arrange_at(id)
 
 	if(NA_to_zero){
-		col <- switch(component,
-			   "Distance" = "Distance",
-			   "Time" = "Time",
-			   "Distance-Time" = c("Distance","Time"))
+		col <- translate_component_to_cols(component)
 		jdf <- jdf %>% dplyr::mutate_at(col,function(x) tidyr::replace_na(x,0))
 	}
 
@@ -65,8 +61,8 @@ aggrenvo <- function(x,M,stap_term,component) UseMethod("aggrenvo")
 aggrenvo.benvo <- function(x,M,stap_term,component){
 
 	. <- NULL
-	jndf <- joinvo(x,stap_term,component,NA_to_zero = F)
 	id <- get_id(x)
+	jndf <- joinvo(x,stap_term,component,NA_to_zero = F) %>% dplyr::arrange_at(id)
 
 	if(component=="Distance-Time")
 		component_ <- c("Distance") ## Fine to use just one since zero exposure variable will equate to zero exposure in the other
@@ -97,7 +93,6 @@ aggrenvo.benvo <- function(x,M,stap_term,component){
 	X <- as.matrix((AggMat %*% M))
 	return(X)
 }
-
 
 
 #' Between - Within Decomposition

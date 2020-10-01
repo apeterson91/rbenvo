@@ -1,3 +1,13 @@
+
+#' Model Design Matrices
+#'
+#' @export
+#' @param x benvo
+#' @param ... optional arguments
+#'
+model_matrices <- function(x,...) UseMethod("model_matrices")
+
+
 #' Subject Design Matrix
 #'
 #' @export
@@ -20,10 +30,12 @@ subject_design.benvo <- function(x,formula,...){
 	mf <- match.call(expand.dots=FALSE)
 	m <- match(c("formula","data"),names(mf),0L)
 	mf <- mf[c(1L,m)]
+	id <- get_id(x)
 	mf$drop.unused.levels <- T
 	mf[[1L]] <- quote(stats::model.frame)
 	mf$formula <- formula
 	mf$data = if(subject_has_sf(x)) sf::st_drop_geometry(x$subject_data) else x$subject_data
+	mf$data <- mf$data %>% dplyr::arrange_at(id)
 	mf <- eval(mf,parent.frame()) ## evaluate in this environment with current Benvo object
 	mt <- attr(mf,"terms")
 	if(is.empty.model(mt))
@@ -54,6 +66,7 @@ longitudinal_design <- function(x,formula,...) UseMethod("longitudinal_design")
 #'
 longitudinal_design <- function(x,formula,...){
 
+	id <- get_id(x)
   design <- function(formula){
 	  mf <- match.call(expand.dots = TRUE)
 	  mf[[1]] <- quote(lme4::glFormula)
@@ -64,6 +77,7 @@ longitudinal_design <- function(x,formula,...){
 	                             check.nobs.vs.nRE = "ignore" )
 
 	  mf$data = if(subject_has_sf(x)) sf::st_drop_geometry(x$subject_data) else x$subject_data
+	  mf$data <- mf$data %>% dplyr::arrange_at(id)
 	  mf$formula <- formula
 	  mf <- eval(mf,parent.frame())
 	  y <- mf$fr[,as.character(mf$formula[2L])]

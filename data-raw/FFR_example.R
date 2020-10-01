@@ -15,8 +15,8 @@ y <- 26 + Z * -2.2 +  exposure  +  rnorm(num_subj)
 
 
 FFR_subjects <- dplyr::tibble(id=1:num_subj,
-                                      BMI = y,
-                                      sex = Z)
+                              BMI = y,
+                              sex = Z)
 
 FFR_distances <- purrr::map2_dfr(1:length(ldists),ldists,function(x,y) dplyr::tibble(id=x,Distance=y))
 
