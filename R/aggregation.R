@@ -20,8 +20,8 @@ joinvo.benvo <- function(x,term,component = "Distance",NA_to_zero = F){
 	Distance <- Time <- NULL
 
 	ix <- term_check(x,term)
-	id <- get_id(x)
 	component_check(x,term,component)
+	id <- get_id(x)
 
 
 	if(subject_has_sf(x))

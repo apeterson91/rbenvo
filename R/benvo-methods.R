@@ -176,7 +176,7 @@ sf_check <-function(x){
 
 component_check <- function(x, term, component){
 
-	if(!(component %in% component_lookup(x,term))){
+	if(!all((translate_component_to_cols(component) %in% component_lookup(x,term)))){
 		stop("Component:", component, "Not associated with ", term)
 	}
 }
@@ -185,7 +185,8 @@ translate_component_to_cols <-  function(component){
 	out <- switch(component,
 				  "Distance" = "Distance",
 				  "Time" = "Time",
-				  "Distance-Time" = c("Distance","Time"))
+				  "Distance-Time" = c("Distance","Time"),
+					stop("Incorrect component value"))
 	return(out)
 }
 
