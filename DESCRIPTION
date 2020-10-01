@@ -1,7 +1,7 @@
 Package: rbenvo
 Type: Package
 Title: Built Environment Objects for Point Pattern Data in R 
-Version: 1.0.3
+Version: 1.0.3.9000
 Authors@R: person("Adam", "Peterson", , "atpvyc@umich.edu", c("aut", "cre"))
 Description: rbenvo is package that holds S3 class objects and methods for built environment data to ease the use of working with these data and improve interoperability with other packages.
 License: GPL-3
