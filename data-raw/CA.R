@@ -41,12 +41,15 @@ school_data %>%
          matches("Percent[5-9]"),
          Charter) %>%
   gather(contains("No"),key="Grade",value="N") %>%
-  gather(contains("Perc"),key="Grade",value="Percent") %>%
+  filter(N>0) %>% arrange(cdscode) %>%
+  gather(contains("Perc"),key="PcntGrade",value="Percent") %>%
   mutate(Grade = factor(stringr::str_extract(Grade,"[5-9]")),
+         PcntGrade = factor(stringr::str_extract(Grade,"[5-9]")),
          Percent = as.numeric(Percent)) %>%
-  filter(N>0,!is.na(Percent)) %>%
+  filter(N>0,Percent>0,!is.na(Percent),Grade==PcntGrade) %>%
   mutate(NoStud_OverweightObese = round((N*Percent)/100),
          NoStud_NotOverweightObese = N- NoStud_OverweightObese) %>%
+  select(-PcntGrade) %>%
   arrange(cdscode) %>%
   inner_join(schls %>%
                select(CDSCode,City,County,Latitude,Longitude),

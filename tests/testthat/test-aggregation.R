@@ -7,5 +7,6 @@ test_that("Aggrenvo works", {
 
 M_ <- aggrenvo(longitudinal_HFS,M,"HFS","Distance")
 test_that("bw_construction works",{
-  expect_equivalent(11,bwinvo(longitudinal_HFS,M_)$between[1,1])
+  ## 4 is from looking up how many visits the first subject has
+  expect_equivalent(sum(M_[1:4,])/4,bwinvo(longitudinal_HFS,M_)$between[1,1])
 })

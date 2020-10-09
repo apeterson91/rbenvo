@@ -62,7 +62,7 @@ aggrenvo.benvo <- function(x,M,stap_term,component){
 
 	. <- NULL
 	id <- get_id(x)
-	jndf <- joinvo(x,stap_term,component,NA_to_zero = F) %>% dplyr::arrange_at(id)
+	jndf <- joinvo(x,stap_term,component,NA_to_zero = F) 
 
 	if(component=="Distance-Time")
 		component_ <- c("Distance") ## Fine to use just one since zero exposure variable will equate to zero exposure in the other
@@ -78,7 +78,7 @@ aggrenvo.benvo <- function(x,M,stap_term,component){
 		AggMat <- create_unique_ID_mat(jndf[,id[1],drop=TRUE],jndf[,id[2],drop=TRUE])
 		IDMat <- Matrix::t(create_unique_ID_mat(sdf[,id[1],drop=TRUE],sdf[,id[2],drop=TRUE]))
 	}else{
-		IDMat <- Matrix::t(create_unique_ID_mat(sdf %>% dplyr::select_at(id) %>% dplyr::pull(name = id)))
+		IDMat <- Matrix::t(create_unique_ID_mat(sdf %>% dplyr::arrange_at(id) %>% dplyr::select_at(id) %>% dplyr::pull(name = id)))
 		AggMat <- create_unique_ID_mat(jndf[,id,drop=TRUE])
 	}
 	zeromat <- jndf %>% dplyr::group_by_at(id)  %>%
@@ -114,7 +114,7 @@ bwinvo.benvo <- function(x,M){
 
 	stopifnot(is.longitudinal(x))
 	id <- get_id(x)
-	smat <- create_unique_ID_mat(x$subject_data[,id[1],drop=TRUE],x$subject_data[,id[2],drop=TRUE])
+	smat <- create_unique_ID_mat(x$subject_data[,id[1],drop=TRUE])
 	if(nrow(M)!=ncol(smat))
 		stop("rows in M are inappropriate")
 	num <- apply(smat,1,sum)

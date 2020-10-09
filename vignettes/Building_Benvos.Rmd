@@ -3,7 +3,6 @@ title: "Building Benvos"
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{Building Benvos}
-  %\VignetteDepends{rsstap}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -74,24 +73,7 @@ While we could get a sense of the distribution of distances using the `plot_poin
 ```{r}
 plot(bdf,'map') + ggplot2::theme_bw() + ggplot2::theme_void() 
 ```
-
-Finally, while `benvo`'s are useful for making the construction and manipulation of built environment data easier, as shown above, they also facilitate the use of this relational data for model fitting via, for example the [`rsstap` package](http://apeterson91.github.io/rsstap), which we can use to estimate the association of restaurant proximity to schools with the probability of obesity at those schools.
-
-We'll fit a *simple* model below, with the emphasis here on simple since we're using open street map data, which may be considered less than authoritative and, additionally, we are not including relevant covariates such as parent's education and income which have been shown to affect a child's propensity to be obese. So this model is more for illustrative purposes, rather than offering anything approaching definitive. 
-
-```{r,results='hide'}
-library(rsstap)
-fit <- sstap_glmer(cbind(NoStud_OverweightObese,NoStud_NotOverweightObese) ~ Charter + Grade + sap(FFR)  + (1|cdscode),
-         benvo=bdf,
-         family=binomial())
-```
-
-
-Plotting the results below, we can see that the model estimates an increase in the odds of a child's obesity for each FFR placed within roughly one kilometer of the school. A result that, while not fully credible at the 95\% level, may not surprise us.
-```{r}
-plot(fit)
-```
-
+For more on how these data might be modeled, check out the [`rsstap`](https://apeterson91.github.io/rsstap/articles/Introduction.html) or [`bentobox`](https://apeterson91.github.io/bentobox/articles/Introduction.html) packages.
 
 Having looked at how `benvo`'s handle spatial data, we'll now turn to temporal data.
 
