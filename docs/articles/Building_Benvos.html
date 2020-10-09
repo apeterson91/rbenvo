@@ -31,7 +31,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">rbenvo</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.4</span>
       </span>
     </div>
 
@@ -95,20 +95,20 @@
 <a href="#spatial-data" class="anchor"></a>Spatial Data</h2>
 <p>We’ll begin with a look at two datasets composed of subject and BEF data respectively that can be procured publicly via the California Department of Education and the <a href="https://github.com/ropensci/osmdata"><code>osmdata</code> package</a> respectively (See <a href="https://github.com/apeterson91/rbenvo/blob/master/data-raw/CA.R">here</a> for how I downloaded these data). The former dataset contains information on 5th, 7th and 9th graders’ obesity at schools through the state of California, though we’ll focus on those schools and restaurants in Los Angeles for ease of exposition.</p>
 <div class="sourceCode" id="cb2"><html><body><pre class="r"><span class="no">LA_schools</span>
-<span class="co">#&gt; # A tibble: 1,686 x 9</span>
-<span class="co">#&gt;    cdscode Charter     N Grade Percent NoStud_Overweig… NoStud_NotOverw…</span>
-<span class="co">#&gt;    &lt;chr&gt;   &lt;fct&gt;   &lt;dbl&gt; &lt;fct&gt;   &lt;dbl&gt;            &lt;dbl&gt;            &lt;dbl&gt;</span>
-<span class="co">#&gt;  1 141014… Charter    19 5         0                  0               19</span>
-<span class="co">#&gt;  2 141014… Charter    19 7         0                  0               19</span>
-<span class="co">#&gt;  3 141014… Charter    19 9        47.4                9               10</span>
-<span class="co">#&gt;  4 191019… Charter    92 5         0                  0               92</span>
-<span class="co">#&gt;  5 191019… Charter    92 7        35.9               33               59</span>
-<span class="co">#&gt;  6 191019… Charter    92 9         0                  0               92</span>
-<span class="co">#&gt;  7 191019… Charter    44 5         0                  0               44</span>
-<span class="co">#&gt;  8 191019… Charter    44 7         0                  0               44</span>
-<span class="co">#&gt;  9 191019… Charter    44 9        52.3               23               21</span>
-<span class="co">#&gt; 10 191019… Tradit…    99 5         0                  0               99</span>
-<span class="co">#&gt; # … with 1,676 more rows, and 2 more variables: Latitude &lt;dbl&gt;, Longitude &lt;dbl&gt;</span></pre></body></html></div>
+<span class="co">#&gt; # A tibble: 698 x 9</span>
+<span class="co">#&gt;    cdscode Charter Grade     N Percent NoStud_Overweig… NoStud_NotOverw…</span>
+<span class="co">#&gt;    &lt;chr&gt;   &lt;fct&gt;   &lt;fct&gt; &lt;dbl&gt;   &lt;dbl&gt;            &lt;dbl&gt;            &lt;dbl&gt;</span>
+<span class="co">#&gt;  1 141014… Charter 9        19    47.4                9               10</span>
+<span class="co">#&gt;  2 191019… Charter 7        92    35.9               33               59</span>
+<span class="co">#&gt;  3 191019… Charter 9        44    52.3               23               21</span>
+<span class="co">#&gt;  4 191019… Tradit… 9        99    19.2               19               80</span>
+<span class="co">#&gt;  5 196473… Charter 5        45    33.3               15               30</span>
+<span class="co">#&gt;  6 196473… Charter 5       101    59.4               60               41</span>
+<span class="co">#&gt;  7 196473… Charter 7       127    59.4               75               52</span>
+<span class="co">#&gt;  8 196473… Charter 5       101    46.5               47               54</span>
+<span class="co">#&gt;  9 196473… Charter 7       127    46.5               59               68</span>
+<span class="co">#&gt; 10 196473… Charter 5        65    46.2               30               35</span>
+<span class="co">#&gt; # … with 688 more rows, and 2 more variables: Latitude &lt;dbl&gt;, Longitude &lt;dbl&gt;</span></pre></body></html></div>
 <p>The latter dataset contains businesses labeled as “Fast Food” in the Los Angeles Area, by users of <a href="https://www.openstreetmap.org/">openstreetmap</a>, a crowd-sourcing map tool which allows users to document different areas of their environment.</p>
 <div class="sourceCode" id="cb3"><html><body><pre class="r"><span class="no">LA_FF</span>
 <span class="co">#&gt; # A tibble: 6,621 x 4</span>
@@ -130,25 +130,25 @@
 <p>To create a benvo, we use the same <code><a href="../reference/benvo.html">benvo()</a></code> function as used with pre-calculated data, but we now specify the unique subject id so the object can correctly link future data tables.</p>
 <div class="sourceCode" id="cb5"><html><body><pre class="r"><span class="fu"><a href="../reference/benvo.html">benvo</a></span>(<span class="no">LA_schools</span>,<span class="kw">by</span><span class="kw">=</span><span class="st">'cdscode'</span>)
 <span class="co">#&gt; Active df:  subject</span>
-<span class="co">#&gt; Simple feature collection with 1686 features and 7 fields</span>
+<span class="co">#&gt; Simple feature collection with 698 features and 7 fields</span>
 <span class="co">#&gt; geometry type:  POINT</span>
 <span class="co">#&gt; dimension:      XY</span>
 <span class="co">#&gt; bbox:           xmin: -118.4958 ymin: 33.90556 xmax: -118.136 ymax: 34.29046</span>
 <span class="co">#&gt; geographic CRS: WGS 84</span>
-<span class="co">#&gt; # A tibble: 1,686 x 8</span>
-<span class="co">#&gt;    cdscode Charter     N Grade Percent NoStud_Overweig… NoStud_NotOverw…</span>
-<span class="co">#&gt;  * &lt;chr&gt;   &lt;fct&gt;   &lt;dbl&gt; &lt;fct&gt;   &lt;dbl&gt;            &lt;dbl&gt;            &lt;dbl&gt;</span>
-<span class="co">#&gt;  1 141014… Charter    19 5         0                  0               19</span>
-<span class="co">#&gt;  2 141014… Charter    19 7         0                  0               19</span>
-<span class="co">#&gt;  3 141014… Charter    19 9        47.4                9               10</span>
-<span class="co">#&gt;  4 191019… Charter    92 5         0                  0               92</span>
-<span class="co">#&gt;  5 191019… Charter    92 7        35.9               33               59</span>
-<span class="co">#&gt;  6 191019… Charter    92 9         0                  0               92</span>
-<span class="co">#&gt;  7 191019… Charter    44 5         0                  0               44</span>
-<span class="co">#&gt;  8 191019… Charter    44 7         0                  0               44</span>
-<span class="co">#&gt;  9 191019… Charter    44 9        52.3               23               21</span>
-<span class="co">#&gt; 10 191019… Tradit…    99 5         0                  0               99</span>
-<span class="co">#&gt; # … with 1,676 more rows, and 1 more variable: geometry &lt;POINT [°]&gt;</span></pre></body></html></div>
+<span class="co">#&gt; # A tibble: 698 x 8</span>
+<span class="co">#&gt;    cdscode Charter Grade     N Percent NoStud_Overweig… NoStud_NotOverw…</span>
+<span class="co">#&gt;  * &lt;chr&gt;   &lt;fct&gt;   &lt;fct&gt; &lt;dbl&gt;   &lt;dbl&gt;            &lt;dbl&gt;            &lt;dbl&gt;</span>
+<span class="co">#&gt;  1 141014… Charter 9        19    47.4                9               10</span>
+<span class="co">#&gt;  2 191019… Charter 7        92    35.9               33               59</span>
+<span class="co">#&gt;  3 191019… Charter 9        44    52.3               23               21</span>
+<span class="co">#&gt;  4 191019… Tradit… 9        99    19.2               19               80</span>
+<span class="co">#&gt;  5 196473… Charter 5        45    33.3               15               30</span>
+<span class="co">#&gt;  6 196473… Charter 5       101    59.4               60               41</span>
+<span class="co">#&gt;  7 196473… Charter 7       127    59.4               75               52</span>
+<span class="co">#&gt;  8 196473… Charter 5       101    46.5               47               54</span>
+<span class="co">#&gt;  9 196473… Charter 7       127    46.5               59               68</span>
+<span class="co">#&gt; 10 196473… Charter 5        65    46.2               30               35</span>
+<span class="co">#&gt; # … with 688 more rows, and 1 more variable: geometry &lt;POINT [°]&gt;</span></pre></body></html></div>
 <p>In order to construct the new table of subj-BEF distances and incorporate the bef table into the relational data structure of the <code>benvo</code>, the appropriately named <code><a href="../reference/add_BEF.html">add_BEF()</a></code> function works much like it sounds. We can then <code>activate</code> the restaurant table in order to look at the distances.</p>
 <div class="sourceCode" id="cb6"><html><body><pre class="r"><span class="fu"><a href="../reference/benvo.html">benvo</a></span>(<span class="no">LA_schools</span>,<span class="kw">by</span><span class="kw">=</span><span class="st">'cdscode'</span>) <span class="kw">%&gt;%</span>
   <span class="fu"><a href="../reference/add_BEF.html">add_BEF</a></span>(<span class="no">FFR</span>,<span class="kw">bef_id</span> <span class="kw">=</span> <span class="st">'osm_id'</span>) <span class="kw">%&gt;%</span>
@@ -156,20 +156,20 @@
 <span class="co">#&gt; Linking to GEOS 3.8.1, GDAL 3.1.1, PROJ 6.3.1</span>
 <span class="no">bdf</span>
 <span class="co">#&gt; Active df:  FFR</span>
-<span class="co">#&gt; # A tibble: 11,163,006 x 3</span>
+<span class="co">#&gt; # A tibble: 4,621,458 x 3</span>
 <span class="co">#&gt;    cdscode        osm_id    Distance</span>
 <span class="co">#&gt;    &lt;chr&gt;          &lt;chr&gt;          [m]</span>
 <span class="co">#&gt;  1 14101400128454 60713740 19717.047</span>
-<span class="co">#&gt;  2 14101400128454 60713740 19717.047</span>
-<span class="co">#&gt;  3 14101400128454 60713740 19717.047</span>
-<span class="co">#&gt;  4 19101990134361 60713740 17167.510</span>
-<span class="co">#&gt;  5 19101990134361 60713740 17167.510</span>
-<span class="co">#&gt;  6 19101990134361 60713740 17167.510</span>
-<span class="co">#&gt;  7 19101990135582 60713740 17606.308</span>
-<span class="co">#&gt;  8 19101990135582 60713740 17606.308</span>
-<span class="co">#&gt;  9 19101990135582 60713740 17606.308</span>
-<span class="co">#&gt; 10 19101991933399 60713740  5907.847</span>
-<span class="co">#&gt; # … with 11,162,996 more rows</span></pre></body></html></div>
+<span class="co">#&gt;  2 19101990134361 60713740 17167.510</span>
+<span class="co">#&gt;  3 19101990135582 60713740 17606.308</span>
+<span class="co">#&gt;  4 19101991933399 60713740  5907.847</span>
+<span class="co">#&gt;  5 19647330100289 60713740  9887.820</span>
+<span class="co">#&gt;  6 19647330100669 60713740 18522.629</span>
+<span class="co">#&gt;  7 19647330100669 60713740 18522.629</span>
+<span class="co">#&gt;  8 19647330100669 60713740 18522.629</span>
+<span class="co">#&gt;  9 19647330100669 60713740 18522.629</span>
+<span class="co">#&gt; 10 19647330100743 60713740 14184.749</span>
+<span class="co">#&gt; # … with 4,621,448 more rows</span></pre></body></html></div>
 <p>As can be seen here, the <code><a href="../reference/add_BEF.html">add_BEF()</a></code> function uses the <code><a href="https://rdrr.io/pkg/sf/man/geos_measures.html">sf::st_distance</a></code> function by default which returns a distance (great circle distance in this case) according to the coordinate reference system set for the <code>sf</code> objects. In this case the units are meters , but we can convert them to km and remove those pairings that are greater than 10km using the <code>dplyr</code> verbs adapted to function on whatever table is currently active in the <code>benvo</code>. Since we have repeat measurements for each school we have multiple distances for each school when we only need 1, so we’ll use a combination of <a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a> and <a href="https://dplyr.tidyverse.org/reference/distinct_all.html?q=distinct">distinct</a> to remove the duplicate and extraneous (&gt;10 km) distances:</p>
 <div class="sourceCode" id="cb7"><html><body><pre class="r"><span class="no">bdf</span> <span class="kw">&lt;-</span> <span class="no">bdf</span> <span class="kw">%&gt;%</span>
   <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span>(<span class="kw">Distance</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/numeric.html">as.numeric</a></span>(<span class="no">Distance</span>/<span class="fl">1E3</span>)) <span class="kw">%&gt;%</span>
@@ -200,16 +200,7 @@
 <span class="co">#&gt; Source : http://tile.stamen.com/terrain/10/174/409.png</span>
 <span class="co">#&gt; Source : http://tile.stamen.com/terrain/10/175/409.png</span>
 <span class="co">#&gt; Coordinate system already present. Adding new coordinate system, which will replace the existing one.</span></pre></body></html></div>
-<p><img src="Building_Benvos_files/figure-html/unnamed-chunk-5-1.png" width="700"></p>
-<p>Finally, while <code>benvo</code>’s are useful for making the construction and manipulation of built environment data easier, as shown above, they also facilitate the use of this relational data for model fitting via, for example the <a href="http://apeterson91.github.io/rsstap"><code>rsstap</code> package</a>, which we can use to estimate the association of restaurant proximity to schools with the probability of obesity at those schools.</p>
-<p>We’ll fit a <em>simple</em> model below, with the emphasis here on simple since we’re using open street map data, which may be considered less than authoritative and, additionally, we are not including relevant covariates such as parent’s education and income which have been shown to affect a child’s propensity to be obese. So this model is more for illustrative purposes, rather than offering anything approaching definitive.</p>
-<div class="sourceCode" id="cb9"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">rsstap</span>)
-<span class="no">fit</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/rsstap/man/sstap_glmer.html">sstap_glmer</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/cbind.html">cbind</a></span>(<span class="no">NoStud_OverweightObese</span>,<span class="no">NoStud_NotOverweightObese</span>) ~ <span class="no">Charter</span> + <span class="no">Grade</span> + <span class="fu">sap</span>(<span class="no">FFR</span>)  + (<span class="fl">1</span><span class="kw">|</span><span class="no">cdscode</span>),
-         <span class="kw">benvo</span><span class="kw">=</span><span class="no">bdf</span>,
-         <span class="kw">family</span><span class="kw">=</span><span class="fu"><a href="https://rdrr.io/r/stats/family.html">binomial</a></span>())</pre></body></html></div>
-<p>Plotting the results below, we can see that the model estimates an increase in the odds of a child’s obesity for each FFR placed within roughly one kilometer of the school. A result that, while not fully credible at the 95% level, may not surprise us.</p>
-<div class="sourceCode" id="cb10"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/plot.html">plot</a></span>(<span class="no">fit</span>)</pre></body></html></div>
-<p><img src="Building_Benvos_files/figure-html/unnamed-chunk-7-1.png" width="700"></p>
+<p><img src="Building_Benvos_files/figure-html/unnamed-chunk-5-1.png" width="700"> For more on how these data might be modeled, check out the <a href="https://apeterson91.github.io/rsstap/articles/Introduction.html"><code>rsstap</code></a> or <a href="https://apeterson91.github.io/bentobox/articles/Introduction.html"><code>bentobox</code></a> packages.</p>
 <p>Having looked at how <code>benvo</code>’s handle spatial data, we’ll now turn to temporal data.</p>
 </div>
 <div id="temporal-data" class="section level2">
@@ -220,7 +211,7 @@
 <h3 class="hasAnchor">
 <a href="#temporal-data-simulation" class="anchor"></a>Temporal Data Simulation</h3>
 <p>We’ll begin by simulating dates for the Los Angeles Schools that have fifth graders and Fast Food Restaurant data. We’ll set all schools to start sometime in the fall, and have the business arbitrarily open and close sometime after 2015.</p>
-<div class="sourceCode" id="cb11"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span>(<span class="fl">342431</span>)
+<div class="sourceCode" id="cb9"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span>(<span class="fl">342431</span>)
 <span class="no">LA_schools_five</span>  <span class="kw">&lt;-</span>  <span class="no">LA_schools</span> <span class="kw">%&gt;%</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span>(<span class="no">Grade</span><span class="kw">==</span><span class="fl">5</span>)
 <span class="no">origin</span> <span class="kw">&lt;-</span> <span class="kw pkg">lubridate</span><span class="kw ns">::</span><span class="fu"><a href="http://lubridate.tidyverse.org/reference/as_date.html">as_date</a></span>(<span class="st">"2018-08-01"</span>)
 <span class="no">school_start</span> <span class="kw">&lt;-</span> <span class="no">origin</span>+<span class="fu"><a href="https://rdrr.io/r/base/sample.html">sample</a></span>(<span class="fl">1</span>:<span class="fl">120</span>,<span class="kw">size</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/nrow.html">nrow</a></span>(<span class="no">LA_schools_five</span>),<span class="kw">replace</span> <span class="kw">=</span> <span class="fl">TRUE</span>)
@@ -232,32 +223,32 @@
   <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span>(<span class="kw">open</span><span class="kw">=</span><span class="no">business_start_date</span>,<span class="kw">close</span><span class="kw">=</span><span class="no">business_close_date</span>)
 <span class="no">schools</span> <span class="kw">&lt;-</span> <span class="no">LA_schools_five</span> <span class="kw">%&gt;%</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span>(<span class="kw">open</span><span class="kw">=</span><span class="no">school_start</span>,<span class="kw">measure</span><span class="kw">=</span><span class="no">measure_date</span>,<span class="kw">close</span><span class="kw">=</span><span class="no">close_date</span>)</pre></body></html></div>
 <p>We create the benvo using the same function as before, but now including the optional arguments that specify the start,measurement, and stop date columns for each subject observation which are each vectors of <code><a href="http://lubridate.tidyverse.org/reference/date_utils.html">lubridate::Date</a></code> objects. These must be named similarly in any subsequent BEF table that is then added, as in the FFR example here. The <code><a href="../reference/benvo.html">benvo()</a></code> function uses these date columns to then construct the time exposed, labeled as Time and exposure lag (time between the end of the exposure period and the current measurement date)</p>
-<div class="sourceCode" id="cb12"><html><body><pre class="r"><span class="no">bdf</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/benvo.html">benvo</a></span>(<span class="no">schools</span>,
+<div class="sourceCode" id="cb10"><html><body><pre class="r"><span class="no">bdf</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/benvo.html">benvo</a></span>(<span class="no">schools</span>,
       <span class="kw">start_date_col</span><span class="kw">=</span><span class="st">"open"</span>,
       <span class="kw">measurement_date</span><span class="kw">=</span><span class="st">"measure"</span>,
       <span class="kw">stop_date_col</span><span class="kw">=</span><span class="st">"close"</span>,<span class="kw">by</span><span class="kw">=</span><span class="st">'cdscode'</span>) <span class="kw">%&gt;%</span>
   <span class="fu"><a href="../reference/add_BEF.html">add_BEF</a></span>(<span class="no">FFR</span>,<span class="kw">bef_id</span> <span class="kw">=</span> <span class="st">'osm_id'</span>)</pre></body></html></div>
 <p>We can look at the constructed times, by activating the FFR table.</p>
-<div class="sourceCode" id="cb13"><html><body><pre class="r"><span class="no">bdf</span> <span class="kw">%&gt;%</span> <span class="fu"><a href="../reference/activate.html">activate</a></span>(<span class="no">FFR</span>) <span class="kw">%&gt;%</span>
+<div class="sourceCode" id="cb11"><html><body><pre class="r"><span class="no">bdf</span> <span class="kw">%&gt;%</span> <span class="fu"><a href="../reference/activate.html">activate</a></span>(<span class="no">FFR</span>) <span class="kw">%&gt;%</span>
   <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span>(-<span class="no">open</span>,-<span class="no">close</span>) <span class="co">## for better display</span>
 <span class="co">#&gt; Active df:  FFR</span>
-<span class="co">#&gt; # A tibble: 1,842,122 x 7</span>
+<span class="co">#&gt; # A tibble: 1,168,497 x 7</span>
 <span class="co">#&gt;    cdscode       measure    open_FFR   close_FFR  osm_id    Time    exposure_lag</span>
 <span class="co">#&gt;    &lt;chr&gt;         &lt;date&gt;     &lt;date&gt;     &lt;date&gt;     &lt;chr&gt;     &lt;drtn&gt;  &lt;drtn&gt;      </span>
-<span class="co">#&gt;  1 141014001284… 2019-05-01 2016-06-06 2019-03-03 42835540…  98 da…  59 days    </span>
-<span class="co">#&gt;  2 141014001284… 2019-05-01 2016-06-06 2020-04-22 40984406… 157 da…   0 days    </span>
-<span class="co">#&gt;  3 141014001284… 2019-05-01 2016-06-06 2020-05-22 38870735… 157 da…   0 days    </span>
-<span class="co">#&gt;  4 141014001284… 2019-05-01 2016-06-07 2019-03-15 75921499… 110 da…  47 days    </span>
-<span class="co">#&gt;  5 141014001284… 2019-05-01 2016-06-07 2020-05-06 56421932… 157 da…   0 days    </span>
-<span class="co">#&gt;  6 141014001284… 2019-05-01 2016-06-09 2019-05-15 40975707… 157 da…   0 days    </span>
-<span class="co">#&gt;  7 141014001284… 2019-05-01 2016-06-09 2019-08-26 42011494… 157 da…   0 days    </span>
-<span class="co">#&gt;  8 141014001284… 2019-05-01 2016-06-09 2020-07-28 42026373… 157 da…   0 days    </span>
-<span class="co">#&gt;  9 141014001284… 2019-05-01 2016-06-10 2019-01-12 43003660…  48 da… 109 days    </span>
-<span class="co">#&gt; 10 141014001284… 2019-05-01 2016-06-10 2019-08-31 45210825… 157 da…   0 days    </span>
-<span class="co">#&gt; # … with 1,842,112 more rows</span></pre></body></html></div>
+<span class="co">#&gt;  1 196473301002… 2019-05-01 2016-06-06 2019-03-03 42979757…  98 da…  59 days    </span>
+<span class="co">#&gt;  2 196473301002… 2019-05-01 2016-06-06 2020-04-22 41070726… 157 da…   0 days    </span>
+<span class="co">#&gt;  3 196473301002… 2019-05-01 2016-06-07 2020-04-09 66588233… 157 da…   0 days    </span>
+<span class="co">#&gt;  4 196473301002… 2019-05-01 2016-06-09 2019-01-17 42448677…  53 da… 104 days    </span>
+<span class="co">#&gt;  5 196473301002… 2019-05-01 2016-06-09 2019-05-15 41026121… 157 da…   0 days    </span>
+<span class="co">#&gt;  6 196473301002… 2019-05-01 2016-06-09 2020-07-28 42256375… 157 da…   0 days    </span>
+<span class="co">#&gt;  7 196473301002… 2019-05-01 2016-06-10 2019-03-10 46601780… 105 da…  52 days    </span>
+<span class="co">#&gt;  8 196473301002… 2019-05-01 2016-06-10 2019-08-26 43027016… 157 da…   0 days    </span>
+<span class="co">#&gt;  9 196473301002… 2019-05-01 2016-06-10 2019-09-03 18732152… 157 da…   0 days    </span>
+<span class="co">#&gt; 10 196473301002… 2019-05-01 2016-06-10 2020-08-07 46589894… 157 da…   0 days    </span>
+<span class="co">#&gt; # … with 1,168,487 more rows</span></pre></body></html></div>
 <p>Similar to how the distances were calculated in specific units from the <code><a href="https://rdrr.io/pkg/sf/man/geos_measures.html">sf::st_distance()</a></code> function, the <code>lubridate</code> function calculates differences in times according to the granularity of the data. Here since we have information available in days, we calculate differences in units of days. These can be altered according to user preference, as before using the dplyr verb functions and converting times according to the functions in the <a href="https://lubridate.tidyverse.org/reference/lubridate-package.html">lubridate package</a>.</p>
 <p>To finish off this section we’ll highlight a timeline plot that is currently available for visualizing the temporal exposure for subjects. The plot below shows when the different schools opened and closed. Since we’re showing all schools were closed and measured at the same time, we have a uniform line at the right side. This is just a feature of how we constructed the data, but it could be different. As the starting times show variability on the left hand side of the plot, it is not hard to imagine a setting in which there’d be similar variability for closing and measure times.</p>
-<div class="sourceCode" id="cb14"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/plot.html">plot</a></span>(<span class="no">bdf</span>,<span class="st">'time'</span>)</pre></body></html></div>
+<div class="sourceCode" id="cb12"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/plot.html">plot</a></span>(<span class="no">bdf</span>,<span class="st">'time'</span>)</pre></body></html></div>
 <p><img src="Building_Benvos_files/figure-html/timeline-1.png" width="700"></p>
 </div>
 </div>
