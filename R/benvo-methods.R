@@ -161,7 +161,6 @@ create_unique_ID_mat <- function(id_one,id_two = NULL){
 }
 
 term_check <- function(x,term){
-
 	stopifnot(length(term)==1)
 	nms <- bef_names(x)
 	ix <- which(nms == term )
