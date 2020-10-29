@@ -31,7 +31,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">rbenvo</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.4</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.5</span>
       </span>
     </div>
 
@@ -62,7 +62,14 @@
   </ul>
 </li>
       </ul>
-<ul class="nav navbar-nav navbar-right"></ul>
+<ul class="nav navbar-nav navbar-right">
+<li>
+  <a href="https://github.com/apeterson91/rbenvo/">
+    <span class="fab fa fab fa-github fa-lg"></span>
+     
+  </a>
+</li>
+      </ul>
 </div>
 <!--/.nav-collapse -->
   </div>
@@ -78,7 +85,7 @@
       <h1 data-toc-skip>Building Benvos</h1>
             
       
-      
+      <small class="dont-index">Source: <a href="https://github.com/apeterson91/rbenvo/blob/master/vignettes/Building_Benvos.Rmd"><code>vignettes/Building_Benvos.Rmd</code></a></small>
       <div class="hidden name"><code>Building_Benvos.Rmd</code></div>
 
     </div>
@@ -232,20 +239,20 @@
 <div class="sourceCode" id="cb11"><html><body><pre class="r"><span class="no">bdf</span> <span class="kw">%&gt;%</span> <span class="fu"><a href="../reference/activate.html">activate</a></span>(<span class="no">FFR</span>) <span class="kw">%&gt;%</span>
   <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span>(-<span class="no">open</span>,-<span class="no">close</span>) <span class="co">## for better display</span>
 <span class="co">#&gt; Active df:  FFR</span>
-<span class="co">#&gt; # A tibble: 1,168,497 x 7</span>
+<span class="co">#&gt; # A tibble: 1,175,977 x 7</span>
 <span class="co">#&gt;    cdscode       measure    open_FFR   close_FFR  osm_id    Time    exposure_lag</span>
 <span class="co">#&gt;    &lt;chr&gt;         &lt;date&gt;     &lt;date&gt;     &lt;date&gt;     &lt;chr&gt;     &lt;drtn&gt;  &lt;drtn&gt;      </span>
-<span class="co">#&gt;  1 196473301002… 2019-05-01 2016-06-06 2019-03-03 42979757…  98 da…  59 days    </span>
-<span class="co">#&gt;  2 196473301002… 2019-05-01 2016-06-06 2020-04-22 41070726… 157 da…   0 days    </span>
-<span class="co">#&gt;  3 196473301002… 2019-05-01 2016-06-07 2020-04-09 66588233… 157 da…   0 days    </span>
-<span class="co">#&gt;  4 196473301002… 2019-05-01 2016-06-09 2019-01-17 42448677…  53 da… 104 days    </span>
-<span class="co">#&gt;  5 196473301002… 2019-05-01 2016-06-09 2019-05-15 41026121… 157 da…   0 days    </span>
-<span class="co">#&gt;  6 196473301002… 2019-05-01 2016-06-09 2020-07-28 42256375… 157 da…   0 days    </span>
-<span class="co">#&gt;  7 196473301002… 2019-05-01 2016-06-10 2019-03-10 46601780… 105 da…  52 days    </span>
-<span class="co">#&gt;  8 196473301002… 2019-05-01 2016-06-10 2019-08-26 43027016… 157 da…   0 days    </span>
-<span class="co">#&gt;  9 196473301002… 2019-05-01 2016-06-10 2019-09-03 18732152… 157 da…   0 days    </span>
-<span class="co">#&gt; 10 196473301002… 2019-05-01 2016-06-10 2020-08-07 46589894… 157 da…   0 days    </span>
-<span class="co">#&gt; # … with 1,168,487 more rows</span></pre></body></html></div>
+<span class="co">#&gt;  1 196473301002… 2019-05-01 2016-06-06 2019-04-14 42979757… 140 da…  17 days    </span>
+<span class="co">#&gt;  2 196473301002… 2019-05-01 2016-06-06 2020-04-12 41070726… 157 da…   0 days    </span>
+<span class="co">#&gt;  3 196473301002… 2019-05-01 2016-06-07 2019-03-01 66588233…  96 da…  61 days    </span>
+<span class="co">#&gt;  4 196473301002… 2019-05-01 2016-06-08 2019-06-10 42979758… 157 da…   0 days    </span>
+<span class="co">#&gt;  5 196473301002… 2019-05-01 2016-06-08 2020-09-01 471250006 157 da…   0 days    </span>
+<span class="co">#&gt;  6 196473301002… 2019-05-01 2016-06-09 2019-04-10 43124339… 136 da…  21 days    </span>
+<span class="co">#&gt;  7 196473301002… 2019-05-01 2016-06-09 2019-05-15 41026121… 157 da…   0 days    </span>
+<span class="co">#&gt;  8 196473301002… 2019-05-01 2016-06-09 2020-03-15 42256375… 157 da…   0 days    </span>
+<span class="co">#&gt;  9 196473301002… 2019-05-01 2016-06-09 2020-08-08 42026373… 157 da…   0 days    </span>
+<span class="co">#&gt; 10 196473301002… 2019-05-01 2016-06-10 2019-01-01 46601780…  37 da… 120 days    </span>
+<span class="co">#&gt; # … with 1,175,967 more rows</span></pre></body></html></div>
 <p>Similar to how the distances were calculated in specific units from the <code><a href="https://rdrr.io/pkg/sf/man/geos_measures.html">sf::st_distance()</a></code> function, the <code>lubridate</code> function calculates differences in times according to the granularity of the data. Here since we have information available in days, we calculate differences in units of days. These can be altered according to user preference, as before using the dplyr verb functions and converting times according to the functions in the <a href="https://lubridate.tidyverse.org/reference/lubridate-package.html">lubridate package</a>.</p>
 <p>To finish off this section we’ll highlight a timeline plot that is currently available for visualizing the temporal exposure for subjects. The plot below shows when the different schools opened and closed. Since we’re showing all schools were closed and measured at the same time, we have a uniform line at the right side. This is just a feature of how we constructed the data, but it could be different. As the starting times show variability on the left hand side of the plot, it is not hard to imagine a setting in which there’d be similar variability for closing and measure times.</p>
 <div class="sourceCode" id="cb12"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/plot.html">plot</a></span>(<span class="no">bdf</span>,<span class="st">'time'</span>)</pre></body></html></div>

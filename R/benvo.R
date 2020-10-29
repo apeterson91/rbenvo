@@ -13,6 +13,7 @@
 #' @details benvo is a constructor function which creates benvo objects.
 #' In particular, note that the \code{benvo} function will explicitly check the data you provide,
 #' to ensure benvo methods can be performed without error.
+#' @seealso  \href{https://apeterson91.github.io/rbenvo/articles/Introduction.html}{Introductory} and more \href{https://apeterson91.github.io/rbenvo/articles/Building_Benvos.html}{Specialized} vignettes. 
 #'
 benvo <- function(subject_data,
 				  sub_bef_data = NULL,

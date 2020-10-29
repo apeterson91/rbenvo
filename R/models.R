@@ -1,13 +1,3 @@
-
-#' Model Design Matrices
-#'
-#' @export
-#' @param x benvo
-#' @param ... optional arguments
-#'
-model_matrices <- function(x,...) UseMethod("model_matrices")
-
-
 #' Subject Design Matrix
 #'
 #' @export

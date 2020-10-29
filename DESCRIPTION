@@ -1,7 +1,7 @@
 Package: rbenvo
 Type: Package
 Title: Built Environment Objects for Point Pattern Data in R 
-Version: 1.0.4.9000
+Version: 1.0.5
 Authors@R: person(given = "Adam", 
 				  family = "Peterson", 
 				  email ="atpvyc@umich.edu", 
@@ -20,7 +20,6 @@ Imports:
     lme4,
     Matrix,
     forcats,
-    glue,
     sf,
     lubridate,
     rlang,
@@ -31,6 +30,7 @@ Depends:
 Suggests: 
     ggmap,
     knitr,
+    glue,
     rmarkdown,
     testthat (>= 2.1.0),
     tidygraph,
