@@ -21,7 +21,7 @@ subject_design.benvo <- function(x,formula,...){
 	m <- match(c("formula","data"),names(mf),0L)
 	mf <- mf[c(1L,m)]
 	id <- get_id(x)
-	mf$drop.unused.levels <- T
+	mf$drop.unused.levels <- TRUE
 	mf[[1L]] <- quote(stats::model.frame)
 	mf$formula <- formula
 	mf$data = if(subject_has_sf(x)) sf::st_drop_geometry(x$subject_data) else x$subject_data

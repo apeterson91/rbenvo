@@ -53,9 +53,9 @@ plot_pointrange <- function(x, term = NULL,component = NULL, p = 0.95){
 		dplyr::mutate_at(id,factor) %>%
 		dplyr::group_by_at(id) %>%
 		dplyr::summarise_at(component,
-		                    list(Lower = ~ quantile(.,l,na.rm=T),
-		                         Median = ~ median(.,na.rm=T),
-		                         Upper = ~ quantile(.,u,na.rm=T))) %>%
+		                    list(Lower = ~ quantile(.,l,na.rm = TRUE),
+		                         Median = ~ median(.,na.rm = TRUE),
+		                         Upper = ~ quantile(.,u,na.rm = TRUE))) %>%
 	ggplot2::ggplot(ggplot2::aes(x=forcats::fct_reorder(.data[[id[1]]],Median),y=Median))  +
 	ggplot2::geom_pointrange(ggplot2::aes(ymin=Lower,ymax=Upper),alpha=0.4) +
 	ggplot2::xlab(id) +
@@ -106,7 +106,7 @@ plot_map <- function(x,term = NULL){
 	mp <- ggmap::get_stamenmap(bbx,color='bw')
 
 	p <- ggmap::ggmap(mp) + 
-		ggplot2::geom_sf(data= rbdf, inherit.aes=F,
+		ggplot2::geom_sf(data= rbdf, inherit.aes = FALSE,
 						 ggplot2::aes(color=Class,shape=Class))
 	return(p)
 }

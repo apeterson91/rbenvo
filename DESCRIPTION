@@ -1,14 +1,14 @@
 Package: rbenvo
 Type: Package
-Title: Built Environment Objects in R 
+Title: Built Environment Objects
 Version: 1.0.5
 Authors@R: person(given = "Adam", 
 				  family = "Peterson", 
 				  email ="atpvyc@umich.edu", 
 				  role = c("aut", "cre"),
 				  comment = c(ORCID = "0000-0001-7071-7873"))
-Description:  Provides S3 class objects and methods for built environment data to ease the use of working with these data and facilitate other packages that make use of this data structure.
-License: GPL-3
+Description: Provides S3 class objects and methods for built environment data to ease the use of working with these data and facilitate other packages that make use of this data structure.
+License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
 Imports: 
