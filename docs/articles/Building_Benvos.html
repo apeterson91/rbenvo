@@ -239,20 +239,20 @@
 <div class="sourceCode" id="cb11"><html><body><pre class="r"><span class="no">bdf</span> <span class="kw">%&gt;%</span> <span class="fu"><a href="../reference/activate.html">activate</a></span>(<span class="no">FFR</span>) <span class="kw">%&gt;%</span>
   <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span>(-<span class="no">open</span>,-<span class="no">close</span>) <span class="co">## for better display</span>
 <span class="co">#&gt; Active df:  FFR</span>
-<span class="co">#&gt; # A tibble: 1,175,977 x 7</span>
+<span class="co">#&gt; # A tibble: 1,187,983 x 7</span>
 <span class="co">#&gt;    cdscode       measure    open_FFR   close_FFR  osm_id    Time    exposure_lag</span>
 <span class="co">#&gt;    &lt;chr&gt;         &lt;date&gt;     &lt;date&gt;     &lt;date&gt;     &lt;chr&gt;     &lt;drtn&gt;  &lt;drtn&gt;      </span>
-<span class="co">#&gt;  1 196473301002… 2019-05-01 2016-06-06 2019-04-14 42979757… 140 da…  17 days    </span>
-<span class="co">#&gt;  2 196473301002… 2019-05-01 2016-06-06 2020-04-12 41070726… 157 da…   0 days    </span>
-<span class="co">#&gt;  3 196473301002… 2019-05-01 2016-06-07 2019-03-01 66588233…  96 da…  61 days    </span>
-<span class="co">#&gt;  4 196473301002… 2019-05-01 2016-06-08 2019-06-10 42979758… 157 da…   0 days    </span>
-<span class="co">#&gt;  5 196473301002… 2019-05-01 2016-06-08 2020-09-01 471250006 157 da…   0 days    </span>
-<span class="co">#&gt;  6 196473301002… 2019-05-01 2016-06-09 2019-04-10 43124339… 136 da…  21 days    </span>
-<span class="co">#&gt;  7 196473301002… 2019-05-01 2016-06-09 2019-05-15 41026121… 157 da…   0 days    </span>
-<span class="co">#&gt;  8 196473301002… 2019-05-01 2016-06-09 2020-03-15 42256375… 157 da…   0 days    </span>
-<span class="co">#&gt;  9 196473301002… 2019-05-01 2016-06-09 2020-08-08 42026373… 157 da…   0 days    </span>
-<span class="co">#&gt; 10 196473301002… 2019-05-01 2016-06-10 2019-01-01 46601780…  37 da… 120 days    </span>
-<span class="co">#&gt; # … with 1,175,967 more rows</span></pre></body></html></div>
+<span class="co">#&gt;  1 196473301002… 2019-05-01 2016-06-06 2019-10-05 41070726… 157 da…  0 days     </span>
+<span class="co">#&gt;  2 196473301002… 2019-05-01 2016-06-07 2019-05-24 38614490… 157 da…  0 days     </span>
+<span class="co">#&gt;  3 196473301002… 2019-05-01 2016-06-08 2020-08-15 46611260… 157 da…  0 days     </span>
+<span class="co">#&gt;  4 196473301002… 2019-05-01 2016-06-09 2019-04-29 42256375… 155 da…  2 days     </span>
+<span class="co">#&gt;  5 196473301002… 2019-05-01 2016-06-09 2019-07-18 44859943… 157 da…  0 days     </span>
+<span class="co">#&gt;  6 196473301002… 2019-05-01 2016-06-09 2020-01-02 43124339… 157 da…  0 days     </span>
+<span class="co">#&gt;  7 196473301002… 2019-05-01 2016-06-09 2020-10-15 37616364… 157 da…  0 days     </span>
+<span class="co">#&gt;  8 196473301002… 2019-05-01 2016-06-10 2019-03-10 46601780… 105 da… 52 days     </span>
+<span class="co">#&gt;  9 196473301002… 2019-05-01 2016-06-10 2019-05-17 43027016… 157 da…  0 days     </span>
+<span class="co">#&gt; 10 196473301002… 2019-05-01 2016-06-11 2019-02-01 40901984…  68 da… 89 days     </span>
+<span class="co">#&gt; # … with 1,187,973 more rows</span></pre></body></html></div>
 <p>Similar to how the distances were calculated in specific units from the <code><a href="https://rdrr.io/pkg/sf/man/geos_measures.html">sf::st_distance()</a></code> function, the <code>lubridate</code> function calculates differences in times according to the granularity of the data. Here since we have information available in days, we calculate differences in units of days. These can be altered according to user preference, as before using the dplyr verb functions and converting times according to the functions in the <a href="https://lubridate.tidyverse.org/reference/lubridate-package.html">lubridate package</a>.</p>
 <p>To finish off this section we’ll highlight a timeline plot that is currently available for visualizing the temporal exposure for subjects. The plot below shows when the different schools opened and closed. Since we’re showing all schools were closed and measured at the same time, we have a uniform line at the right side. This is just a feature of how we constructed the data, but it could be different. As the starting times show variability on the left hand side of the plot, it is not hard to imagine a setting in which there’d be similar variability for closing and measure times.</p>
 <div class="sourceCode" id="cb12"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/plot.html">plot</a></span>(<span class="no">bdf</span>,<span class="st">'time'</span>)</pre></body></html></div>

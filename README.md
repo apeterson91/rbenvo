@@ -1,6 +1,6 @@
 ## <img src = "docs/figures/rbenvo_hex.png" align="right" width=190 height=220> `rbenvo`: Built Environment Objects for Point Pattern Data in R
 <!-- badges: start -->
-[![License: GPL v3](https://img.shields.io/badge/License-GPL%20v3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Travis build status](https://travis-ci.org/apeterson91/rbenvo.svg?branch=master)](https://travis-ci.org/apeterson91/rbenvo)
 [![R build status](https://github.com/apeterson91/rbenvo/workflows/R-CMD-check/badge.svg)](https://github.com/apeterson91/rbenvo/actions)
 <!-- badges: end -->
