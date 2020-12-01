@@ -1,7 +1,7 @@
 Package: rbenvo
 Type: Package
 Title: Built Environment Objects
-Version: 1.0.5
+Version: 1.0.6.9000
 Authors@R: person(given = "Adam", 
 				  family = "Peterson", 
 				  email ="atpvyc@umich.edu", 

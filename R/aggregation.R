@@ -29,7 +29,7 @@ joinvo.benvo <- function(x,term,component = "Distance",NA_to_zero = F){
 	else
 		sdf <- x$subject_data[,id,drop=F]
 
-	jdf <- dplyr::right_join(x$sub_bef_data[[ix]],sdf, by=id) %>% dplyr::arrange_at(id)
+	jdf <- dplyr::right_join(x$sub_bef_data[[ix]],dplyr::distinct_at(sdf,id), by=id) %>% dplyr::arrange_at(id)
 
 	if(NA_to_zero){
 		col <- translate_component_to_cols(component)
@@ -84,8 +84,7 @@ aggrenvo.benvo <- function(x,M,stap_term,component){
 	zeromat <- jndf %>% dplyr::group_by_at(id)  %>%
 			dplyr::summarise_at(component_,function(x) 1*all(!is.na(x))) %>%
 			dplyr::pull(component_) %>%
-			diag(.) %>%
-			Matrix::Matrix()
+			Matrix::Diagonal(x = .)
 
 	AggMat <- IDMat %*% zeromat %*% AggMat
 	stopifnot(nrow(M) == ncol(AggMat))

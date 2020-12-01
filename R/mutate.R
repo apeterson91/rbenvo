@@ -40,8 +40,8 @@ dplyr::n
 check_id_components <- function(x){
 
 	id <- get_id(x)
-	check_one <- id %in% colnames(x$subject_data)
-	check_two <- id %in% Reduce(intersect,lapply(x$sub_bef_data,colnames))
+	check_one <- all(id %in% colnames(x$subject_data))
+	check_two <- all(id %in% Reduce(intersect,lapply(x$sub_bef_data,colnames)))
 	if(!(check_one && check_two))
 		stop("id key ",paste0(paste0("'",id,"'",sep=", "))," is no longer present, this operation results in an invalid benvo")
 	check_three <- purrr::map_lgl(bef_names(x),function(y){ component_lookup(x,y) %in% colnames(x$sub_bef_data[[y]]) })
