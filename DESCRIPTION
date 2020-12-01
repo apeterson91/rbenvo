@@ -20,7 +20,6 @@ Imports:
     lme4,
     Matrix,
     forcats,
-    sf,
     lubridate,
     rlang,
     stringr,
@@ -28,6 +27,7 @@ RoxygenNote: 7.1.1
 Depends:
 	R (>= 2.10)
 Suggests: 
+    sf,
     ggmap,
     knitr,
     glue,
